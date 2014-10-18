@@ -12,36 +12,26 @@ import openfl.utils.JNI;
 
 
 class SensorExtension {
-	
-	
-	public static function sampleMethod (inputValue:Int):Int {
+
+	public static function getAccelX ():Int {
 		
 		#if (android && openfl)
 		
-		var resultJNI = sensorextension_sample_method_jni(inputValue);
-		var resultNative = sensorextension_sample_method(inputValue);
-		
-		if (resultJNI != resultNative) {
-			
-			throw "Fuzzy math!";
-			
-		}
-		
-		return resultNative;
+		return sensorextension_get_accel_x();
 		
 		#else
 		
-		return sensorextension_sample_method(inputValue);
+		return 0;
 		
 		#end
 		
 	}
 	
 	
-	private static var sensorextension_sample_method = Lib.load ("sensorextension", "sensorextension_sample_method", 1);
+	/*private static var sensorextension_sample_method = Lib.load ("sensorextension", "sensorextension_sample_method", 1);*/
 	
 	#if (android && openfl)
-	private static var sensorextension_sample_method_jni = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "sampleMethod", "(I)I");
+	private static var sensorextension_get_accel_x = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getAccelX", "()F");
 	#end
 	
 	
