@@ -2,83 +2,117 @@ package osc;
 
 import haxe.io.Bytes;
 import haxe.io.BytesBuffer;
+import openfl.utils.ByteArray;
 
 class OscMessage {
 
-    private var typeTag:BytesBuffer;
-    private var data:BytesBuffer;
-    private var addrPattern:String;
+    private static inline var OSC_STRING_BYTE_MOD:Int = 4;
 
-    public function new(addrPattern:String)
+    private var typeTag:ByteArray;
+    private var data:ByteArray;
+    private var addrPattern:ByteArray;
+
+    public function new(?addrPattern:String)
     {
-        this.addrPattern = addrPattern;
-        typeTag = new BytesBuffer();
-        data = new BytesBuffer();
+        addrPattern = "/" + addrPattern;
+        this.addrPattern = new ByteArray();
+        this.addrPattern.writeUTFBytes(addrPattern);
+        padToMultipleOf4Bytes(this.addrPattern);
+        typeTag = new ByteArray();
+        typeTag.writeUTFBytes(",");
+        data = new ByteArray();
     }
 
-    // This function nulls the BytesBuffers
-    // You cannot use the OscMessage after calling it
-    public function getBytes():Bytes
+    public function clear()
     {
-        var bytesBuffer:BytesBuffer = new BytesBuffer();
-        var typeBytes:Bytes = typeTag.getBytes();
-        var dataBytes:Bytes = data.getBytes();
+        typeTag.clear();
+        data.clear();
+        typeTag.writeUTFBytes(",");
+    }
 
-        bytesBuffer.add(typeBytes);
-        bytesBuffer.add(dataBytes);
+    public function getBytes():ByteArray
+    {
+        var byteArray:ByteArray = new ByteArray();
 
-        return bytesBuffer.getBytes();
+        byteArray.writeBytes(addrPattern, 0, addrPattern.length);
+
+        var tempTypeTag:ByteArray = new ByteArray();
+        tempTypeTag.writeBytes(typeTag, 0, typeTag.length);
+        padToMultipleOf4Bytes(tempTypeTag);
+        byteArray.writeBytes(tempTypeTag, 0, tempTypeTag.length);
+
+        byteArray.writeBytes(data, 0, data.length);
+
+        return byteArray;
     }
 
     public function addInt(val:Int)
     {
-        typeTag.addByte(0x69); // i
-        data.addByte(val);
+        typeTag.writeByte(0x69); // i
+        data.writeInt(val);
     }
 
     public function addFloat(val:Float)
     {
-        typeTag.addByte(0x66); // f
-        data.addFloat(val);
+        typeTag.writeByte(0x66); // f
+        data.writeFloat(val);
     }
 
     public function addDouble(val:Float)
     {
-        typeTag.addByte(0x64); // d
-        data.addDouble(val);
+        typeTag.writeByte(0x64); // d
+        data.writeDouble(val);
     }
 
     public function addString(val:String)
     {
-        typeTag.addByte(0x53); // s
-        data.addString(val);
+        var tempBytes:ByteArray = new ByteArray();
+        typeTag.writeByte(0x53); // s
+        tempBytes.writeUTFBytes(val);
+        padToMultipleOf4Bytes(tempBytes);
+        data.writeBytes(tempBytes, 0, tempBytes.length);
     }
 
     public function addBool(val:Bool)
     {
         if(val)
-            typeTag.addByte(0x54); // T
+            typeTag.writeByte(0x54); // T
         else
-            typeTag.addByte(0x46); // F
+            typeTag.writeByte(0x46); // F
     }
 
     public function addMidi(channel:Int, status:Int, val1:Int, val2:Int)
     {
-        typeTag.addByte(0x6d); // m
-        data.addByte(channel);
-        data.addByte(val1);
-        data.addByte(val2);
+        typeTag.writeByte(0x6d); // m
+        data.writeByte(channel);
+        data.writeByte(val1);
+        data.writeByte(val2);
     }
 
-    // The following functions will ruin the BytesBuffer
-    // For now use them only for debugging
     public function toString():String
     {
-        return addrPattern + " " + typeTag.getBytes().toString() + " " + data.getBytes().toString();
+        return getBytes().toString();
     }
 
     public function toHex():String
     {
-        return addrPattern + " " + typeTag.getBytes().toString() + " " + data.getBytes().toHex();
+        return getBytes().toHex();
+    }
+
+    private function padToMultipleOf4Bytes(byteArray:ByteArray)
+    {
+        byteArray.writeByte(0x0);
+
+        var numNullsToAdd:Int = OSC_STRING_BYTE_MOD - byteArray.length % OSC_STRING_BYTE_MOD;
+
+        if(numNullsToAdd == OSC_STRING_BYTE_MOD)
+        {
+            return;
+        }
+
+        for(i in 0...numNullsToAdd)
+        {
+            byteArray.writeByte(0x0);
+        }
     }
 }

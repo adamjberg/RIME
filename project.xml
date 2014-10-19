@@ -9,6 +9,7 @@
 	<haxelib name="openfl" />
 	<haxelib name="haxeui" />
 	<haxelib name="hxudp" />
+	<haxelib name="msignal" />
 	<haxelib name="SensorExtension"/>
 	
 	<assets path="Assets" rename="assets" exclude="openfl.svg" />
