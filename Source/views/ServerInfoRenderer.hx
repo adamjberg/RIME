@@ -29,7 +29,7 @@ class ServerInfoRenderer extends VBox {
 
         this.serverInfo = serverInfo;
 
-        this.percentWidth = 100;
+        percentWidth = 100;
         
         hBox = new HBox();
         hBox.horizontalAlign = "center";

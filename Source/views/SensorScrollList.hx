@@ -1,26 +1,29 @@
 package views;
 
 import haxe.ui.toolkit.containers.ScrollView;
-import haxe.ui.toolkit.containers.VBox;
+import models.sensors.Sensor;
+import views.SensorListItem;
 
 class SensorScrollList extends ScrollView {
-    private var vBox:VBox;
 
-    public function new()
+    private var sensors:Array<Sensor>;
+
+    public function new(?sensors:Array<Sensor>)
     {
         super();
 
-        this.percentWidth = 90;
+        this.sensors = sensors;
+
+        this.style.borderSize = 0;
+        this.style.spacingY = 10;
+
+        this.percentWidth = 95;
         this.percentHeight = 100;
         this.horizontalAlign = "center";
 
-        vBox = new VBox();
-        vBox.percentWidth = 100;
-        addChild(vBox);
-
-        for(i in 0...20)
+        for(sensor in sensors)
         {
-            vBox.addChild(new SensorListItem());
+            addChild(new SensorListItem(sensor));
         }
     }
 }

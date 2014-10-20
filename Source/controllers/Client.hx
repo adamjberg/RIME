@@ -1,6 +1,7 @@
 package controllers;
 
 import hxudp.UdpSocket;
+import models.sensors.Sensor;
 import models.ServerInfo;
 import openfl.events.AccelerometerEvent;
 import openfl.events.TimerEvent;
@@ -15,20 +16,16 @@ class Client {
     private var sendTimer:Timer;
     private var message:OscMessage;
 
-    private var accelerometer:Accelerometer;
-    private var accelerometerData:Array<Float> = [0, 0, 0];
+    private var sensors:Array<Sensor>;
 
-    public function new(?serverInfo:ServerInfo)
+    public function new(?serverInfo:ServerInfo, ?sensors:Array<Sensor>)
     {
         this.serverInfo = serverInfo;
+        this.sensors = sensors;
+
         socket = new UdpSocket();
         socket.create();
         message = new OscMessage("rime");
-        if(Accelerometer.isSupported)
-        {
-            accelerometer = new Accelerometer();
-            accelerometer.addEventListener(AccelerometerEvent.UPDATE, accelerometerUpdate);
-        }
     }
 
     public function connect()
@@ -55,17 +52,13 @@ class Client {
 
     private function timerHandler(e:TimerEvent)
     {
-        message.addString("acc");
-        message.addFloat(accelerometerData[0]);
-        message.addFloat(accelerometerData[1]);
-        message.addFloat(accelerometerData[2]);
+        for(sensor in sensors)
+        {
+            if(sensor.enabled)
+            {
+                sensor.addToOscMessage(message);
+            }
+        }
         send();
-    }
-
-    private function accelerometerUpdate(event:AccelerometerEvent)
-    {
-        accelerometerData[0] = event.accelerationX;
-        accelerometerData[1] = event.accelerationY;
-        accelerometerData[2] = event.accelerationZ;
     }
 }
