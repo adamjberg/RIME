@@ -1,5 +1,6 @@
 package;
 
+import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.core.Root;
 import haxe.ui.toolkit.core.Toolkit;
 import haxe.ui.toolkit.themes.GradientMobileTheme;
@@ -10,6 +11,7 @@ class Main extends Sprite {
 	public function new () {
         super();
 		Toolkit.theme = new GradientMobileTheme();
+        Toolkit.setTransitionForClass(Stack, "none");
 		Toolkit.init();
 		Toolkit.openFullscreen(function(root:Root) {
 			var app:App = new App();

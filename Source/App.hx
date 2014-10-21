@@ -1,25 +1,22 @@
 package;
 
+import controllers.ScreenManager;
+import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
 import models.sensors.Sensor;
 import models.sensors.Accelerometer;
 import models.ServerInfo;
-import openfl.events.AccelerometerEvent;
-import openfl.events.Event;
 import controllers.Client;
 import views.HeaderBar;
-import views.SensorScrollList;
-import views.ServerInfoRenderer;
+import views.HomeScreen;
 
 class App extends VBox {
 
     private var headerBar:HeaderBar;
+    private var homeScreen:HomeScreen;
 
+    private var stack:Stack;
     private var client:Client;
-
-    private var serverInfo:ServerInfo;
-    private var serverInfoRenderer:ServerInfoRenderer;
-
     private var sensors:Array<Sensor>;
     private var accelerometer:Sensor;
 
@@ -32,9 +29,13 @@ class App extends VBox {
         style.paddingBottom = 10;
 
         headerBar = new HeaderBar();
+        addChild(headerBar);
 
-        serverInfo = new ServerInfo();
-        serverInfoRenderer = new ServerInfoRenderer(serverInfo);
+        stack = new Stack();
+        stack.percentHeight = 100;
+        stack.percentWidth = 100;
+        ScreenManager.init(stack, headerBar);
+        addChild(stack);
 
         accelerometer = new Accelerometer();
         sensors = [
@@ -45,20 +46,12 @@ class App extends VBox {
             client = new Client(serverInfo, sensors);
         #end
 
-        addChild(headerBar);
+        homeScreen = new HomeScreen(
+            headerBar,
+            sensors,
+            client
+        );
 
-        var sensorList:SensorScrollList = new SensorScrollList(sensors);
-        addChild(sensorList);
-
-        addChild(serverInfoRenderer);
-
-        serverInfoRenderer.onSendButtonPressed.add(sendButtonPressed);
-    }
-
-    private function sendButtonPressed()
-    {
-        #if !neko
-            client.connect();
-        #end
+        ScreenManager.push(homeScreen);
     }
 }
