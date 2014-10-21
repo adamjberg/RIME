@@ -17,10 +17,11 @@ class HeaderBar extends MenuBar {
         super();
 
         this.percentWidth = 100;
-        this.style.padding = 5;
+        this.style.paddingLeft = 5;
 
         backButton = new Button();
         backButton.text = "Back";
+        backButton.verticalAlign = "center";
         addChild(backButton);
         hideBackButton();
 
