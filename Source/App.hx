@@ -9,14 +9,17 @@ import models.ServerInfo;
 import controllers.Client;
 import views.HeaderBar;
 import views.HomeScreen;
+import views.PianoButtonScreen;
 
 class App extends VBox {
 
     private var headerBar:HeaderBar;
     private var homeScreen:HomeScreen;
+    private var pianoButtonScreen:PianoButtonScreen;
 
     private var stack:Stack;
     private var client:Client;
+    private var serverInfo:ServerInfo;
     private var sensors:Array<Sensor>;
     private var accelerometer:Sensor;
 
@@ -37,20 +40,22 @@ class App extends VBox {
         ScreenManager.init(stack, headerBar);
         addChild(stack);
 
+        serverInfo = new ServerInfo();
         accelerometer = new Accelerometer();
         sensors = [
             accelerometer
         ];
 
-        #if !neko
-            client = new Client(serverInfo, sensors);
-        #end
+        client = new Client(serverInfo, sensors);
 
         homeScreen = new HomeScreen(
             headerBar,
             sensors,
-            client
+            client,
+            serverInfo
         );
+
+        pianoButtonScreen = new PianoButtonScreen(client);
 
         ScreenManager.push(homeScreen);
     }

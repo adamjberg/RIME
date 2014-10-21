@@ -39,7 +39,6 @@ class ScreenManager {
         }
         else
         {
-            trace("show");
             headerBar.showBackButton();
         }
     }

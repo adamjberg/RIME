@@ -30,8 +30,9 @@ class ServerInfoRenderer extends VBox {
         this.serverInfo = serverInfo;
 
         percentWidth = 100;
-        
+
         hBox = new HBox();
+        hBox.percentWidth = 100;
         hBox.horizontalAlign = "center";
         addChild(hBox);
 
@@ -42,6 +43,7 @@ class ServerInfoRenderer extends VBox {
 
         ipAddress = new TextInput();
         ipAddress.maxChars = 15;
+        ipAddress.percentWidth = 50;
         ipAddress.verticalAlign = "center";
         ipAddress.text = serverInfo.ipAddress;
         ipAddress.addEventListener(Event.CHANGE, ipAddressChanged);
@@ -55,6 +57,7 @@ class ServerInfoRenderer extends VBox {
         portNumber.verticalAlign = "center";
         portNumber.text = Std.string(serverInfo.portNumber);
         portNumber.addEventListener(Event.CHANGE, portNumberChanged);
+        portNumber.percentWidth = 50;
         hBox.addChild(portNumber);
 
         sendButton = new Button();

@@ -23,14 +23,19 @@ class Client {
         this.serverInfo = serverInfo;
         this.sensors = sensors;
 
-        socket = new UdpSocket();
-        socket.create();
+        #if !neko
+            socket = new UdpSocket();
+            socket.create();
+        #end
+
         message = new OscMessage("rime");
     }
 
     public function connect()
     {
-        socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
+        #if !neko
+            socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
+        #end
         sendTimer = new Timer(1000, 0);
         sendTimer.addEventListener(TimerEvent.TIMER, timerHandler);
         sendTimer.start();
@@ -38,15 +43,19 @@ class Client {
 
     public function disconnect()
     {
-        socket.close();
+        #if !neko
+            socket.close();
+        #end
         sendTimer.stop();
         sendTimer.removeEventListener(TimerEvent.TIMER, timerHandler);
         sendTimer = null;
     }
 
-    public function send()
+    public function send(message:OscMessage)
     {
-        socket.send(message.getBytes());
+        #if !neko
+            socket.send(message.getBytes());
+        #end
         message.clear();
     }
 
@@ -59,6 +68,6 @@ class Client {
                 sensor.addToOscMessage(message);
             }
         }
-        send();
+        send(message);
     }
 }

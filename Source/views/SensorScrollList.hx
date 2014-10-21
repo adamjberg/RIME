@@ -18,7 +18,6 @@ class SensorScrollList extends ScrollView {
         this.style.spacingY = 10;
 
         this.percentWidth = 95;
-        this.percentHeight = 100;
         this.horizontalAlign = "center";
 
         for(sensor in sensors)
