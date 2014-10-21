@@ -11,6 +11,7 @@ import views.HeaderBar;
 import views.PianoButtonScreen;
 import views.SensorScrollList;
 import views.ServerInfoRenderer;
+import views.TestPositionScreen;
 
 class HomeScreen extends VBox {
 
@@ -44,9 +45,18 @@ class HomeScreen extends VBox {
         var openPianoScreenButton:Button = new Button();
         openPianoScreenButton.text = "Open Piano Screen";
         openPianoScreenButton.percentWidth = 100;
-        openPianoScreenButton.percentHeight = 20;
+        openPianoScreenButton.percentHeight = 10;
         openPianoScreenButton.addEventListener(MouseEvent.CLICK, openPianoScreen);
         addChild(openPianoScreenButton);
+
+        var openTestScreenButton:Button = new Button();
+        openTestScreenButton.text = "Open Test Screen";
+        openTestScreenButton.percentWidth = 100;
+        openTestScreenButton.percentHeight = 10;
+        openTestScreenButton.addEventListener(MouseEvent.CLICK, function(e:MouseEvent) {
+            ScreenManager.push(new TestPositionScreen(client));
+            });
+        addChild(openTestScreenButton);
 
         serverInfoRenderer.percentHeight = 20;
         addChild(serverInfoRenderer);

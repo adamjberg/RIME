@@ -38,7 +38,7 @@ class Client {
         #end
         sendTimer = new Timer(1000, 0);
         sendTimer.addEventListener(TimerEvent.TIMER, timerHandler);
-        sendTimer.start();
+        //sendTimer.start();
     }
 
     public function disconnect()

@@ -67,18 +67,20 @@ class PianoButtonScreen extends Container {
 
     private function pianoButtonDown(event:MouseEvent)
     {
-        sendButtonMessage(event.target, true);
+        var pianoButton:PianoButton = event.currentTarget;
+        sendButtonMessage(pianoButton, true);
     }
 
     private function pianoButtonUp(event:MouseEvent)
     {
-        sendButtonMessage(event.target, false);
+        sendButtonMessage(event.currentTarget, false);
     }
 
     private function sendButtonMessage(pianoButton:PianoButton, isDown:Bool)
     {
         var buttonNum:Int = pianoButtons.indexOf(pianoButton);
-        var message:OscMessage = new OscMessage();
+        var message:OscMessage = new OscMessage("rime");
+        trace("button: " + "bt" + Std.string(buttonNum));
         message.addString("bt" + Std.string(buttonNum));
         message.addBool(true);
         client.send(message);

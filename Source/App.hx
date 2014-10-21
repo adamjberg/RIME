@@ -10,6 +10,7 @@ import controllers.Client;
 import views.HeaderBar;
 import views.HomeScreen;
 import views.PianoButtonScreen;
+import views.TestPositionScreen;
 
 class App extends VBox {
 
@@ -56,6 +57,7 @@ class App extends VBox {
         );
 
         pianoButtonScreen = new PianoButtonScreen(client);
+        var testPositionScreen:TestPositionScreen = new TestPositionScreen(client);
 
         ScreenManager.push(homeScreen);
     }
