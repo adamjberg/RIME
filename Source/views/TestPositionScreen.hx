@@ -4,6 +4,8 @@ import controllers.Client;
 import haxe.ui.toolkit.containers.VBox;
 import haxe.ui.toolkit.controls.Button;
 import haxe.ui.toolkit.controls.TextInput;
+import models.commands.ViperCreateImageCommand;
+import models.commands.ViperUpdatePositionCommand;
 import openfl.events.MouseEvent;
 import osc.OscMessage;
 
@@ -44,27 +46,10 @@ class TestPositionScreen extends VBox {
 
     private function send(e:MouseEvent)
     {
-        var message:OscMessage = new OscMessage("rime");
+        var createCommand:ViperCreateImageCommand = new ViperCreateImageCommand(0, 0.2, 0.5);
+        var updateCommand:ViperUpdatePositionCommand = new ViperUpdatePositionCommand(0, Std.parseFloat(xInput.text), Std.parseFloat(yInput.text));
 
-        message.addString("command");
-        message.addString("create");
-        message.addString("id");
-        message.addInt(0);
-        message.addString("xPos");
-        message.addFloat(0);
-        message.addString("yPos");
-        message.addFloat(0);
-
-        message.addString("command");
-        message.addString("update");
-        message.addString("id");
-        message.addInt(0);
-        message.addString("xPos");
-        message.addFloat(Std.parseFloat(xInput.text));
-        message.addString("yPos");
-        message.addFloat(Std.parseFloat(yInput.text));
-
-        client.send(message);
+        client.send(updateCommand.fillOscMessage(createCommand.fillOscMessage()));
     }
 
 }
