@@ -29,12 +29,12 @@ class Accelerometer extends Sensor {
 
     override private function enable()
     {
-        acc.addEventListener(AccelerometerEvent.UPDATE, update);
+        acc.addEventListener(AccelerometerEvent.UPDATE, updateAccel);
     }
 
     override private function disable()
     {
-        acc.removeEventListener(AccelerometerEvent.UPDATE, update);
+        acc.removeEventListener(AccelerometerEvent.UPDATE, updateAccel);
     }
 
     override public function isSupported():Bool
@@ -42,11 +42,11 @@ class Accelerometer extends Sensor {
         return openfl.sensors.Accelerometer.isSupported;
     }
 
-    private function update(event:AccelerometerEvent)
+    private function updateAccel(?event:AccelerometerEvent)
     {
         values[0] = event.accelerationX;
         values[1] = event.accelerationY;
         values[2] = event.accelerationZ;
-        onUpdate.dispatch();
+        super.update();
     }
 }
