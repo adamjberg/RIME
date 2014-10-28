@@ -14,7 +14,7 @@ class Magnetic extends Sensor {
 
     override public function update()
     {
-        values = SensorExtension.getMagField();
+        values = SensorExtension.getMagneticField();
         super.update();
     }
 }

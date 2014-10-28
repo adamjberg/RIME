@@ -14,7 +14,7 @@ class Light extends Sensor {
 
     override public function update()
     {
-        values = SensorExtension.getLight();
+        values[0] = SensorExtension.getLight();
         super.update();
     }
 }

@@ -14,7 +14,7 @@ class Pressure extends Sensor {
 
     override public function update()
     {
-        values = SensorExtension.getPressure();
+        values[0] = SensorExtension.getPressure();
         super.update();
     }
 }

@@ -14,7 +14,7 @@ class Proximity extends Sensor {
 
     override public function update()
     {
-        values = SensorExtension.getProximity();
+        values[0] = SensorExtension.getProximity();
         super.update();
     }
 }

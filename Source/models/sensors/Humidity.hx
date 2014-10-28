@@ -14,7 +14,7 @@ class Humidity extends Sensor {
 
     override public function update()
     {
-        values = SensorExtension.getHumidity();
+        values[0] = SensorExtension.getHumidity();
         super.update();
     }
 }

@@ -43,7 +43,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 
@@ -60,7 +60,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 
@@ -77,7 +77,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 
@@ -94,7 +94,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 
@@ -107,7 +107,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
@@ -121,7 +121,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
@@ -138,7 +138,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 
@@ -152,7 +152,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
@@ -165,12 +165,12 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
 	}
-	public static function getMagfield ():Array<Float>{
+	public static function getMagneticField ():Array<Float>{
 		#if (android && openfl)
 		var array:Array<Float> = new Array<Float>();
 		array.push(sensorextension_get_magfield_x());
@@ -181,7 +181,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 
@@ -196,14 +196,14 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
 	}
 
 
-	public static function getaccelSupported ():String {
+	public static function isAccelerometerSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -211,13 +211,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getgyroSupported ():String {
+	public static function isGyroscopeSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -225,13 +225,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getgravitySupported ():String {
+	public static function isGravitySupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -239,13 +239,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getlnaccelSupported ():String {
+	public static function isLinearAccelerometerSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -253,13 +253,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getorientSupported ():String {
+	public static function isOrientationSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -267,13 +267,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getpressureSupported ():String {
+	public static function isPressureSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -281,13 +281,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getamtempSupported ():String {
+	public static function isAmbientTemperatureSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -295,13 +295,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getrotvectSupported ():String {
+	public static function isRotationSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -309,13 +309,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getproximitySupported ():String {
+	public static function isProximitySupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -323,13 +323,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getlightSupported ():String {
+	public static function isLightSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -337,13 +337,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function getmagfieldSupported ():String {
+	public static function isMagneticSupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -351,13 +351,13 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
 
-	public static function gethumiditySupported ():String {
+	public static function isHumiditySupported ():Bool {
 		
 		#if (android && openfl)
 		
@@ -365,20 +365,11 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return false;
 		
 		#end
 		
 	}
-
-
-
-
-
-
-	
-	
-	/*private static var sensorextension_sample_method = Lib.load ("sensorextension", "sensorextension_sample_method", 1);*/
 	
 	#if (android && openfl)
 	private static var sensorextension_get_accel_x = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getAccelX", "()F");
@@ -429,8 +420,6 @@ class SensorExtension {
 	private static var is_light_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getlightSupported", "()Z");
 	private static var is_magfield_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getmagfieldSupported", "()Z");
 	private static var is_humidity_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "gethumiditySupported", "()Z");
-
-
 
 	#end
 	

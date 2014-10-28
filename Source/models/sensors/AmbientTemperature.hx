@@ -14,7 +14,7 @@ class AmbientTemperature extends Sensor {
 
     override public function update()
     {
-        values = SensorExtension.getAmtemp();
+        values[0] = SensorExtension.getAmtemp();
         super.update();
     }
 }
