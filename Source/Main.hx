@@ -17,16 +17,18 @@ class Main extends Sprite {
 
 	private function frame(e:Event)
 	{
-		trace("Accel: " + SensorExtension.getAccel());
-		trace("Gyro:"+SensorExtension.getGyro());
-		trace("Gravity:" +SensorExtension.getGravity());
-		trace("Linear Accel:" + SensorExtension.getLnaccel());
-		trace("Orientation:"+SensorExtension.getOrient());
-		trace("Pressure:"+SensorExtension.getPressure());
-		trace("Ambient Temperature:"+SensorExtension.getAmtemp());
-		trace("Rotation Vector:"+SensorExtension.getRotvect());
-		trace("Proximity:"+ SensorExtension.getProximity());
-		trace("Light:"+SensorExtension.getLight());
+		trace("Accel: " + SensorExtension.getaccelSupported() + SensorExtension.getAccel());
+		trace("Gyro:"+SensorExtension.getgyroSupported()+SensorExtension.getGyro());
+		trace("Gravity:" +SensorExtension.getgravitySupported()+SensorExtension.getGravity());
+		trace("Linear Accel:" + SensorExtension.getlnaccelSupported()+SensorExtension.getLnaccel());
+		trace("Orientation:"+SensorExtension.getorientSupported()+SensorExtension.getOrient());
+		trace("Pressure:"+SensorExtension.getpressureSupported()+SensorExtension.getPressure());
+		trace("Ambient Temperature:"+SensorExtension.getamtempSupported()+SensorExtension.getAmtemp());
+		trace("Rotation Vector:"+SensorExtension.getrotvectSupported()+SensorExtension.getRotvect());
+		trace("Proximity:"+ SensorExtension.getproximitySupported()+SensorExtension.getProximity());
+		trace("Light:"+SensorExtension.getlightSupported()+SensorExtension.getLight());
+		trace("Magnetic Field:"+SensorExtension.getmagfieldSupported()+SensorExtension.getMagfield());
+		trace("Humidity:"+SensorExtension.gethumiditySupported()+SensorExtension.getHumidity());
 	
 
 	}

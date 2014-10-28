@@ -170,38 +170,211 @@ class SensorExtension {
 		#end
 		
 	}
-
-
-	// public static function getHumidity ():Float {
-		
-	// 	#if (android && openfl)
-		
-	// 	return sensorextension_get_humidity();
-		
-	// 	#else
-		
-	// 	return 0;
-		
-	// 	#end
-		
-	// }
-
-	// public static function getMagfield ():Array<Float>{
-	// 	#if (android && openfl)
-	// 	var array:Array<Float> = new Array<Float>();
-	// 	array.push(sensorextension_get_magfield_x());
-	// 	array.push(sensorextension_get_magfield_y());
-	// 	array.push(sensorextension_get_magfield_z());
+	public static function getMagfield ():Array<Float>{
+		#if (android && openfl)
+		var array:Array<Float> = new Array<Float>();
+		array.push(sensorextension_get_magfield_x());
+		array.push(sensorextension_get_magfield_y());
+		array.push(sensorextension_get_magfield_z());
 	
-	// 	return array;
+		return array;
 		
-	// 	#else
+		#else
 		
-	// 	return 0;
+		return 0;
 		
-	// 	#end
+		#end
 
-	// }
+	}
+
+
+	public static function getHumidity ():Float {
+		
+		#if (android && openfl)
+		
+		return sensorextension_get_humidity();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+
+	public static function getaccelSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_accel_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getgyroSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_gyro_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getgravitySupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_gravity_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getlnaccelSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_lnaccel_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getorientSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_orient_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getpressureSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_pressure_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getamtempSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_amtemp_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getrotvectSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_rotvect_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getproximitySupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_proximity_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getlightSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_light_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function getmagfieldSupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_magfield_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+	public static function gethumiditySupported ():String {
+		
+		#if (android && openfl)
+		
+		return is_humidity_supported();
+		
+		#else
+		
+		return 0;
+		
+		#end
+		
+	}
+
+
+
+
+
 
 	
 	
@@ -234,13 +407,29 @@ class SensorExtension {
 	private static var sensorextension_get_rotvect_x = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getRotvectX", "()F");
 	private static var sensorextension_get_rotvect_y = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getRotvectY", "()F");
 	private static var sensorextension_get_rotvect_z = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getRotvectZ", "()F");
-	private static var sensorextension_get_rotvect_cos = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getRotvectCOS", "()F");
-	private static var sensorextension_get_rotvect_est = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getRotvectEst", "()F");
 
 	private static var sensorextension_get_proximity = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getProximity", "()F");
 	private static var sensorextension_get_light = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getLight", "()F");
 
+	private static var sensorextension_get_magfield_x = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getMagfieldX", "()F");
+	private static var sensorextension_get_magfield_y = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getMagfieldY", "()F");
+	private static var sensorextension_get_magfield_z = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getMagfieldZ", "()F");
 	
+	private static var sensorextension_get_humidity = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getHumidity", "()F");
+
+	private static var is_accel_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getaccelSupported", "()Z");
+	private static var is_gyro_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getgyroSupported", "()Z");
+	private static var is_gravity_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getgravitySupported", "()Z");
+	private static var is_lnaccel_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getlnaccelSupported", "()Z");
+	private static var is_orient_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getorientSupported", "()Z");
+	private static var is_pressure_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getpressureSupported", "()Z");
+	private static var is_amtemp_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getamtempSupported", "()Z");
+	private static var is_rotvect_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getrotvectSupported", "()Z");
+	private static var is_proximity_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getproximitySupported", "()Z");
+	private static var is_light_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getlightSupported", "()Z");
+	private static var is_magfield_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getmagfieldSupported", "()Z");
+	private static var is_humidity_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "gethumiditySupported", "()Z");
+
 
 
 	#end
