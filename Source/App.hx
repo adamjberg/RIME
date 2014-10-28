@@ -1,10 +1,10 @@
 package;
 
 import controllers.ScreenManager;
+import controllers.SensorController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
 import models.sensors.Sensor;
-import models.sensors.Accelerometer;
 import models.ServerInfo;
 import controllers.Client;
 import views.HeaderBar;
@@ -21,8 +21,8 @@ class App extends VBox {
     private var stack:Stack;
     private var client:Client;
     private var serverInfo:ServerInfo;
+    private var sensorController:SensorController;
     private var sensors:Array<Sensor>;
-    private var accelerometer:Sensor;
 
     public function new () {
         super();
@@ -42,10 +42,9 @@ class App extends VBox {
         addChild(stack);
 
         serverInfo = new ServerInfo();
-        accelerometer = new Accelerometer();
-        sensors = [
-            accelerometer
-        ];
+
+        sensorController = new SensorController();
+        sensors = sensorController.sensors;
 
         client = new Client(serverInfo, sensors);
 
