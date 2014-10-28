@@ -3,6 +3,8 @@
 	
 	<meta title="Rime" package="com.example.rime" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="Rime" />
+
+	<android minimum-sdk-version="19" target-sdk-version="19" />
 	
 	<source path="Source" />
 	

@@ -13,13 +13,178 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+
 public class SensorExtension extends Extension implements SensorEventListener {
 	
-	public static float[] accel = new float[3];
+	public static boolean accelSupported;
+	public static boolean gyroSupported;
+	public static boolean gravitySupported;
+	public static boolean lnaccelSupported;
+	public static boolean orientSupported;
+	public static boolean pressureSupported;
+	public static boolean amtempSupported;
+	public static boolean rotvectSupported;
+	public static boolean proximitySupported;
+	public static boolean lightSupported;
+	public static boolean magfieldSupported;
+	public static boolean humiditySupported;
 
-	public static float getAccelX() {
+	public static float[] accel = new float[3];
+	public static float[] gyroscope = new float[3];
+	public static float[] gravity = new float[3];
+	public static float[] lnaccel = new float[3];
+	public static float[] orient = new float[3];
+	public static float pressure=0.0f;
+	public static float amtemp=0.0f;
+	public static float[] rotvect=new float[5];
+	public static float proximity=0.0f;
+	public static float light=0.0f;
+	public static float[] magfield = new float[3];
+	public static float humidity=0.0f;
+
+	
+	
+
+	/*Accelerometer get method */
+	public static float getAccelX(){
 		return accel[0];
 	}
+	public static float getAccelY() {
+
+		return accel[1];
+	}
+	public static float getAccelZ() {
+
+		return accel[2];
+	}
+	/*Gyroscope get method */
+	public static float getGyroX() {
+		return gyroscope[0];
+	}
+	public static float getGyroY() {
+		return gyroscope[1];
+	}
+	public static float getGyroZ() {
+		return gyroscope[2];
+	}
+	/*Gravity get method */
+	public static float getGravityX() {
+		return gravity[0];
+	}
+
+	public static float getGravityY() {
+		return gravity[1];
+	}
+	public static float getGravityZ() {
+		return gravity[2];
+	}
+	/*Linear Acceleration get method */
+	public static float getLnaccelX() {
+		return lnaccel[0];
+	}
+
+	public static float getLnaccelY() {
+		return lnaccel[1];
+	}
+	public static float getLnaccelZ() {
+		return lnaccel[2];
+	}
+
+	/*Orientation get method */
+	public static float getOrientX() {
+		return orient[0];
+	}
+
+	public static float getOrientY() {
+		return orient[1];
+	}
+	public static float getOrientZ() {
+		return orient[2];
+	}
+	/*Pressure get method */
+	public static float getPressure() {
+		return pressure;
+	}
+	/*Temperature get method*/
+	public static float getAmtemp() {
+		return amtemp;
+	}
+	/*Rotation Vetor get method */
+	public static float getRotvectX() {
+		return rotvect[0];
+	}
+	public static float getRotvectY() {
+		return rotvect[1];
+	}
+	public static float getRotvectZ() {
+		return rotvect[2];
+	}
+	/*Proximity get Method*/
+	public static float getProximity() {
+		return proximity;
+	}
+	/*Light get method */
+	public static float getLight() {
+		return light;
+	}
+	/*Magnetic Field get method */
+	public static float getMagfieldX() {
+		return magfield[0];
+	}
+	
+	public static float getMagfieldY() {
+		return magfield[1];
+	}
+
+	public static float getMagfieldZ() {
+		return magfield[2];
+	}
+	/*Humidity get method */
+	public static float getHumidity() {
+		return humidity;
+	}
+
+
+	//SensorSupport Get Functions
+	public static boolean getaccelSupported() {
+		return accelSupported;
+	}
+	public static boolean getgyroSupported() {
+		return gyroSupported;
+	}
+	public static boolean getgravitySupported() {
+		return gravitySupported;
+	}
+	public static boolean getlnaccelSupported() {
+		return lnaccelSupported;
+	}
+	public static boolean getorientSupported() {
+		return orientSupported;
+	}
+	public static boolean getpressureSupported() {
+		return pressureSupported;
+	}
+	public static boolean getamtempSupported() {
+		return amtempSupported;
+	}
+	public static boolean getrotvectSupported() {
+		return rotvectSupported;
+	}
+	public static boolean getproximitySupported() {
+		return proximitySupported;
+	}
+	public static boolean getlightSupported() {
+		return lightSupported;
+	}
+	public static boolean getmagfieldSupported() {
+		return magfieldSupported;
+	}
+	public static boolean gethumiditySupported() {
+		return humiditySupported;
+	}
+
+
+
 
 	/**
 	 * Called when an activity you launched exits, giving you the requestCode 
@@ -38,7 +203,126 @@ public class SensorExtension extends Extension implements SensorEventListener {
 	public void onCreate (Bundle savedInstanceState) {
 		
 		SensorManager sm = (SensorManager) Extension.mainActivity.getSystemService(Context.SENSOR_SERVICE);
-		sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 0);
+		if(sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!=null){
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 0);
+			accelSupported=true;
+		}
+		else
+		{
+			accelSupported=false;
+		}
+
+		if(sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE), 0);
+
+			gyroSupported=true;
+		}
+		else
+		{
+			gyroSupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_GRAVITY)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_GRAVITY), 0);
+
+			gravitySupported=true;
+		}
+		else
+		{
+			gravitySupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION), 0);
+
+			lnaccelSupported=true;
+		}
+		else
+		{
+			lnaccelSupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_ORIENTATION)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ORIENTATION), 0);
+
+			orientSupported=true;
+		}
+		else
+		{
+			orientSupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_PRESSURE)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_PRESSURE), 0);
+
+			pressureSupported=true;
+		}
+		else
+		{
+			pressureSupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE), 0);
+			amtempSupported=true;
+		}
+		else
+		{
+			amtempSupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR), 0);
+			rotvectSupported=true;
+		}
+		else
+		{
+			rotvectSupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_PROXIMITY)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_PROXIMITY), 0);
+			proximitySupported=true;
+		}
+		else
+		{
+			proximitySupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_LIGHT)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_LIGHT), 0);
+			lightSupported=true;
+		}
+		else
+		{
+			lightSupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), 0);
+			magfieldSupported=true;
+		}
+		else
+		{
+			magfieldSupported=false;
+		}
+		if(sm.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY)!=null){
+			
+			sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY), 0);
+			humiditySupported=true;
+		}
+		else
+		{
+			humiditySupported=false;
+		}
+		
+		
+		
+		
+
+
+
 	}
 	
 	@Override
@@ -50,6 +334,40 @@ public class SensorExtension extends Extension implements SensorEventListener {
 	    if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 	    	accel = event.values;
 		}
+		if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+			gyroscope = event.values;
+		}
+		if(event.sensor.getType() == Sensor.TYPE_GRAVITY) {
+			gravity = event.values;
+		}
+		if(event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+			lnaccel = event.values;
+		}
+		if(event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+			orient = event.values;
+		}
+		if(event.sensor.getType() == Sensor.TYPE_PRESSURE) {
+			pressure = event.values[0];
+		}
+		if(event.sensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+			amtemp = event.values[0];
+		}
+		if(event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+			rotvect = event.values;
+		}
+		if(event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
+			proximity = event.values[0];
+		}
+		if(event.sensor.getType() == Sensor.TYPE_LIGHT) {
+			light = event.values[0];
+		}
+		if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+			magfield = event.values;
+		}
+		if(event.sensor.getType() == Sensor.TYPE_RELATIVE_HUMIDITY) {
+			humidity = event.values[0];
+		}
+		
 	}
 	
 	/**
