@@ -1,6 +1,6 @@
 package filters;
 
-class SimpleLowPassFilter extends Filter {
+class HighPassFilter extends Filter {
 
     private static var DEFAULT_ALPHA:Float = 0.8;
 
@@ -17,7 +17,8 @@ class SimpleLowPassFilter extends Filter {
 
     override public function update(newValue:Float):Float
     {
-        value = value + ( newValue - value ) * alpha;
+        var prevValue = value + ( newValue - value ) * alpha;
+        value = newValue - prevValue;
         return value;
     }
 }

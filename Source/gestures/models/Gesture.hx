@@ -1,7 +1,5 @@
 package gestures.models;
 
-import models.sensors.SensorData;
-
 /**
  * This class represents a movement trajectory
  */
@@ -74,7 +72,7 @@ class Gesture {
         return max;
     }
     
-    public function getMinAcceleration():Float
+    public function getMin():Float
     {
         if(!this.minmaxmanual)
         {
