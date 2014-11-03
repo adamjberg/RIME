@@ -215,7 +215,7 @@ class SensorExtension {
 		
 		#else
 		
-		return false;
+		return true;
 		
 		#end
 		

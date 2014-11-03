@@ -1,48 +1,25 @@
 package;
 
-import filters.SimpleLowPassFilter;
-import models.sensors.Accelerometer;
-import openfl.display.Sprite;
-import gestures.models.*;
-import filters.*;
-import gestures.controllers.GestureController;
-import openfl.events.MouseEvent;
+import haxe.ui.toolkit.containers.Stack;
+import haxe.ui.toolkit.core.Root;
+import haxe.ui.toolkit.core.Toolkit;
+import haxe.ui.toolkit.style.Style;
+import haxe.ui.toolkit.style.StyleManager;
+import haxe.ui.toolkit.themes.GradientMobileTheme;
+import styles.RimeStyles;
+import openfl.display.Sprite ;
 
 class Main extends Sprite {
 
-    private var controller:GestureController;
-
-	public function new () {
+    public function new () {
         super();
-        
-        var accel:Accelerometer = new Accelerometer();
-        accel.addFilter(new SimpleLowPassFilter(), 0);
-        accel.addFilter(new SimpleLowPassFilter(), 1);
-        accel.addFilter(new SimpleLowPassFilter(), 2);
-        controller = new GestureController(accel, stage);
-        stage.addEventListener(MouseEvent.MOUSE_DOWN, down);
-        stage.addEventListener(MouseEvent.MOUSE_UP, up);
-        stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, up2);
-        stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, down2);
-	}
-
-    private function up(?e)
-    {
-        controller.stopTraining();
-    }
-
-    private function down(?e)
-    {
-        controller.startTraining();
-    }
-
-    private function down2(?e)
-    {
-        controller.startRecognizing();
-    }
-
-    private function up2(?e)
-    {
-        controller.stopRecognizing();
+        Toolkit.theme = new GradientMobileTheme();
+        Toolkit.setTransitionForClass(Stack, "none");
+        Toolkit.init();
+        Toolkit.openFullscreen(function(root:Root) {
+            StyleManager.instance.addStyles(new RimeStyles());
+            var app:App = new App();
+            root.addChild(app);
+        });
     }
 }

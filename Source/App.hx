@@ -2,27 +2,28 @@ package;
 
 import controllers.ScreenManager;
 import controllers.SensorController;
+import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
+import views.GestureScreen;
 import views.HeaderBar;
 import views.HomeScreen;
-import views.PianoButtonScreen;
-import views.TestPositionScreen;
 
 class App extends VBox {
 
     private var headerBar:HeaderBar;
+    private var gestureScreen:GestureScreen;
     private var homeScreen:HomeScreen;
-    private var pianoButtonScreen:PianoButtonScreen;
 
     private var stack:Stack;
     private var client:Client;
     private var serverInfo:ServerInfo;
     private var sensorController:SensorController;
     private var sensors:Array<Sensor>;
+    private var gestureController:GestureController;
 
     public function new () {
         super();
@@ -46,6 +47,8 @@ class App extends VBox {
         sensorController = new SensorController();
         sensors = sensorController.sensors;
 
+        gestureController = new GestureController(sensors);
+
         client = new Client(serverInfo, sensors);
 
         homeScreen = new HomeScreen(
@@ -55,9 +58,8 @@ class App extends VBox {
             serverInfo
         );
 
-        pianoButtonScreen = new PianoButtonScreen(client);
-        var testPositionScreen:TestPositionScreen = new TestPositionScreen(client);
+        gestureScreen = new GestureScreen(gestureController);
 
-        ScreenManager.push(homeScreen);
+        ScreenManager.push(gestureScreen);
     }
 }

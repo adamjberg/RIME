@@ -45,6 +45,7 @@ class SensorController {
             var sensor = Type.createInstance(sensorClass, []);
             if(sensor.isSupported())
             {
+                sensor.enabled = true;
                 sensors.push(sensor);
             }
         }
