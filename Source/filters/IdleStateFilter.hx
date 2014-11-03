@@ -6,7 +6,7 @@ class IdleStateFilter extends Filter {
     private static var DEAFULT_REST_VALUE:Float = 1;
 
     private var restValue:Float = DEAFULT_REST_VALUE;
-    private var sensitivity:Float;
+    private var sensitivity:Float = DEFAULT_SENSITIVITY;
 
     public function new(?restValue:Float, ?sensitivity:Float)
     {
@@ -27,6 +27,7 @@ class IdleStateFilter extends Filter {
         if(newValue > restValue + sensitivity ||
             newValue < restValue - sensitivity)
         {
+            value = newValue;
             return value;
         }
         return null;

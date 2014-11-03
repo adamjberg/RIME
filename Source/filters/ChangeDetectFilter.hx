@@ -1,7 +1,7 @@
 package filters;
 
 import openfl.events.TimerEvent;
-import openfl.utls.Timer;
+import openfl.utils.Timer;
 
 class ChangeDetectFilter extends Filter {
 
@@ -9,16 +9,18 @@ class ChangeDetectFilter extends Filter {
 
     private var timeIdleBeforeChangeDetected:Float = DEFAULT_TIME_IDLE;
     private var isChanging:Bool = false;
-    private var DEFAULT_TIME_IDLE:Timer;
+    private var changeStoppedTimer:Timer;
 
     public function new()
     {
-        changeStoppedTimer = new Timer();
+        super();
+        changeStoppedTimer = new Timer(DEFAULT_TIME_IDLE, 1);
         changeStoppedTimer.addEventListener(TimerEvent.TIMER_COMPLETE, changeStopped);
     }
 
-    public function reset()
+    override public function reset()
     {
+        super.reset();
         changeStoppedTimer.reset();
         changeStoppedTimer.start();
         isChanging = false;

@@ -1,5 +1,6 @@
  package gestures.controllers;
 
+import controllers.SensorController;
 import gestures.models.Classifier;
 import gestures.models.Gesture;
 import gestures.models.GestureModel;
@@ -13,8 +14,6 @@ import openfl.utils.Timer;
 
  class GestureController {
 
-    private static var UPDATE_FREQ_MS:Float = 100;
-
     public var onGestureDetected:Signal2<Int, Float> = new Signal2<Int, Float>();
 
     private var currentGesture:Gesture;
@@ -24,20 +23,16 @@ import openfl.utils.Timer;
     private var learning:Bool;
     private var analyzing:Bool;
 
-    private var updateTimer:Timer;
-    private var sensors:Array<Sensor>;
+    private var sensorController:SensorController;
     
-    public function new(sensors:Array<Sensor>)
+    public function new(sensorController:SensorController)
     {
-        this.sensors = sensors;
+        this.sensorController = sensorController;
         this.learning = false;
         this.analyzing = false;
         this.currentGesture = new Gesture();
         this.classifier = new Classifier();
-
-        updateTimer = new Timer(UPDATE_FREQ_MS, 0);
-        updateTimer.addEventListener(TimerEvent.TIMER, update);
-        updateTimer.start();
+        sensorController.onSensorsUpdated.add(update);
     }
 
     public function startTraining()
@@ -60,11 +55,6 @@ import openfl.utils.Timer;
                 var gesture:Gesture = new Gesture(currentGesture);
                 trainSequence.push(gesture);
                 currentGesture = new Gesture();
-                var gestureModel:GestureModel = new GestureModel();
-                gestureModel.train(trainSequence);
-                classifier.addGestureModel(gestureModel);
-
-                trainSequence = new Array<Gesture>();
             }
             else
             {
@@ -72,6 +62,15 @@ import openfl.utils.Timer;
             }
             learning = false;
         }
+    }
+
+    public function saveGesture()
+    {
+        trace("Saving gesture with " + trainSequence.length + " trains");
+        var gestureModel:GestureModel = new GestureModel();
+        gestureModel.train(trainSequence);
+        classifier.addGestureModel(gestureModel);
+        trainSequence = new Array<Gesture>();
     }
 
     public function startRecognizing()
@@ -115,12 +114,17 @@ import openfl.utils.Timer;
         onGestureDetected.dispatch(id, prob);
     }
 
-    private function update(?e:TimerEvent)
+    private function update()
     {
+        var sensors:Array<Sensor> = sensorController.getEnabledSensors();
         if(this.learning || this.analyzing)
         {
-            trace("update: " + sensors[0].values.slice(0, 3));
-            this.currentGesture.add( sensors[0].values.slice(0, 3) );
+            var accel:Sensor = sensors[0];
+            if(accel.hasUpdatedValues)
+            {
+                trace("update: " + accel.getValues());
+                this.currentGesture.add( accel.getValues() );
+            }
         }
     }
 }

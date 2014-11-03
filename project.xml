@@ -5,7 +5,7 @@
 	<app main="Main" path="Export" file="Rime" />
 
 	<android minimum-sdk-version="19" target-sdk-version="19" />
-	
+	<window fps="60"/>
 	<source path="Source" />
 	
 	<haxelib name="openfl" />

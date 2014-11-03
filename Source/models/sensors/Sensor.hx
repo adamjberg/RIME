@@ -26,6 +26,7 @@ class Sensor {
         return enabled = newEnabled;
     }
     public var numValues:Int = 0;
+    public var hasUpdatedValues:Bool = false;
 
     private var filterList:Array<Array<Filter>> = [
         new Array<Filter>(),
@@ -43,9 +44,22 @@ class Sensor {
         this.valueLabels = valueLabels;
     }
 
+    public function getValues():Array<Float>
+    {
+        return values.slice(0, numValues);
+    }
+
     public function isSupported():Bool
     {
         return false;
+    }
+
+    public function addFilterToAllValues(filter:Filter)
+    {
+        for(i in 0...values.length)
+        {
+            addFilter(filter, i);
+        }
     }
 
     public function addFilter(filter:Filter, index:Int)
@@ -96,11 +110,17 @@ class Sensor {
 
     private function updateFilters()
     {
+        hasUpdatedValues = false;
         for(valueIndex in 0...filterList.length)
         {
             for(filterIndex in 0...filterList[valueIndex].length)
             {
-                values[valueIndex] = filterList[valueIndex][filterIndex].update(values[valueIndex]);
+                var newVal = filterList[valueIndex][filterIndex].update(values[valueIndex]);
+                if(newVal != null)
+                {
+                    hasUpdatedValues = true;
+                    values[valueIndex] = newVal;
+                }
             }
         }
     }

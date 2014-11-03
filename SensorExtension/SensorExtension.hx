@@ -111,7 +111,7 @@ class SensorExtension {
 		
 		#else
 		
-		return null;
+		return 0;
 		
 		#end
 		
@@ -125,7 +125,7 @@ class SensorExtension {
 		
 		#else
 		
-		return null;
+		return 0;
 		
 		#end
 		
@@ -156,7 +156,7 @@ class SensorExtension {
 		
 		#else
 		
-		return null;
+		return 0;
 		
 		#end
 		
@@ -169,7 +169,7 @@ class SensorExtension {
 		
 		#else
 		
-		return null;
+		return 0;
 		
 		#end
 		
@@ -200,7 +200,7 @@ class SensorExtension {
 		
 		#else
 		
-		return null;
+		return 0;
 		
 		#end
 		

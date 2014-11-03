@@ -16,6 +16,7 @@ class GestureScreen extends VBox {
 
     private var recordButton:Button;
     private var recognizeButton:Button;
+    private var saveGestureButton:Button;
 
     private var gestureController:GestureController;
 
@@ -30,7 +31,6 @@ class GestureScreen extends VBox {
 
         recordButton = new Button();
         recordButton.percentWidth = 100;
-        recordButton.percentHeight = 50;
         recordButton.text = "Record";
         recordButton.addEventListener(MouseEvent.MOUSE_DOWN, recordDown);
         recordButton.addEventListener(MouseEvent.MOUSE_UP, recordUp);
@@ -38,11 +38,16 @@ class GestureScreen extends VBox {
 
         recognizeButton = new Button();
         recognizeButton.percentWidth = 100;
-        recognizeButton.percentHeight = 50;
         recognizeButton.text = "Recognize";
         recognizeButton.addEventListener(MouseEvent.MOUSE_DOWN, recognizeDown);
         recognizeButton.addEventListener(MouseEvent.MOUSE_UP, recognizeUp);
         addChild(recognizeButton);
+
+        saveGestureButton = new Button();
+        saveGestureButton.percentWidth = 100;
+        saveGestureButton.text = "Save Gesture";
+        saveGestureButton.onClick = saveGesture;
+        addChild(saveGestureButton);
     }
 
     private function recordDown(?e:MouseEvent)
@@ -63,5 +68,10 @@ class GestureScreen extends VBox {
     private function recognizeUp(e:MouseEvent)
     {
         gestureController.stopRecognizing();
+    }
+
+    private function saveGesture(e:UIEvent)
+    {
+        gestureController.saveGesture();
     }
 }

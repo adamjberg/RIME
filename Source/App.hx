@@ -47,7 +47,7 @@ class App extends VBox {
         sensorController = new SensorController();
         sensors = sensorController.sensors;
 
-        gestureController = new GestureController(sensors);
+        gestureController = new GestureController(sensorController);
 
         client = new Client(serverInfo, sensors);
 

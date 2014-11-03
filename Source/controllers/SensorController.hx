@@ -1,14 +1,19 @@
 package controllers;
 
 import models.sensors.*;
+import filters.ChangeDetectFilter;
+import filters.IdleStateFilter;
 import models.sensors.Accelerometer;
 import models.sensors.Sensor;
+import msignal.Signal.Signal0;
 import openfl.events.TimerEvent;
 import openfl.utils.Timer;
 
 class SensorController {
 
-    private static var UPDATE_INTERVAL:Float = 0.2;
+    public var onSensorsUpdated:Signal0 = new Signal0();
+
+    private static var UPDATE_INTERVAL:Float = 16.6;
 
     private static var sensorClasses:Array<Class<Sensor>> =
     [
@@ -38,6 +43,16 @@ class SensorController {
         updateTimer.start();
     }
 
+    public function getEnabledSensors():Array<Sensor>
+    {
+        return sensors.filter(
+            function(sensor)
+            {
+                return sensor.enabled;
+            }
+        );
+    }
+
     private function fillWithSupportedSensors()
     {
         for(sensorClass in sensorClasses)
@@ -45,6 +60,9 @@ class SensorController {
             var sensor = Type.createInstance(sensorClass, []);
             if(sensor.isSupported())
             {
+                sensor.addFilterToAllValues(new IdleStateFilter());
+                sensor.addFilterToAllValues(new ChangeDetectFilter());
+
                 sensor.enabled = true;
                 sensors.push(sensor);
             }
@@ -60,5 +78,6 @@ class SensorController {
                 sensor.update();
             }
         }
+        onSensorsUpdated.dispatch();
     }
 }
