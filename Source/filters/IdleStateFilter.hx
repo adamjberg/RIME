@@ -30,6 +30,6 @@ class IdleStateFilter extends Filter {
             value = newValue;
             return value;
         }
-        return null;
+        return Math.NaN;
     }
 }

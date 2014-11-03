@@ -29,7 +29,7 @@ class ChangeDetectFilter extends Filter {
     override public function update(newValue:Float):Float
     {
         // This will be null if no change was detected
-        if(newValue != null)
+        if(Math.isFinite(newValue))
         {
             changeStoppedTimer.reset();
             changeStoppedTimer.start();

@@ -71,6 +71,7 @@ import openfl.utils.Timer;
         gestureModel.train(trainSequence);
         classifier.addGestureModel(gestureModel);
         trainSequence = new Array<Gesture>();
+        trace("Gesture Successfully Saved");
     }
 
     public function startRecognizing()

@@ -31,6 +31,7 @@ class GestureScreen extends VBox {
 
         recordButton = new Button();
         recordButton.percentWidth = 100;
+        recordButton.percentHeight = 33;
         recordButton.text = "Record";
         recordButton.addEventListener(MouseEvent.MOUSE_DOWN, recordDown);
         recordButton.addEventListener(MouseEvent.MOUSE_UP, recordUp);
@@ -38,6 +39,7 @@ class GestureScreen extends VBox {
 
         recognizeButton = new Button();
         recognizeButton.percentWidth = 100;
+        recognizeButton.percentHeight = 33;
         recognizeButton.text = "Recognize";
         recognizeButton.addEventListener(MouseEvent.MOUSE_DOWN, recognizeDown);
         recognizeButton.addEventListener(MouseEvent.MOUSE_UP, recognizeUp);
@@ -45,6 +47,7 @@ class GestureScreen extends VBox {
 
         saveGestureButton = new Button();
         saveGestureButton.percentWidth = 100;
+        saveGestureButton.percentHeight = 33;
         saveGestureButton.text = "Save Gesture";
         saveGestureButton.onClick = saveGesture;
         addChild(saveGestureButton);

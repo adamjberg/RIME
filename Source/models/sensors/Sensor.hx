@@ -116,7 +116,7 @@ class Sensor {
             for(filterIndex in 0...filterList[valueIndex].length)
             {
                 var newVal = filterList[valueIndex][filterIndex].update(values[valueIndex]);
-                if(newVal != null)
+                if(Math.isFinite(newVal))
                 {
                     hasUpdatedValues = true;
                     values[valueIndex] = newVal;
