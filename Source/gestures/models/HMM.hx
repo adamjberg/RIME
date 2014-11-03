@@ -41,7 +41,7 @@ class HMM {
         
         // set startup probability
         initialProbabilitiesForState[0] = 1;
-        for(i in 0...numStates)
+        for(i in 1...numStates)
         {
             initialProbabilitiesForState[i] = 0;
         }
@@ -221,6 +221,12 @@ class HMM {
         return prob;
     }
     
+    public function print() {
+        trace("HMM:print: initialProbabilitiesForState: " + initialProbabilitiesForState);
+        trace("HMM:print: a: " + a);
+        trace("HMM:print: b: " + b);
+    }
+
     /**
      * Backward algorithm.
      * 

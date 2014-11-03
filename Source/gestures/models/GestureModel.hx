@@ -50,7 +50,6 @@ class GestureModel {
         var seqs:Array<Array<Int>> = new Array<Array<Int>>();
         for(i in 0...trainSequence.length)
         {
-            trace("adding seq");
             seqs.push(quantizer.getObservationSequence(trainSequence[i]));
         }
         
@@ -68,7 +67,6 @@ class GestureModel {
     public function matches(gesture:Gesture):Float
     {
         var sequence:Array<Int> = quantizer.getObservationSequence(gesture);
-        trace("sequence: " + sequence);
         return markovModel.getProbability(sequence);
     }
     
@@ -85,10 +83,8 @@ class GestureModel {
         for(i in 0...defaultSequence.length)
         {
             prob += matches(defaultSequence[i]);
-            trace("prob: " + prob);
         }
         defaultProbability= prob / defaultSequence.length;
-        trace("set default: " + defaultProbability);
     }
     
     public function setDefaultProbability(prob:Float)
@@ -119,5 +115,17 @@ class GestureModel {
     public function setHMM(hmm:HMM)
     {
         markovModel = hmm;    
+    }
+
+    public function printMap() {
+        trace("Gesture Quantizer-Map:");
+        this.quantizer.printMap();
+    }
+    
+    public function print() {
+            trace("HMM-Print:");
+            this.markovModel.print();
+            trace("Quantizer-Print:");
+            this.quantizer.printMap();
     }
 }

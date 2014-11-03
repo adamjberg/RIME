@@ -29,8 +29,7 @@ class Accelerometer extends Sensor {
 
     override public function update()
     {
-        var rand:Float = Math.random();
-        values = [rand, rand, rand];//SensorExtension.getAccel();
+        values = SensorExtension.getAccel();
         super.update();
     }
 }

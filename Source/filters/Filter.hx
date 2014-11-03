@@ -2,7 +2,7 @@ package filters;
 
 class Filter {
 
-    private var value:Int = 0;
+    private var value:Float = 0;
 
     public function new()
     {

@@ -21,7 +21,6 @@ class Classifier
         var sum:Float = 0;
         for(i in 0...gestureModels.length)
         {
-            trace("i: " + i);
             sum += gestureModels[i].getDefaultProbability() *
                     gestureModels[i].matches(g);
         }
@@ -39,9 +38,6 @@ class Classifier
             {  
                 tempProbability = tmpgesture;
                 tempProbModel = tmpmodel;
-                trace("tmpmodel " + tmpmodel);
-                trace("tmpgesture " + tmpgesture);
-                trace("sum: " + sum);
                 probabilityOfRecognizedGesture = ((tmpmodel*tmpgesture)/sum);
                 recognizedGesture = i;
             }

@@ -158,7 +158,7 @@ class Quantizer {
                 }
                 groups[i][j] = 0;
             }
-            groups[row][j] = 1; // guppe gesetzt
+            groups[row][j] = 1;
         }
 
         return groups;
@@ -202,6 +202,10 @@ class Quantizer {
     public function setUpManually(centeroids:Array<Array<Float>>, radius:Float) {
         this.centeroids = centeroids;
         this.radius = radius;
+    }
+
+    public function printMap() {
+        trace("Centeroids: " + centeroids);
     }
 
     private function copyarray(oldArr:Array<Array<Int>>):Array<Array<Int>> {

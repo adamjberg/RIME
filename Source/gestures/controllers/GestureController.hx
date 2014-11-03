@@ -5,6 +5,8 @@ import gestures.models.Gesture;
 import gestures.models.GestureModel;
 import models.sensors.Accelerometer;
 import msignal.Signal.Signal2;
+import openfl.display.Stage;
+import openfl.events.MouseEvent;
 import openfl.events.TimerEvent;
 import openfl.utils.Timer;
 
@@ -25,8 +27,9 @@ import openfl.utils.Timer;
 
     // For testing only
     private var accel:Accelerometer;
+    private var stage:Stage;
 
-    public function new(accel:Accelerometer)
+    public function new(accel:Accelerometer, stage:Stage)
     {
         this.accel = accel;
         this.learning = false;
@@ -36,6 +39,9 @@ import openfl.utils.Timer;
         updateTimer = new Timer(UPDATE_FREQ_MS, 0);
         updateTimer.addEventListener(TimerEvent.TIMER, update);
         updateTimer.start();
+        this.stage = stage;
+        stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+
     }
 
     public function startTraining()
@@ -90,6 +96,7 @@ import openfl.utils.Timer;
             {
                 trace("Comparing gesture with " + classifier.getCountOfGestures() + " other gestures");
                 var gesture:Gesture = new Gesture(currentGesture);
+                currentGesture = new Gesture();
 
                 var recognized:Int = this.classifier.classifyGesture(gesture);
                 if(recognized != -1)
@@ -112,13 +119,26 @@ import openfl.utils.Timer;
         onGestureDetected.dispatch(id, prob);
     }
 
+
+    private var mouseX:Float = 0;
+    private var mouseY:Float = 0;
+    private function mouseMove(e:MouseEvent)
+    {
+        mouseX = e.stageX / stage.stageWidth;
+        mouseY = e.stageY / stage.stageHeight;
+    }
+
     private function update(?e:TimerEvent)
     {
-        accel.update();
         if(this.learning || this.analyzing)
         {
-            trace("update: " + accel.values);
-            this.currentGesture.add( accel.values );
+            var array:Array<Float> = [
+                mouseX,
+                mouseY,
+                0,
+            ];
+            trace("update: " + array);
+            this.currentGesture.add( array );
         }
     }
 }

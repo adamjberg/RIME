@@ -1,5 +1,6 @@
 package;
 
+import filters.SimpleLowPassFilter;
 import models.sensors.Accelerometer;
 import openfl.display.Sprite;
 import gestures.models.*;
@@ -15,11 +16,14 @@ class Main extends Sprite {
         super();
         
         var accel:Accelerometer = new Accelerometer();
-        controller = new GestureController(accel);
+        accel.addFilter(new SimpleLowPassFilter(), 0);
+        accel.addFilter(new SimpleLowPassFilter(), 1);
+        accel.addFilter(new SimpleLowPassFilter(), 2);
+        controller = new GestureController(accel, stage);
         stage.addEventListener(MouseEvent.MOUSE_DOWN, down);
         stage.addEventListener(MouseEvent.MOUSE_UP, up);
-        stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, down2);
         stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, up2);
+        stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, down2);
 	}
 
     private function up(?e)

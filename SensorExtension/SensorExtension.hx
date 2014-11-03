@@ -25,7 +25,11 @@ class SensorExtension {
 		
 		#else
 		
-		return null;
+		var array:Array<Float> = new Array<Float>();
+		array.push(Math.random());
+		array.push(Math.random());
+		array.push(Math.random());
+		return array;
 		
 		#end
 		

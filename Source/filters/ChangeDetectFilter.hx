@@ -38,6 +38,7 @@ class ChangeDetectFilter extends Filter {
                 isChanging = true;
             }
         }
+        return newValue;
     }
 
     private function changeStopped(e:TimerEvent)
