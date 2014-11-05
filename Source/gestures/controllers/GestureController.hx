@@ -11,6 +11,7 @@ import msignal.Signal.Signal2;
 import openfl.display.Stage;
 import openfl.events.MouseEvent;
 import openfl.events.TimerEvent;
+import openfl.utils.SystemPath;
 import openfl.utils.Timer;
 import sys.FileSystem;
 import sys.io.File;
@@ -19,7 +20,7 @@ import sys.io.FileOutput;
 
  class GestureController {
 
-    private static var DIRECTORY:String = "gestures";
+    private static var DIRECTORY:String = SystemPath.applicationStorageDirectory + "/gestures";
     private static var FILENAME:String = "gestures.rime";
     private static var FULL_FILENAME:String = DIRECTORY + "/" + FILENAME;
 
