@@ -8,14 +8,14 @@ import haxe.ui.toolkit.containers.VBox;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
-import views.GestureScreen;
+import views.GestureListScreen;
 import views.HeaderBar;
 import views.HomeScreen;
 
 class App extends VBox {
 
     private var headerBar:HeaderBar;
-    private var gestureScreen:GestureScreen;
+    private var gestureScreen:GestureListScreen;
     private var homeScreen:HomeScreen;
 
     private var stack:Stack;
@@ -58,7 +58,7 @@ class App extends VBox {
             serverInfo
         );
 
-        gestureScreen = new GestureScreen(gestureController);
+        gestureScreen = new GestureListScreen(gestureController);
 
         ScreenManager.push(gestureScreen);
     }

@@ -2,6 +2,8 @@ package gestures.models;
 
 class GestureModel {
     
+    public var name:String;
+
     private var numStates:Int;
     private var numObservations:Int;
     private var quantizer:Quantizer;

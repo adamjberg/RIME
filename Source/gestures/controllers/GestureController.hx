@@ -6,6 +6,7 @@ import gestures.models.Gesture;
 import gestures.models.GestureModel;
 import models.sensors.Accelerometer;
 import models.sensors.Sensor;
+import msignal.Signal.Signal0;
 import msignal.Signal.Signal2;
 import openfl.display.Stage;
 import openfl.events.MouseEvent;
@@ -15,6 +16,7 @@ import openfl.utils.Timer;
  class GestureController {
 
     public var onGestureDetected:Signal2<Int, Float> = new Signal2<Int, Float>();
+    public var onGestureAdded:Signal0 = new Signal0();
 
     private var currentGesture:Gesture;
     private var trainSequence:Array<Gesture> = new Array<Gesture>();
@@ -64,13 +66,13 @@ import openfl.utils.Timer;
         }
     }
 
-    public function saveGesture()
+    public function saveGesture(gestureModel:GestureModel)
     {
         trace("Saving gesture with " + trainSequence.length + " trains");
-        var gestureModel:GestureModel = new GestureModel();
         gestureModel.train(trainSequence);
         classifier.addGestureModel(gestureModel);
         trainSequence = new Array<Gesture>();
+        onGestureAdded.dispatch();
         trace("Gesture Successfully Saved");
     }
 
@@ -107,6 +109,11 @@ import openfl.utils.Timer;
             }
         }
         analyzing = false;
+    }
+
+    public function getGestureModels():Array<GestureModel>
+    {
+        return classifier.getGestureModels();
     }
 
     private function fireGesture(id:Int, prob:Float)

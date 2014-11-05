@@ -75,18 +75,10 @@ class HMM {
     }
 
     /**
-     * Trains the Hidden Markov Model with multiple sequences.
-     * This method is normally not known to basic hidden markov
-     * models, because they usually use the Baum-Welch-Algorithm.
-     * This method is NOT the traditional Baum-Welch-Algorithm.
+     * Trains the Hidden Markov Model
      * 
-     * If you want to know in detail how it works please consider
-     * my Individuelles Projekt paper on the wiigee Homepage. Also
-     * there exist some english literature on the world wide web.
-     * Try to search for some papers by Rabiner or have a look at
-     * Vesa-Matti Mäntylä - "Discrete Hidden Markov Models with
-     * application to isolated user-dependent hand gesture recognition". 
-     * 
+     * TODO: this function takes a long time, can we spread it out over
+     * multiple frames and report progress.
      */
     public function train(trainsequence:Array<Array<Int>>) {
 
@@ -122,10 +114,6 @@ class HMM {
                     denominator += (1/prob) * denominator_innersum;
                 } // k
                 a_new[i][j] = count / denominator;
-                if(Math.isNaN(a_new[i][j]))
-                {
-                    a_new[i][j] = 0;
-                }
             } // j
         } // i
         
@@ -160,10 +148,6 @@ class HMM {
                 } // k
         
                 b_new[i][j] = count / denominator;
-                if(Math.isNaN(b_new[i][j]))
-                {
-                    b_new[i][j] = 0;
-                }
             } // j
         } // i
     
