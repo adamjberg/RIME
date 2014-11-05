@@ -37,12 +37,14 @@ class GestureListScreen extends VBox {
         addGestureButton = new Button();
         addGestureButton.text = "Add Gesture";
         addGestureButton.percentWidth = 100;
+        addGestureButton.percentHeight = 30;
         addGestureButton.onClick = addGestureButtonClicked;
         addChild(addGestureButton); 
 
         recognizeButton = new Button();
         recognizeButton.text = "Recognize";
         recognizeButton.percentWidth = 100;
+        recognizeButton.percentHeight = 30;
         recognizeButton.addEventListener(MouseEvent.MOUSE_DOWN, recognizeButtonDown);
         recognizeButton.addEventListener(MouseEvent.MOUSE_UP, recognizeButtonUp);
         addChild(recognizeButton); 
