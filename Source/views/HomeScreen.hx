@@ -6,6 +6,7 @@ import haxe.ui.toolkit.controls.Button;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
+import msignal.Signal.Signal0;
 import openfl.events.MouseEvent;
 import views.HeaderBar;
 import views.PianoButtonScreen;
@@ -14,6 +15,8 @@ import views.ServerInfoRenderer;
 import views.TestPositionScreen;
 
 class HomeScreen extends VBox {
+
+    public var onOpenGestureScreenButtonPressed:Signal0 = new Signal0();
 
     private var headerBar:HeaderBar;
     private var client:Client;
@@ -57,6 +60,16 @@ class HomeScreen extends VBox {
             ScreenManager.push(new TestPositionScreen(client));
             });
         addChild(openTestScreenButton);
+
+        var onOpenGestureScreenButton:Button = new Button();
+        onOpenGestureScreenButton.text = "Open Gesture Screen";
+        onOpenGestureScreenButton.percentWidth = 100;
+        onOpenGestureScreenButton.percentHeight = 10;
+        onOpenGestureScreenButton.onClick = function(e)
+        {
+            onOpenGestureScreenButtonPressed.dispatch();
+        }
+        addChild(onOpenGestureScreenButton);
 
         serverInfoRenderer.percentHeight = 20;
         addChild(serverInfoRenderer);

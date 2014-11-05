@@ -58,8 +58,14 @@ class App extends VBox {
             serverInfo
         );
 
-        gestureScreen = new GestureListScreen(gestureController);
+        homeScreen.onOpenGestureScreenButtonPressed.add(openGestureScreen);
 
+        ScreenManager.push(homeScreen);
+    }
+
+    private function openGestureScreen()
+    {
+        gestureScreen = new GestureListScreen(gestureController);
         ScreenManager.push(gestureScreen);
     }
 }
