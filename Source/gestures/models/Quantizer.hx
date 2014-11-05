@@ -1,5 +1,7 @@
 package gestures.models;
 
+import sys.io.FileInput;
+import sys.io.FileOutput;
 import utils.ArrayUtils;
 
 /**
@@ -206,6 +208,45 @@ class Quantizer {
 
     public function printMap() {
         trace("Centeroids: " + centeroids);
+    }
+
+    public function writeToFile(file:FileOutput)
+    {
+        file.writeInt8(numStates);
+        file.writeFloat(radius);
+
+        for(i in 0...centeroids.length)
+        {
+            for(j in 0...centeroids[i].length)
+            {
+                file.writeFloat(centeroids[i][j]);
+            }
+        }
+    }
+
+    public static function fromFile(file:FileInput):Quantizer
+    {
+        var numStates = file.readInt8();
+        trace("Quantizer:fromFile numStates " + numStates);
+
+        var result:Quantizer = new Quantizer(numStates);
+        result.radius = file.readFloat();
+        trace("Quantizer:fromFile radius " + result.radius);
+
+        var centeroidsLength:Int = 3;
+        var centeroidsInnerLength:Int = 14;
+
+        for(i in 0...centeroidsLength)
+        {
+            for(j in 0...centeroidsInnerLength)
+            {
+                result.centeroids[i][j] = file.readFloat();
+            }
+        }
+
+        result.areCenteroidsTrained = true;
+
+        return result;
     }
 
     private function copyarray(oldArr:Array<Array<Int>>):Array<Array<Int>> {

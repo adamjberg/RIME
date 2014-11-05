@@ -20,6 +20,7 @@ class GestureListScreen extends VBox {
 
     private var gestureController:GestureController;
     private var addGestureButton:Button;
+    private var recognizeButton:Button;
 
     public function new(?gestureController:GestureController)
     {
@@ -38,10 +39,27 @@ class GestureListScreen extends VBox {
         addGestureButton.percentWidth = 100;
         addGestureButton.onClick = addGestureButtonClicked;
         addChild(addGestureButton); 
+
+        recognizeButton = new Button();
+        recognizeButton.text = "Recognize";
+        recognizeButton.percentWidth = 100;
+        recognizeButton.addEventListener(MouseEvent.MOUSE_DOWN, recognizeButtonDown);
+        recognizeButton.addEventListener(MouseEvent.MOUSE_UP, recognizeButtonUp);
+        addChild(recognizeButton); 
     }
 
     private function addGestureButtonClicked(e)
     {
         ScreenManager.push(new GestureEditScreen(gestureController));
+    }
+
+    private function recognizeButtonDown(e)
+    {
+        gestureController.startRecognizing();
+    }
+
+    private function recognizeButtonUp(e)
+    {
+        gestureController.stopRecognizing();
     }
 }

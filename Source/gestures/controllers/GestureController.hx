@@ -12,8 +12,16 @@ import openfl.display.Stage;
 import openfl.events.MouseEvent;
 import openfl.events.TimerEvent;
 import openfl.utils.Timer;
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.FileInput;
+import sys.io.FileOutput;
 
  class GestureController {
+
+    private static var DIRECTORY:String = "gestures";
+    private static var FILENAME:String = "gestures.rime";
+    private static var FULL_FILENAME:String = DIRECTORY + "/" + FILENAME;
 
     public var onGestureDetected:Signal2<Int, Float> = new Signal2<Int, Float>();
     public var onGestureAdded:Signal0 = new Signal0();
@@ -34,6 +42,11 @@ import openfl.utils.Timer;
         this.analyzing = false;
         this.currentGesture = new Gesture();
         this.classifier = new Classifier();
+
+        setupGesturesDirectory();
+
+        loadGesturesFromFile();
+
         sensorController.onSensorsUpdated.add(update);
     }
 
@@ -72,6 +85,7 @@ import openfl.utils.Timer;
         gestureModel.train(trainSequence);
         classifier.addGestureModel(gestureModel);
         trainSequence = new Array<Gesture>();
+        writeGesturesToFile();
         onGestureAdded.dispatch();
         trace("Gesture Successfully Saved");
     }
@@ -133,6 +147,29 @@ import openfl.utils.Timer;
                 trace("update: " + accel.getValues());
                 this.currentGesture.add( accel.getValues() );
             }
+        }
+    }
+
+    private function loadGesturesFromFile()
+    {
+        if(FileSystem.exists(FULL_FILENAME))
+        {
+            var file:FileInput = File.read(FULL_FILENAME, false);
+            classifier = Classifier.fromFile(file);
+        }
+    }
+
+    private function writeGesturesToFile()
+    {
+        var file:FileOutput = File.write(FULL_FILENAME, false);
+        classifier.writeToFile(file);
+    }
+
+    private function setupGesturesDirectory()
+    {
+        if(!FileSystem.exists(DIRECTORY))
+        {
+            FileSystem.createDirectory(DIRECTORY);
         }
     }
 }

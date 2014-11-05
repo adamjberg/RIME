@@ -1,7 +1,14 @@
 package gestures.models;
 
-class Classifier
-	{
+import gestures.models.GestureModel;
+import sys.io.File;
+import sys.io.FileInput;
+import sys.io.FileOutput;
+
+class Classifier {
+
+    private static var START_TAG:String = "classifier\n";
+    private static var END_TAG:String = "\nend";
 
     private var gestureModels:Array<GestureModel>; 
     private var lastProbability:Float;
@@ -86,5 +93,31 @@ class Classifier
     public function clear()
 	{
         gestureModels = new Array<GestureModel>();
+    }
+
+    public function writeToFile(file:FileOutput)
+    {
+        file.writeInt8(gestureModels.length);
+        for(gestureModel in gestureModels)
+        {
+            gestureModel.writeToFile(file);
+        }
+    }
+
+    public static function fromFile(file:FileInput):Classifier
+    {
+        var result:Classifier = new Classifier();
+        var numGestures:Int = file.readInt8();
+
+        trace("Classifier:fromFile numGestures " + numGestures);
+        
+        for(i in 0...numGestures)
+        {
+            result.gestureModels.push
+            (
+                GestureModel.fromFile(file)
+            );
+        }
+        return result;
     }
 }

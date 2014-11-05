@@ -1,5 +1,8 @@
 package gestures.models;
 
+import sys.io.File;
+import sys.io.FileInput;
+import sys.io.FileOutput;
 import utils.ArrayUtils;
 
 /**
@@ -209,6 +212,45 @@ class HMM {
         trace("HMM:print: initialProbabilitiesForState: " + initialProbabilitiesForState);
         trace("HMM:print: a: " + a);
         trace("HMM:print: b: " + b);
+    }
+
+    public function writeToFile(file:FileOutput)
+    {
+        file.writeInt8(numStates);
+        file.writeInt8(numObservations);
+
+        for(i in 0...numStates)
+        {
+            file.writeFloat(initialProbabilitiesForState[i]);
+            for(j in 0...numStates)
+            {
+                file.writeFloat(a[i][j]);
+                file.writeFloat(b[i][j]);
+            }
+        }
+    }
+
+    public static function fromFile(file:FileInput):HMM
+    {
+        var numStates:Int = file.readInt8();
+        trace("HMM:fromFile numStates " + numStates);
+
+        var numObservations:Int = file.readInt8();
+        trace("HMM:fromFile numObservations " + numObservations);
+
+        var result:HMM = new HMM(numStates, numObservations);
+
+        for(i in 0...numStates)
+        {
+            result.initialProbabilitiesForState[i] = file.readFloat();
+            for(j in 0...numStates)
+            {
+                result.a[i][j] = file.readFloat();
+                result.b[i][j] = file.readFloat();
+            }
+        }
+
+        return result;
     }
 
     /**

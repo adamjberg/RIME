@@ -1,7 +1,12 @@
 package gestures.models;
 
+import gestures.models.GestureModel;
+import gestures.models.Quantizer;
+import sys.io.FileInput;
+import sys.io.FileOutput;
+
 class GestureModel {
-    
+
     public var name:String;
 
     private var numStates:Int;
@@ -117,6 +122,41 @@ class GestureModel {
     public function setHMM(hmm:HMM)
     {
         markovModel = hmm;    
+    }
+
+    public function writeToFile(file:FileOutput)
+    {
+        file.writeInt8(name.length);
+        file.writeString(name);
+        file.writeInt8(numStates);
+        file.writeInt8(numObservations);
+        file.writeFloat(defaultProbability);
+        markovModel.writeToFile(file);
+        quantizer.writeToFile(file);
+    }
+
+    public static function fromFile(file:FileInput):GestureModel
+    {
+        var result:GestureModel = new GestureModel();
+        var nameLength:Int = file.readInt8();
+        trace("GestureModel:fromFile nameLength " + nameLength);
+        
+        result.name = file.readString(nameLength);
+        trace("GestureModel:fromFile name " + result.name);
+
+        result.numStates = file.readInt8();
+        trace("GestureModel:fromFile numStates " + result.numStates);
+
+        result.numObservations = file.readInt8();
+        trace("GestureModel:fromFile numObservations " + result.numObservations);
+
+        result.defaultProbability = file.readFloat();
+        trace("GestureModel:fromFile defaultProbability " + result.defaultProbability);
+
+        result.markovModel = HMM.fromFile(file);
+        result.quantizer = Quantizer.fromFile(file);
+
+        return result;
     }
 
     public function printMap() {
