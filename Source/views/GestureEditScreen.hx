@@ -54,6 +54,13 @@ class GestureEditScreen extends VBox {
         nameInput.horizontalAlign = "center";
         addChild(nameInput);
 
+        saveGestureButton = new Button();
+        saveGestureButton.percentWidth = 100;
+        saveGestureButton.percentHeight = 33;
+        saveGestureButton.text = "Save Gesture";
+        saveGestureButton.onClick = saveGesture;
+        addChild(saveGestureButton);
+
         recordButton = new Button();
         recordButton.percentWidth = 100;
         recordButton.percentHeight = 33;
@@ -61,13 +68,6 @@ class GestureEditScreen extends VBox {
         recordButton.addEventListener(MouseEvent.MOUSE_DOWN, recordDown);
         recordButton.addEventListener(MouseEvent.MOUSE_UP, recordUp);
         addChild(recordButton);
-
-        saveGestureButton = new Button();
-        saveGestureButton.percentWidth = 100;
-        saveGestureButton.percentHeight = 33;
-        saveGestureButton.text = "Save Gesture";
-        saveGestureButton.onClick = saveGesture;
-        addChild(saveGestureButton);
     }
 
     private function recordDown(?e:MouseEvent)
