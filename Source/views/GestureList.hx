@@ -44,7 +44,15 @@ class GestureList extends ScrollView {
         this.gestures = gestureController.getGestureModels();
         for(gesture in gestures)
         {
-            vBox.addChild(new GestureListItem(gesture));
+            var gestureListItem:GestureListItem = new GestureListItem(gesture);
+            gestureListItem.onDeleteButtonPressed.add(deleteGesture);
+            vBox.addChild(gestureListItem);
         }
+    }
+
+    private function deleteGesture(gestureModel:GestureModel)
+    {
+        gestureController.deleteGesture(gestureModel);
+        populate();
     }
 }

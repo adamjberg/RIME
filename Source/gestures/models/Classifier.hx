@@ -95,6 +95,11 @@ class Classifier {
         gestureModels = new Array<GestureModel>();
     }
 
+    public function deleteGesture(gestureModel:GestureModel)
+    {
+        gestureModels.remove(gestureModel);
+    }
+
     public function writeToFile(file:FileOutput)
     {
         file.writeInt8(gestureModels.length);

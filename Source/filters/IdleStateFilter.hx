@@ -2,10 +2,10 @@ package filters;
 
 class IdleStateFilter extends Filter {
 
-    private static var DEFAULT_SENSITIVITY:Float = 0.1;
-    private static var DEAFULT_REST_VALUE:Float = 1;
+    private static var DEFAULT_SENSITIVITY:Float = 1;
+    private static var DEFAULT_REST_VALUE:Float = 0;
 
-    private var restValue:Float = DEAFULT_REST_VALUE;
+    private var restValue:Float = DEFAULT_REST_VALUE;
     private var sensitivity:Float = DEFAULT_SENSITIVITY;
 
     public function new(?restValue:Float, ?sensitivity:Float)

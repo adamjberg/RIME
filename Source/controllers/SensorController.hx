@@ -17,12 +17,12 @@ class SensorController {
 
     private static var sensorClasses:Array<Class<Sensor>> =
     [
+        LinearAccelerometer,
         Accelerometer,
         AmbientTemperature,
         Gravity,
         Humidity,
         Light,
-        LinearAccelerometer,
         Magnetic,
         Orientation,
         Pressure,

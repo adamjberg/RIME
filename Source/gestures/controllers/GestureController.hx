@@ -4,6 +4,7 @@ import controllers.SensorController;
 import gestures.models.Classifier;
 import gestures.models.Gesture;
 import gestures.models.GestureModel;
+import haxe.ui.toolkit.core.PopupManager;
 import models.sensors.Accelerometer;
 import models.sensors.Sensor;
 import msignal.Signal.Signal0;
@@ -91,6 +92,12 @@ import sys.io.FileOutput;
         trace("Gesture Successfully Saved");
     }
 
+    public function deleteGesture(gestureModel:GestureModel)
+    {
+        classifier.deleteGesture(gestureModel);
+        writeGesturesToFile();
+    }
+
     public function startRecognizing()
     {
         if(!analyzing && !learning)
@@ -133,7 +140,11 @@ import sys.io.FileOutput;
 
     private function fireGesture(id:Int, prob:Float)
     {
-        trace("Firing Gesture: " + id + " prob: " + prob);
+        var gestureModel:GestureModel = getGestureModels()[id];
+
+        PopupManager.instance.showSimple(gestureModel.name, "Gesture!");
+
+        trace("Firing Gesture: " + gestureModel.name + " prob: " + prob);
         onGestureDetected.dispatch(id, prob);
     }
 

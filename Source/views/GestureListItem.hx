@@ -2,11 +2,16 @@ package views;
 
 import gestures.models.GestureModel;
 import haxe.ui.toolkit.containers.HBox;
+import haxe.ui.toolkit.controls.Button;
 import haxe.ui.toolkit.controls.Text;
+import msignal.Signal.Signal1;
 
 class GestureListItem extends HBox {
 
+    public var onDeleteButtonPressed:Signal1<GestureModel> = new Signal1<GestureModel>();
+
     private var name:Text;
+    private var deleteButton:Button;
 
     private var gesture:GestureModel;
 
@@ -26,6 +31,15 @@ class GestureListItem extends HBox {
         name.percentWidth = 100;
         name.textAlign = "center";
         addChild(name);
+
+        deleteButton = new Button();
+        deleteButton.text = "delete";
+        deleteButton.verticalAlign = "center";
+        deleteButton.onClick = function(e)
+        {
+            onDeleteButtonPressed.dispatch(gesture);
+        }
+        addChild(deleteButton);
 
         onClick = clicked;
     }
