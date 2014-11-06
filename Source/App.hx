@@ -2,6 +2,7 @@ package;
 
 import controllers.ScreenManager;
 import controllers.SensorController;
+import controllers.SensorDataController;
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
@@ -24,6 +25,7 @@ class App extends VBox {
     private var sensorController:SensorController;
     private var sensors:Array<Sensor>;
     private var gestureController:GestureController;
+    private var sensorDataController:SensorDataController;
 
     public function new () {
         super();
@@ -47,9 +49,11 @@ class App extends VBox {
         sensorController = new SensorController();
         sensors = sensorController.sensors;
 
+        sensorDataController = new SensorDataController(sensors);
+
         gestureController = new GestureController(sensorController);
 
-        client = new Client(serverInfo, sensors);
+        client = new Client(serverInfo);
 
         homeScreen = new HomeScreen(
             headerBar,

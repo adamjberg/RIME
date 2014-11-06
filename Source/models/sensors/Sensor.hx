@@ -2,16 +2,15 @@ package models.sensors;
 
 import filters.Filter;
 import msignal.Signal;
-import osc.OscMessage;
 
 class Sensor {
 
-    public var onUpdate:Signal0 = new Signal0();
+    public var onUpdate:Signal1<Dynamic> = new Signal1<Dynamic>();
 
     public var name:String;
     public var id:String;
-    public var values:Array<Float> = [ 0, 0, 0, 0, 0 ];
-    public var valueLabels:Array<String> = ["", "", "", "", ""];
+    public var values:Array<Float> = new Array<Float>();
+    public var valueLabels:Array<String> = new Array<String>();
     public var enabled(default, set):Bool;
     function set_enabled(newEnabled:Bool) {
         if(newEnabled == enabled)
@@ -26,15 +25,6 @@ class Sensor {
         return enabled = newEnabled;
     }
     public var numValues:Int = 0;
-    public var hasUpdatedValues:Bool = false;
-
-    private var filterList:Array<Array<Filter>> = [
-        new Array<Filter>(),
-        new Array<Filter>(),
-        new Array<Filter>(),
-        new Array<Filter>(),
-        new Array<Filter>(),
-    ];
 
     private function new(?name:String, ?id:String, ?valueLabels:Array<String>)
     {
@@ -44,98 +34,18 @@ class Sensor {
         this.valueLabels = valueLabels;
     }
 
-    public function getValues():Array<Float>
-    {
-        return values.slice(0, numValues);
-    }
-
     public function isSupported():Bool
     {
         return false;
     }
 
-    public function addFilterToAllValues(filter:Filter)
-    {
-        for(i in 0...values.length)
-        {
-            addFilter(filter, i);
-        }
-    }
-
-    public function addFilter(filter:Filter, index:Int)
-    {
-        if(index >= 0 && index < filterList.length)
-        {
-            filterList[index].push(filter);
-        }
-        else
-        {
-            trace("Filter at index " + index + " doesn't exist.");
-        }
-    }
-
-    public function removeFilter(filter:Filter, index:Int)
-    {
-        if(index >= 0 && index < filterList.length)
-        {
-            filterList[index].remove(filter);
-        }
-        else
-        {
-            trace("Filter at index " + index + " doesn't exist.");
-        }
-    }
-
-    public function removeAllFiltersForIndex(index:Int)
-    {
-        filterList[index] = new Array<Filter>();
-    }
-
-    public function removeAllFilters()
-    {
-        filterList = [
-            new Array<Filter>(),
-            new Array<Filter>(),
-            new Array<Filter>(),
-            new Array<Filter>(),
-            new Array<Filter>(),
-        ];
-    }
-
     public function update()
     {
-        updateFilters();
-        onUpdate.dispatch();
-    }
-
-    private function updateFilters()
-    {
-        hasUpdatedValues = false;
-        for(valueIndex in 0...filterList.length)
-        {
-            for(filterIndex in 0...filterList[valueIndex].length)
-            {
-                var newVal = filterList[valueIndex][filterIndex].update(values[valueIndex]);
-                if(Math.isFinite(newVal))
-                {
-                    hasUpdatedValues = true;
-                    values[valueIndex] = newVal;
-                }
-            }
-        }
+        onUpdate.dispatch(values);
     }
 
     private function enable(){}
 
     private function disable(){}
-
-    public function addToOscMessage(oscMessage:OscMessage)
-    {
-        oscMessage.addString(id);
-        for(i in 0...numValues)
-        {
-            oscMessage.addFloat(values[i]);
-        }
-    }
 
 }

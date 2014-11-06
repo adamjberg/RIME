@@ -12,8 +12,6 @@ class SensorListItem extends HBox {
     private static var DISABLED_BG_COLOR:Int = 0xFF0000;
 
     private var name:Text;
-    private var valueLabels:Array<Text> = new Array<Text>();
-    private var values:Array<Text> = new Array<Text>();
     private var sensor:Sensor;
 
     public function new(?sensor:Sensor)
@@ -33,19 +31,6 @@ class SensorListItem extends HBox {
         name.textAlign = "center";
         addChild(name);
 
-        for(i in 0...sensor.numValues)
-        {
-            var value:Text = new Text();
-            var valueLabel = new Text();
-            value.text = Std.string(Math.round(sensor.values[i]));
-            valueLabel.text = sensor.valueLabels[i] + ":";
-            addChild(valueLabel);
-            addChild(value);
-            values.push(value);
-            valueLabels.push(valueLabel);
-        }
-
-        sensor.onUpdate.add(sensorUpdated);
         onClick = clicked;
         enableChanged();
     }
@@ -65,19 +50,6 @@ class SensorListItem extends HBox {
         else
         {
            style.backgroundColor = DISABLED_BG_COLOR;
-        }
-    }
-
-    private function sensorUpdated()
-    {
-        if(sensor.values == null)
-        {
-            trace("Values is null");
-            return;
-        }
-        for(i in 0...sensor.numValues)
-        {
-            values[i].text = Std.string(Math.round(sensor.values[i]));
         }
     }
 }

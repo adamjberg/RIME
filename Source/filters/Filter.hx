@@ -11,7 +11,7 @@ class Filter {
 
     public function reset()
     {
-        values = new Array<Float>();
+        values = [0,0,0];
     }
 
     public function update(newValues:Array<Float>):Array<Float>

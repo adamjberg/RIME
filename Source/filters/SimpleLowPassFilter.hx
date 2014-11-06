@@ -15,9 +15,16 @@ class SimpleLowPassFilter extends Filter {
         }
     }
 
-    override public function update(newValue:Float):Float
+    override public function update(newValues:Array<Float>):Array<Float>
     {
-        value = value + ( newValue - value ) * alpha;
-        return value;
+        if(newValues == null)
+        {
+            return null;
+        }
+        for(i in 0...newValues.length)
+        {
+            values[i] = values[i] + ( newValues[i] - values[i] ) * alpha;
+        }
+        return values;
     }
 }

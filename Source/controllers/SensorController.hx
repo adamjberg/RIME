@@ -13,7 +13,8 @@ class SensorController {
 
     public var onSensorsUpdated:Signal0 = new Signal0();
 
-    private static var UPDATE_INTERVAL:Float = 16.6;
+    // This should be equivalent to once every frame
+    private static var UPDATE_INTERVAL:Float = 0;
 
     private static var sensorClasses:Array<Class<Sensor>> =
     [
@@ -60,9 +61,6 @@ class SensorController {
             var sensor = Type.createInstance(sensorClass, []);
             if(sensor.isSupported())
             {
-                sensor.addFilterToAllValues(new IdleStateFilter());
-                sensor.addFilterToAllValues(new ChangeDetectFilter());
-
                 sensor.enabled = true;
                 sensors.push(sensor);
             }

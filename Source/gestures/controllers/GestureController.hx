@@ -48,8 +48,6 @@ import sys.io.FileOutput;
         setupGesturesDirectory();
 
         loadGesturesFromFile();
-
-        sensorController.onSensorsUpdated.add(update);
     }
 
     public function startTraining()
@@ -154,11 +152,8 @@ import sys.io.FileOutput;
         if(this.learning || this.analyzing)
         {
             var accel:Sensor = sensors[0];
-            if(accel.hasUpdatedValues)
-            {
-                trace("update: " + accel.getValues());
-                this.currentGesture.add( accel.getValues() );
-            }
+            trace("update: " + accel.values);
+            this.currentGesture.add( accel.values );
         }
     }
 
