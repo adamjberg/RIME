@@ -2,20 +2,20 @@ package filters;
 
 class Filter {
 
-    private var value:Float = 0;
+    private var values:Array<Float>;
 
     public function new()
     {
-        
+        reset();   
     }
 
     public function reset()
     {
-        value = 0;
+        values = new Array<Float>();
     }
 
-    public function update(newValue:Float):Float
+    public function update(newValues:Array<Float>):Array<Float>
     {
-        return 0;
+        return newValues;
     }
 }

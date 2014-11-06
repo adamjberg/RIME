@@ -22,14 +22,16 @@ class IdleStateFilter extends Filter {
     }
 
     // Only return the new value if it is outside the sensitivity range
-    override public function update(newValue:Float):Float
+    override public function update(newValues:Array<Float>):Array<Float>
     {
-        if(newValue > restValue + sensitivity ||
-            newValue < restValue - sensitivity)
+        for(i in 0...newValues.length)
         {
-            value = newValue;
-            return value;
+            if(newValues[i] > restValue + sensitivity ||
+            newValues[i] < restValue - sensitivity)
+            {
+                values[i] = newValues[i];
+            }
         }
-        return Math.NaN;
+        return values;
     }
 }

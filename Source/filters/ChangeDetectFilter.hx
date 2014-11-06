@@ -13,9 +13,9 @@ class ChangeDetectFilter extends Filter {
 
     public function new()
     {
-        super();
         changeStoppedTimer = new Timer(DEFAULT_TIME_IDLE, 1);
         changeStoppedTimer.addEventListener(TimerEvent.TIMER_COMPLETE, changeStopped);
+        super();
     }
 
     override public function reset()
@@ -26,21 +26,31 @@ class ChangeDetectFilter extends Filter {
         isChanging = false;
     }
 
-    override public function update(newValue:Float):Float
+    override public function update(newValues:Array<Float>):Array<Float>
     {
-        // This will be null if no change was detected
-        if(Math.isFinite(newValue))
+        var valueHasChanged:Bool = true;
+        for(i in 0...newValues.length)
+        {
+            if(newValues[i] != values[i])
+            {
+                valueHasChanged = true;
+            }
+        }
+
+        if(valueHasChanged)
         {
             changeStoppedTimer.reset();
             changeStoppedTimer.start();
-
             // The value has started changing
             if(isChanging == false)
             {
                 isChanging = true;
             }
         }
-        return newValue;
+
+        values = newValues;
+        
+        return values;
     }
 
     private function changeStopped(e:TimerEvent)

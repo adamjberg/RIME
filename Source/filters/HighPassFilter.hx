@@ -15,10 +15,13 @@ class HighPassFilter extends Filter {
         }
     }
 
-    override public function update(newValue:Float):Float
+    override public function update(newValues:Array<Float>):Array<Float>
     {
-        var prevValue = value + ( newValue - value ) * alpha;
-        value = newValue - prevValue;
-        return value;
+        for(i in 0...newValues.length)
+        {
+            var prevValue = values[i] + ( newValues[i] - values[i] ) * alpha;
+            values[i] = newValues[i] - prevValue[i];
+        }
+        return values;
     }
 }
