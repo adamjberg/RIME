@@ -13,11 +13,13 @@ import controllers.Client;
 import views.GestureListScreen;
 import views.HeaderBar;
 import views.HomeScreen;
+import views.PianoButtonScreen;
 
 class App extends VBox {
 
     private var headerBar:HeaderBar;
     private var gestureScreen:GestureListScreen;
+    private var pianoButtonScreen:PianoButtonScreen;
     private var homeScreen:HomeScreen;
 
     private var stack:Stack;
@@ -56,9 +58,6 @@ class App extends VBox {
 
         client = new Client(serverInfo);
 
-        var mappingController:MappingController = new MappingController(client, sensorDataController);
-        mappingController.addMappingFromFile("mapping1.json");
-
         homeScreen = new HomeScreen(
             headerBar,
             sensors,
@@ -66,7 +65,13 @@ class App extends VBox {
             serverInfo
         );
 
+        pianoButtonScreen = new PianoButtonScreen(client);
+
+        var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, sensorDataController);
+        mappingController.addMappingFromFile("mapping1.json");
+
         homeScreen.onOpenGestureScreenButtonPressed.add(openGestureScreen);
+        homeScreen.onOpenPianoButtonScreenButtonPressed.add(openPianoButtonScreen);
 
         ScreenManager.push(homeScreen);
     }
@@ -75,5 +80,10 @@ class App extends VBox {
     {
         gestureScreen = new GestureListScreen(gestureController);
         ScreenManager.push(gestureScreen);
+    }
+
+    private function openPianoButtonScreen()
+    {
+        ScreenManager.push(pianoButtonScreen);
     }
 }

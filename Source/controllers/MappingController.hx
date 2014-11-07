@@ -1,11 +1,13 @@
 package controllers;
 
 import controllers.SensorDataController;
+import haxe.ui.toolkit.controls.Button;
 import models.commands.ViperCommand;
 import models.mappings.JsonMappingReader;
 import models.mappings.Mapping;
 import models.mappings.MappingData;
 import osc.OscMessage;
+import views.PianoButton;
 
 class MappingController {
 
@@ -15,13 +17,13 @@ class MappingController {
     private var sensorDataController:SensorDataController;
     private var jsonMappingReader:JsonMappingReader;
 
-    public function new(client:Client, sensorDataController:SensorDataController)
+    public function new(client:Client, pianoButtons:Array<PianoButton>, sensorDataController:SensorDataController)
     {
         this.client = client;
         this.sensorDataController = sensorDataController;
 
         mappings = new Array<Mapping>();
-        jsonMappingReader = new JsonMappingReader(sensorDataController);
+        jsonMappingReader = new JsonMappingReader(pianoButtons, sensorDataController);
     }
 
     public function addMappingFromFile(filename:String)

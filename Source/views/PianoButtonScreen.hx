@@ -18,7 +18,7 @@ class PianoButtonScreen extends Container {
     private var vBox1:VBox;
     private var vBox2:VBox;
     private var hBox:HBox;
-    private var pianoButtons:Array<PianoButton> = new Array<PianoButton>();
+    public var pianoButtons:Array<PianoButton> = new Array<PianoButton>();
 
     public function new(?client:Client)
     {

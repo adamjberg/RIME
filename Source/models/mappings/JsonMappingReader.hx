@@ -2,24 +2,28 @@ package models.mappings;
 
 import controllers.SensorDataController;
 import haxe.Json;
+import haxe.ui.toolkit.controls.Button;
 import models.mappings.Mapping;
 import models.mappings.MappingData;
+import models.mappings.PianoMappingData;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.FileInput;
 import sys.io.FileOutput;
+import views.PianoButton;
 
 class JsonMappingReader {
     //private static var MAPPING_DIR:String = SystemPath.applicationStorageDirectory + "/mappings/";
 
     private static var MAPPING_DIR:String = "assets/data/mappings/";
 
+    private var pianoButtons:Array<PianoButton>;
     private var sensorDataController:SensorDataController;
 
-    public function new(sensorDataController:SensorDataController)
+    public function new(pianoButtons:Array<PianoButton>, sensorDataController:SensorDataController)
     {
+        this.pianoButtons = pianoButtons;
         this.sensorDataController = sensorDataController;
-        getMapping("mapping1.json");
     }
 
     public function getMapping(filename:String):Mapping
@@ -48,6 +52,15 @@ class JsonMappingReader {
                             mappingDataObj.targetField,
                             mappingDataObj.minOutput,
                             mappingDataObj.maxOutput
+                        );
+                    case(MappingData.TYPE_PIANO):
+                        mappingData = new PianoMappingData
+                        (
+                            pianoButtons[mappingDataObj.buttonId],
+                            mappingDataObj.pressType,
+                            mappingDataObj.method,
+                            mappingDataObj.targetField,
+                            mappingDataObj.targetOutput
                         );
                 }
                 mapping.addMappingData(mappingData);

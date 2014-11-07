@@ -19,6 +19,14 @@
             "minOutput":0,
             "maxOutput":0.5,
             "intervalInMs": 2000
+        },
+        {
+            "type":"piano",
+            "buttonId":0,
+            "pressType":"down",
+            "method": "update",
+            "targetField":"posY",
+            "targetOutput":1
         }
     ]
 }

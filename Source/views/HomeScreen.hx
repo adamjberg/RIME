@@ -17,6 +17,7 @@ import views.TestPositionScreen;
 class HomeScreen extends VBox {
 
     public var onOpenGestureScreenButtonPressed:Signal0 = new Signal0();
+    public var onOpenPianoButtonScreenButtonPressed:Signal0 = new Signal0();
 
     private var headerBar:HeaderBar;
     private var client:Client;
@@ -79,7 +80,7 @@ class HomeScreen extends VBox {
     
     private function openPianoScreen(e:MouseEvent)
     {
-        ScreenManager.push(new PianoButtonScreen(client));
+        onOpenPianoButtonScreenButtonPressed.dispatch();
     }
 
     private function sendButtonPressed()
