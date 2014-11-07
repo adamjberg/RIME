@@ -1,8 +1,8 @@
 package models.commands;
 
-import models.commands.ViperCommandWithId;
+import models.commands.ViperCommand;
 
-class ViperCreateCommand extends ViperCommandWithId {
+class ViperCreateCommand extends ViperCommand {
 
     private static var MESSAGE_TYPE:String = "create";
 

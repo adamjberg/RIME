@@ -7,6 +7,7 @@ import openfl.utils.ByteArray;
 class OscMessage {
 
     private static inline var OSC_STRING_BYTE_MOD:Int = 4;
+    private static inline var DEFAULT_ADDR_PATTERN:String = "rime";
 
     private var typeTag:ByteArray;
     private var data:ByteArray;
@@ -14,6 +15,10 @@ class OscMessage {
 
     public function new(?addrPattern:String)
     {
+        if(addrPattern == null)
+        {
+            addrPattern = DEFAULT_ADDR_PATTERN;
+        }
         addrPattern = "/" + addrPattern;
         this.addrPattern = new ByteArray();
         this.addrPattern.writeUTFBytes(addrPattern);
