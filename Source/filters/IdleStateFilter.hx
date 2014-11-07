@@ -2,7 +2,7 @@ package filters;
 
 class IdleStateFilter extends Filter {
 
-    private static var DEFAULT_SENSITIVITY:Float = .5;
+    private static var DEFAULT_SENSITIVITY:Float = 0.5;
     private static var DEFAULT_REST_VALUE:Float = 0;
 
     private var restValue:Float = DEFAULT_REST_VALUE;

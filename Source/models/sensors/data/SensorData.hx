@@ -19,8 +19,19 @@ class SensorData {
 
     private function update(newValues:Array<Float>)
     {
-        values = newValues;
-        onUpdate.dispatch(values);
+        var hasChanged:Bool = false;
+        for(i in 0...newValues.length)
+        {
+            if(values[i] != newValues[i])
+            {
+                hasChanged = true;
+            }
+        }
+        if(hasChanged)
+        {
+            values = newValues.copy();
+            onUpdate.dispatch(values);
+        }
     }
 
 }

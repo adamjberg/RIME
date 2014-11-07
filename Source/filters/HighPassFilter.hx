@@ -19,7 +19,7 @@ class HighPassFilter extends Filter {
     {
         for(i in 0...newValues.length)
         {
-            var prevValue = values[i] + ( newValues[i] - values[i] ) * alpha;
+            var prevValue = values[i] + ( newValues[i] - values[i] ) * ( 1 - alpha );
             values[i] = newValues[i] - prevValue[i];
         }
         return values;

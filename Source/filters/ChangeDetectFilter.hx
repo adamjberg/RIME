@@ -22,13 +22,12 @@ class ChangeDetectFilter extends Filter {
     {
         super.reset();
         changeStoppedTimer.reset();
-        changeStoppedTimer.start();
         isChanging = false;
     }
 
     override public function update(newValues:Array<Float>):Array<Float>
     {
-        var valueHasChanged:Bool = true;
+        var valueHasChanged:Bool = false;
         for(i in 0...newValues.length)
         {
             if(newValues[i] != values[i])
@@ -55,6 +54,6 @@ class ChangeDetectFilter extends Filter {
 
     private function changeStopped(e:TimerEvent)
     {
-        isChanging = false;
+        reset();
     }
 }

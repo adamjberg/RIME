@@ -7,8 +7,8 @@ import models.sensors.data.FilteredSensorData;
 import models.sensors.data.RawSensorData;
 
 class SensorDataController {
-    private var rawSensorDatas:Array<RawSensorData> = new Array<RawSensorData>();
-    private var defaultFilteredSensorDatas:Array<FilteredSensorData> = new Array<FilteredSensorData>();
+    public var rawSensorDatas:Array<RawSensorData> = new Array<RawSensorData>();
+    public var defaultFilteredSensorDatas:Array<FilteredSensorData> = new Array<FilteredSensorData>();
 
     private var sensors:Array<Sensor>;
 
@@ -23,7 +23,6 @@ class SensorDataController {
 
             defaultFilters = 
             [
-                new SimpleLowPassFilter(),
                 new IdleStateFilter(),
                 new ChangeDetectFilter(),
             ];

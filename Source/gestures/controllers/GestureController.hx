@@ -1,11 +1,13 @@
  package gestures.controllers;
 
 import controllers.SensorController;
+import controllers.SensorDataController;
 import gestures.models.Classifier;
 import gestures.models.Gesture;
 import gestures.models.GestureModel;
 import haxe.ui.toolkit.core.PopupManager;
 import models.sensors.Accelerometer;
+import models.sensors.data.FilteredSensorData;
 import models.sensors.Sensor;
 import msignal.Signal.Signal0;
 import msignal.Signal.Signal2;
@@ -35,11 +37,11 @@ import sys.io.FileOutput;
     private var learning:Bool;
     private var analyzing:Bool;
 
-    private var sensorController:SensorController;
+    private var sensorDataController:SensorDataController;
     
-    public function new(sensorController:SensorController)
+    public function new(sensorDataController:SensorDataController)
     {
-        this.sensorController = sensorController;
+        this.sensorDataController = sensorDataController;
         this.learning = false;
         this.analyzing = false;
         this.currentGesture = new Gesture();
@@ -48,6 +50,8 @@ import sys.io.FileOutput;
         setupGesturesDirectory();
 
         loadGesturesFromFile();
+
+        sensorDataController.defaultFilteredSensorDatas[0].onUpdate.add(update);
     }
 
     public function startTraining()
@@ -146,14 +150,11 @@ import sys.io.FileOutput;
         onGestureDetected.dispatch(id, prob);
     }
 
-    private function update()
+    private function update(newValues:Array<Float>)
     {
-        var sensors:Array<Sensor> = sensorController.getEnabledSensors();
         if(this.learning || this.analyzing)
         {
-            var accel:Sensor = sensors[0];
-            trace("update: " + accel.values);
-            this.currentGesture.add( accel.values );
+            this.currentGesture.add( newValues );
         }
     }
 
