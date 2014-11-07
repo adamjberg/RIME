@@ -1,6 +1,5 @@
 package models.commands;
 
-import models.mappings.MappingParameter;
 import osc.OscMessage;
 
 class ViperCommand {
@@ -13,12 +12,12 @@ class ViperCommand {
 
     private static var ID_STRING:String = "id";
 
-    private var method:String;
+    public var method:String;
     private var id:Int;
     private var params:Array<String> = new Array<String>();
     private var paramValues:Array<Float> = new Array<Float>();
 
-    public function new(id:Int, method:String)
+    public function new(id:Int, ?method:String)
     {
         this.method = method;
         this.id = id; 
@@ -40,6 +39,13 @@ class ViperCommand {
         oscMessage.addString(method);
         oscMessage.addString(ID_STRING);
         oscMessage.addInt(id);
+
+        for(i in 0...params.length)
+        {
+            oscMessage.addString(params[i]);
+            oscMessage.addFloat(paramValues[i]);
+        }
+
         return oscMessage;
     }
 

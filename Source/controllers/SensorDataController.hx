@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.SensorController;
 import filters.*;
+import models.sensors.data.SensorData;
 import models.sensors.Sensor;
 import models.sensors.data.FilteredSensorData;
 import models.sensors.data.RawSensorData;
@@ -30,5 +31,9 @@ class SensorDataController {
         }
     }
 
+    public function getFiltered():Array<FilteredSensorData>
+    {
+        return defaultFilteredSensorDatas;
+    }
     
 }

@@ -1,5 +1,6 @@
 package;
 
+import controllers.MappingController;
 import controllers.ScreenManager;
 import controllers.SensorController;
 import controllers.SensorDataController;
@@ -54,6 +55,9 @@ class App extends VBox {
         gestureController = new GestureController(sensorDataController);
 
         client = new Client(serverInfo);
+
+        var mappingController:MappingController = new MappingController(client, sensorDataController);
+        mappingController.addMappingFromFile("mapping1.json");
 
         homeScreen = new HomeScreen(
             headerBar,

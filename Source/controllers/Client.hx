@@ -40,8 +40,16 @@ class Client {
 
     public function send(message:OscMessage)
     {
-        #if !neko
-            socket.send(message.getBytes());
-        #end
+        if(message != null)
+        {
+            #if !neko
+                socket.send(message.getBytes());
+            #end 
+        }
+        else
+        {
+            trace("Trying to send null message");
+        }
+        
     }
 }

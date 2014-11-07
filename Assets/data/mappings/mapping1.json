@@ -1,0 +1,24 @@
+{  
+    "mappingData":[
+        {  
+            "type":"sensor",
+            "sensor":"accel",
+            "valueIndex":0,
+            "method": "update",
+            "targetField":"posX",
+            "minOutput":0,
+            "maxOutput":1,
+            "intervalInMs": 1000
+        },
+        {
+            "type":"sensor",
+            "sensor":"gyro",
+            "valueIndex":0,
+            "method": "update",
+            "targetField":"posY",
+            "minOutput":0,
+            "maxOutput":0.5,
+            "intervalInMs": 2000
+        }
+    ]
+}
