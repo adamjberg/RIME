@@ -27,6 +27,13 @@
             "method": "update",
             "targetField":"posY",
             "targetOutput":1
+        },
+        {
+            "type":"gesture",
+            "gestureId":0,
+            "method": "update",
+            "targetField":"alpha",
+            "targetOutput":1
         }
     ]
 }

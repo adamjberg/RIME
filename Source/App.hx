@@ -67,7 +67,7 @@ class App extends VBox {
 
         pianoButtonScreen = new PianoButtonScreen(client);
 
-        var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, sensorDataController);
+        var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
         mappingController.addMappingFromFile("mapping1.json");
 
         homeScreen.onOpenGestureScreenButtonPressed.add(openGestureScreen);

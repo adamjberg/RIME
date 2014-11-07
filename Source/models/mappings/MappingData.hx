@@ -7,6 +7,7 @@ class MappingData {
 
     public static inline var TYPE_SENSOR:String = "sensor";
     public static inline var TYPE_PIANO:String = "piano";
+    public static inline var TYPE_GESTURE:String = "gesture";
 
     public var onRequestSend:Signal1<MappingData> = new Signal1<MappingData>();
 

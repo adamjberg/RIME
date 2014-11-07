@@ -1,5 +1,6 @@
 package models.mappings;
 
+import gestures.controllers.GestureController;
 import controllers.SensorDataController;
 import haxe.Json;
 import haxe.ui.toolkit.controls.Button;
@@ -19,10 +20,12 @@ class JsonMappingReader {
 
     private var pianoButtons:Array<PianoButton>;
     private var sensorDataController:SensorDataController;
+    private var gestureController:GestureController;
 
-    public function new(pianoButtons:Array<PianoButton>, sensorDataController:SensorDataController)
+    public function new(pianoButtons:Array<PianoButton>, gestureController:GestureController, sensorDataController:SensorDataController)
     {
         this.pianoButtons = pianoButtons;
+        this.gestureController = gestureController;
         this.sensorDataController = sensorDataController;
     }
 
@@ -58,6 +61,15 @@ class JsonMappingReader {
                         (
                             pianoButtons[mappingDataObj.buttonId],
                             mappingDataObj.pressType,
+                            mappingDataObj.method,
+                            mappingDataObj.targetField,
+                            mappingDataObj.targetOutput
+                        );
+                    case(MappingData.TYPE_GESTURE):
+                        mappingData = new GestureMappingData
+                        (
+                            gestureController,
+                            mappingDataObj.gestureId,
                             mappingDataObj.method,
                             mappingDataObj.targetField,
                             mappingDataObj.targetOutput
