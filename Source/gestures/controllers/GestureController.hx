@@ -154,6 +154,7 @@ import sys.io.FileOutput;
     {
         if(this.learning || this.analyzing)
         {
+            trace("update: " + newValues);
             this.currentGesture.add( newValues );
         }
     }
