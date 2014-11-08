@@ -32,8 +32,11 @@ class MappingController {
 
     public function addMapping(mapping:Mapping)
     {
-        mapping.onRequestSend.add(send);
-        mappings.push(mapping);
+        if(mapping != null)
+        {
+            mapping.onRequestSend.add(send);
+            mappings.push(mapping);
+        }
     }
 
     private function send(mapping:Mapping, mappingData:MappingData)
