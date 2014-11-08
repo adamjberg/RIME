@@ -25,6 +25,7 @@ class SensorDataController {
             defaultFilters = 
             [
                 new IdleStateFilter(),
+                new DirectionalEquivalenceFilter(),
                 new ChangeDetectFilter(),
             ];
             defaultFilteredSensorDatas.push(new FilteredSensorData(sensor, defaultFilters));
