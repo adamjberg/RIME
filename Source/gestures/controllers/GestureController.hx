@@ -165,13 +165,20 @@ import sys.io.FileOutput;
         {
             var file:FileInput = File.read(FULL_FILENAME, false);
             classifier = Classifier.fromFile(file);
+            file.close();
         }
     }
 
     private function writeGesturesToFile()
     {
+        if(FileSystem.exists(FULL_FILENAME))
+        {
+            FileSystem.deleteFile(FULL_FILENAME);
+        }
+
         var file:FileOutput = File.write(FULL_FILENAME, false);
         classifier.writeToFile(file);
+        file.close();
     }
 
     private function setupGesturesDirectory()
