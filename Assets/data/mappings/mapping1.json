@@ -2,7 +2,7 @@
     "mappingData":[
         {  
             "type":"sensor",
-            "sensor":"accel",
+            "sensor":"LinearAccelerometer",
             "valueIndex":0,
             "method": "update",
             "targetField":"posX",
@@ -12,7 +12,8 @@
         },
         {
             "type":"sensor",
-            "sensor":"gyro",
+            "sensor":"Gyroscope",
+            "rawData":"true",
             "valueIndex":0,
             "method": "update",
             "targetField":"posY",

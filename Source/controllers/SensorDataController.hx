@@ -32,6 +32,30 @@ class SensorDataController {
         }
     }
 
+    public function getFilteredWithName(sensorName:String):SensorData
+    {
+        for(sensorData in defaultFilteredSensorDatas)
+        {
+            if(sensorData.getSensorName() == sensorName)
+            {
+                return sensorData;
+            }
+        }
+        return null;
+    }
+
+    public function getRawWithName(sensorName:String):SensorData
+    {
+        for(sensorData in rawSensorDatas)
+        {
+            if(sensorData.getSensorName() == sensorName)
+            {
+                return sensorData;
+            }
+        }
+        return null;
+    }
+
     public function getFiltered():Array<FilteredSensorData>
     {
         return defaultFilteredSensorDatas;

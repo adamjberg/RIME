@@ -16,6 +16,11 @@ class MappingData {
 
     }
 
+    public function isValid():Bool
+    {
+        return true;
+    }
+
     public function fillViperCommand(command:ViperCommand)
     {
 

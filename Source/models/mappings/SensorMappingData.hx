@@ -33,9 +33,29 @@ class SensorMappingData extends MappingData {
         // TODO: Fix this to grab from sensor data
         this.maxPossible = 1;
 
+        if(isValid() == false)
+        {
+            return null;
+        }
+
         sendTimer = new Timer(intervalInMs, 0);
         sendTimer.start();
         sendTimer.addEventListener(TimerEvent.TIMER, requestSend);
+    }
+
+    override public function isValid():Bool
+    {
+        if(sensorData == null)
+        {
+            trace("sensorData is null");
+            return false;
+        }
+        else if(isValueIndexValid() == false)
+        {
+            trace("value index: " + valueIndex + " is invalid for sensor: " + sensorData.getSensorName());
+            return false;
+        }
+        return true;
     }
 
     override public function fillViperCommand(viperCommand:ViperCommand)
@@ -47,6 +67,15 @@ class SensorMappingData extends MappingData {
     public function getData():Float
     {
         return (sensorData.values[valueIndex] / maxPossible) * (maxDesired - minDesired) + minDesired;
+    }
+
+    private function isValueIndexValid():Bool
+    {
+        if(valueIndex == null)
+        {
+            return false;
+        }
+        return valueIndex < sensorData.sensor.numValues;
     }
 
     private function requestSend(e:TimerEvent)

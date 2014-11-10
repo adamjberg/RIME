@@ -7,6 +7,7 @@ import haxe.ui.toolkit.controls.Button;
 import models.mappings.Mapping;
 import models.mappings.MappingData;
 import models.mappings.PianoMappingData;
+import models.sensors.data.SensorData;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.FileInput;
@@ -47,15 +48,33 @@ class JsonMappingReader {
                 switch(mappingDataObj.type)
                 {
                     case(MappingData.TYPE_SENSOR):
-                        mappingData = new SensorMappingData(
-                            sensorDataController.getFiltered()[0],
-                            mappingDataObj.intervalInMs,
-                            mappingDataObj.valueIndex,
-                            mappingDataObj.method,
-                            mappingDataObj.targetField,
-                            mappingDataObj.minOutput,
-                            mappingDataObj.maxOutput
-                        );
+                        var sensorName:String = mappingDataObj.sensor;
+                        var sensorData:SensorData = null;
+                        if(mappingDataObj.rawData != null && mappingDataObj.rawData == "true")
+                        {
+                            sensorData = sensorDataController.getRawWithName(sensorName);
+                        }
+                        else
+                        {
+                            sensorData = sensorDataController.getFilteredWithName(sensorName);
+                        }
+
+                        if(sensorData != null)
+                        {
+                            mappingData = new SensorMappingData(
+                                sensorData,
+                                mappingDataObj.intervalInMs,
+                                mappingDataObj.valueIndex,
+                                mappingDataObj.method,
+                                mappingDataObj.targetField,
+                                mappingDataObj.minOutput,
+                                mappingDataObj.maxOutput
+                            );
+                        }
+                        else
+                        {
+                            trace("Could not map to sensor: " + sensorName);
+                        }
                     case(MappingData.TYPE_PIANO):
                         mappingData = new PianoMappingData
                         (
