@@ -93,10 +93,6 @@ class SensorMappingData extends MappingData {
 
     private function isValueIndexValid():Bool
     {
-        if(valueIndex == null)
-        {
-            return false;
-        }
         return valueIndex < sensorData.sensor.numValues;
     }
 
