@@ -9,10 +9,7 @@ import models.mappings.Mapping;
 import models.mappings.MappingData;
 import models.mappings.PianoMappingData;
 import models.sensors.data.SensorData;
-import sys.FileSystem;
-import sys.io.File;
-import sys.io.FileInput;
-import sys.io.FileOutput;
+import openfl.Assets;
 import views.PianoButton;
 
 class JsonMappingReader {
@@ -35,9 +32,9 @@ class JsonMappingReader {
     {
         var mapping:Mapping = null;
         var fullPath:String = MAPPING_DIR + filename;
-        if(FileSystem.exists(fullPath))
+        if(Assets.exists(fullPath))
         {
-            var jsonContent:String = File.getContent(fullPath);
+            var jsonContent:String = Assets.getText(fullPath);
             var mappingObj:Dynamic = Json.parse(jsonContent);
 
             mapping = new Mapping();
