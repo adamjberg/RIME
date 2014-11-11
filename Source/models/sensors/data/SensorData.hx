@@ -9,12 +9,17 @@ class SensorData {
 
     public var values:Array<Float> = new Array<Float>();
 
-    private var sensor:Sensor;
+    public var sensor:Sensor;
 
     public function new(sensor:Sensor)
     {
         this.sensor = sensor;
         sensor.onUpdate.add(update);
+    }
+
+    public function getSensorName():String
+    {
+        return sensor.name;
     }
 
     private function update(newValues:Array<Float>)

@@ -12,17 +12,11 @@ class PianoMappingData extends MappingData {
     public static inline var PRESS_TYPE_DOUBLE_TAP:String = "double tap";
 
     public var button:Button;
-    public var method:String;
-    public var targetField:String;
-    public var targetOutput:Float;
 
-    public function new(button:Button, pressType:String, method:String, targetField:String, targetOutput:Float)
+    public function new(button:Button, pressType:String)
     {
         super();
         this.button = button;
-        this.method = method;
-        this.targetField = targetField;
-        this.targetOutput = targetOutput;
 
         var eventType:String = "";
         switch(pressType)
@@ -35,12 +29,6 @@ class PianoMappingData extends MappingData {
                 eventType = MouseEvent.DOUBLE_CLICK;
         }
         button.addEventListener(eventType, requestSend);
-    }
-
-    override public function fillViperCommand(viperCommand:ViperCommand)
-    {
-        viperCommand.method = method;
-        viperCommand.addParam(targetField, targetOutput);
     }
 
     private function requestSend(e:MouseEvent)
