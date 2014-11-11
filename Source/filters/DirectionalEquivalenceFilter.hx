@@ -2,7 +2,7 @@ package filters;
 
 class DirectionalEquivalenceFilter extends Filter {
 
-    private static var DEFAULT_SENSITIVITY:Float = 0.2;
+    private static var DEFAULT_SENSITIVITY:Float = 0.2 * 9.8;
 
     private var sensitivity:Float = DEFAULT_SENSITIVITY;
 
