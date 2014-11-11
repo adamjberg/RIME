@@ -8,14 +8,14 @@ class ViperCommand {
     public static var YPOS_STRING:String = "yPos";
 
     private static var ADDR_PATTERN:String = "rime";
-    private static var COMMAND_STRING:String = "command";
+    private static var METHOD_STRING:String = "method";
 
     private static var ID_STRING:String = "id";
 
     public var method:String;
     public var id:Int;
     private var params:Array<String> = new Array<String>();
-    private var paramValues:Array<Float> = new Array<Float>();
+    private var paramValues:Array<Dynamic> = new Array<Dynamic>();
 
     public function new(?id:Int, ?method:String)
     {
@@ -23,7 +23,7 @@ class ViperCommand {
         this.id = id; 
     }
 
-    public function addParam(param:String, value:Float)
+    public function addParam(param:String, value:Dynamic)
     {
         params.push(param);
         paramValues.push(value);
@@ -35,7 +35,7 @@ class ViperCommand {
         {
             oscMessage = new OscMessage(ADDR_PATTERN);
         }
-        oscMessage.addString( COMMAND_STRING );
+        oscMessage.addString( METHOD_STRING );
         oscMessage.addString(method);
         oscMessage.addString(ID_STRING);
         oscMessage.addInt(id);
@@ -43,7 +43,14 @@ class ViperCommand {
         for(i in 0...params.length)
         {
             oscMessage.addString(params[i]);
-            oscMessage.addFloat(paramValues[i]);
+            if(Std.is(paramValues[i], Float))
+            {
+                oscMessage.addFloat(paramValues[i]);
+            }
+            else if(Std.is(paramValues[i], String))
+            {
+                oscMessage.addString(paramValues[i]);
+            }
         }
 
         return oscMessage;
