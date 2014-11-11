@@ -49,9 +49,11 @@ class MappingController {
         var oscMessage:OscMessage = null;
         for(targetId in mapping.targetIds)
         {
-            var command:ViperCommand = new ViperCommand(targetId);
-            mappingData.fillViperCommand(command);
-            oscMessage = command.fillOscMessage(oscMessage);
+            for(command in mappingData.getViperCommands())
+            {
+                command.id = targetId;
+                oscMessage = command.fillOscMessage(oscMessage);
+            }
         }
         client.send(oscMessage);
     }

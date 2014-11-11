@@ -4,6 +4,7 @@ import gestures.controllers.GestureController;
 import controllers.SensorDataController;
 import haxe.Json;
 import haxe.ui.toolkit.controls.Button;
+import models.commands.ViperCommand;
 import models.mappings.Mapping;
 import models.mappings.MappingData;
 import models.mappings.PianoMappingData;
@@ -61,14 +62,16 @@ class JsonMappingReader {
 
                         if(sensorData != null)
                         {
+                            var targetFields:Array<String> = mappingDataObj.targetFields;
+                            var minOutputs:Array<Float> = mappingDataObj.minOutputs;
+                            var maxOutputs:Array<Float> = mappingDataObj.maxOutputs;
                             mappingData = new SensorMappingData(
                                 sensorData,
                                 mappingDataObj.intervalInMs,
                                 mappingDataObj.valueIndex,
-                                mappingDataObj.method,
-                                mappingDataObj.targetField,
-                                mappingDataObj.minOutput,
-                                mappingDataObj.maxOutput
+                                targetFields,
+                                minOutputs,
+                                maxOutputs
                             );
                         }
                         else
@@ -76,23 +79,27 @@ class JsonMappingReader {
                             trace("Could not map to sensor: " + sensorName);
                         }
                     case(MappingData.TYPE_PIANO):
+                        var viperCommands:Array<ViperCommand> = getArrayOfViperCommandsFromJson(mappingDataObj.commands);
                         mappingData = new PianoMappingData
                         (
                             pianoButtons[mappingDataObj.buttonId],
-                            mappingDataObj.pressType,
-                            mappingDataObj.method,
-                            mappingDataObj.targetField,
-                            mappingDataObj.targetOutput
+                            mappingDataObj.pressType
                         );
+                        for(viperCommand in viperCommands)
+                        {
+                            mappingData.addViperCommand(viperCommand);
+                        }
                     case(MappingData.TYPE_GESTURE):
+                        var viperCommands:Array<ViperCommand> = getArrayOfViperCommandsFromJson(mappingDataObj.commands);
                         mappingData = new GestureMappingData
                         (
                             gestureController,
-                            mappingDataObj.gestureId,
-                            mappingDataObj.method,
-                            mappingDataObj.targetField,
-                            mappingDataObj.targetOutput
+                            mappingDataObj.gestureId
                         );
+                        for(viperCommand in viperCommands)
+                        {
+                            mappingData.addViperCommand(viperCommand);
+                        }
                 }
                 mapping.addMappingData(mappingData);
             }
@@ -103,5 +110,38 @@ class JsonMappingReader {
             trace("Mapping file " + filename + " not found");
         }
         return mapping;
+    }
+
+    private function getArrayOfViperCommandsFromJson(jsonCommands:Array<Dynamic>):Array<ViperCommand>
+    {
+        var viperCommands:Array<ViperCommand> = new Array<ViperCommand>();
+        var viperCommand:ViperCommand;
+
+        if(jsonCommands == null)
+        {
+            return viperCommands;
+        }
+
+        for(jsonCommand in jsonCommands)
+        {
+            var targetFields:Array<Dynamic> = jsonCommand.targetFields;
+            var targetOutputs:Array<Dynamic> = jsonCommand.targetOutputs;
+            var method:String = jsonCommand.method;
+
+            if(method == null)
+            {
+                method = "update";
+            }
+
+            viperCommand = new ViperCommand();
+
+            for(i in 0...targetFields.length)
+            {
+                viperCommand.addParam(targetFields[i], targetOutputs[i]);
+            }
+
+            viperCommands.push(viperCommand);
+        }
+        return viperCommands;
     }
 }

@@ -1,40 +1,64 @@
 {  
-    "mappingData":[
+    "mappingData":[  
         {  
             "type":"sensor",
             "sensor":"LinearAccelerometer",
             "valueIndex":0,
-            "method": "update",
-            "targetField":"posX",
-            "minOutput":0,
-            "maxOutput":1,
-            "intervalInMs": 1000
+            "method":"update",
+            "targetFields":[  
+                "posX"
+            ],
+            "minOutputs":[  
+                0
+            ],
+            "maxOutputs":[  
+                1
+            ],
+            "intervalInMs":1000
         },
-        {
+        {  
             "type":"sensor",
             "sensor":"Gyroscope",
             "rawData":"true",
             "valueIndex":0,
-            "method": "update",
+            "method":"update",
             "targetField":"posY",
             "minOutput":0,
             "maxOutput":0.5,
-            "intervalInMs": 2000
+            "intervalInMs":2000
         },
-        {
+        {  
             "type":"piano",
             "buttonId":0,
             "pressType":"down",
-            "method": "update",
-            "targetField":"posY",
-            "targetOutput":1
+            "commands":[  
+                {  
+                    "method":"update",
+                    "targetFields":[  
+                        "posX",
+                        "posY"
+                    ],
+                    "targetOutputs":[  
+                        1,
+                        0
+                    ]
+                }
+            ]
         },
-        {
+        {  
             "type":"gesture",
             "gestureId":0,
-            "method": "update",
-            "targetField":"alpha",
-            "targetOutput":1
+            "commands":[  
+                {  
+                    "method":"update",
+                    "targetFields":[  
+                        "alpha"
+                    ],
+                    "targetOutputs":[  
+                        0
+                    ]
+                }
+            ]
         }
     ]
 }

@@ -13,11 +13,11 @@ class ViperCommand {
     private static var ID_STRING:String = "id";
 
     public var method:String;
-    private var id:Int;
+    public var id:Int;
     private var params:Array<String> = new Array<String>();
     private var paramValues:Array<Float> = new Array<Float>();
 
-    public function new(id:Int, ?method:String)
+    public function new(?id:Int, ?method:String)
     {
         this.method = method;
         this.id = id; 
