@@ -49,8 +49,6 @@ import sys.io.FileOutput;
 
         setupGesturesDirectory();
 
-        loadGesturesFromFile();
-
         sensorDataController.defaultFilteredSensorDatas[0].onUpdate.add(update);
     }
 
