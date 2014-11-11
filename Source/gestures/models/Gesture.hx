@@ -65,7 +65,7 @@ class Gesture {
             {
                 for(value in data[i])
                 {
-                    max = Math.max(max, value);
+                    max = Math.max(max, Math.abs(value));
                 }
             }
         }
@@ -81,7 +81,7 @@ class Gesture {
             {
                 for(value in data[i])
                 {
-                    min = Math.min(min, value);
+                    min = Math.min(min, Math.abs(value));
                 }
             }
         }
