@@ -131,6 +131,7 @@ class JsonMappingReader {
             }
 
             viperCommand = new ViperCommand();
+            viperCommand.method = method;
 
             for(i in 0...targetFields.length)
             {

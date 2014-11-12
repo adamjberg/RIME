@@ -22,8 +22,11 @@ class Mapping {
 
     public function addMappingData(mappingData:MappingData)
     {
-        mappingData.onRequestSend.add(requestSend);
-        mappingDatas.push(mappingData);
+        if(mappingData != null)
+        {
+            mappingData.onRequestSend.add(requestSend);
+            mappingDatas.push(mappingData);   
+        }
     }
 
     public function addTarget(id:Int)

@@ -2,59 +2,53 @@
     "mappingData":[  
         {  
             "type":"sensor",
-            "sensor":"LinearAccelerometer",
+            "sensor":"Orientation",
             "valueIndex":0,
             "method":"update",
             "targetFields":[  
-                "posX"
+                "transparency"
             ],
             "minOutputs":[  
                 0
             ],
             "maxOutputs":[  
-                1
+                255
             ],
-            "intervalInMs":1000
-        },
-        {  
-            "type":"sensor",
-            "sensor":"Gyroscope",
-            "rawData":"true",
-            "valueIndex":0,
-            "method":"update",
-            "targetField":"posY",
-            "minOutput":0,
-            "maxOutput":0.5,
-            "intervalInMs":2000
-        },
-        {  
-            "type":"piano",
-            "buttonId":0,
-            "pressType":"down",
-            "commands":[  
-                {  
-                    "method":"update",
-                    "targetFields":[  
-                        "posX",
-                        "posY"
-                    ],
-                    "targetOutputs":[  
-                        1,
-                        0
-                    ]
-                }
-            ]
+            "intervalInMs":50
         },
         {  
             "type":"gesture",
             "gestureId":0,
             "commands":[  
                 {  
-                    "method":"update",
+                    "method":"create",
                     "targetFields":[  
-                        "alpha"
+                        "image",
+                        "posX",
+                        "posY"
                     ],
                     "targetOutputs":[  
+                        "fish3.png",
+                        1000,
+                        500
+                    ]
+                }
+            ]
+        },
+        {  
+            "type":"gesture",
+            "gestureId":1,
+            "commands":[  
+                {  
+                    "method":"update",
+                    "targetFields":[  
+                        "easing",
+                        "endX",
+                        "endY"
+                    ],
+                    "targetOutputs":[  
+                        0.01,
+                        0,
                         0
                     ]
                 }

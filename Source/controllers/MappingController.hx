@@ -52,6 +52,7 @@ class MappingController {
             for(command in mappingData.getViperCommands())
             {
                 command.id = targetId;
+                command.addParam("deviceId", "oijgoaij2ojgawojfiawfjoa");
                 oscMessage = command.fillOscMessage(oscMessage);
             }
         }

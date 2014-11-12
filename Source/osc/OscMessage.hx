@@ -72,7 +72,7 @@ class OscMessage {
     public function addString(val:String)
     {
         var tempBytes:ByteArray = new ByteArray();
-        typeTag.writeByte(0x53); // s
+        typeTag.writeByte(0x73); // s
         tempBytes.writeUTFBytes(val);
         padToMultipleOf4Bytes(tempBytes);
         data.writeBytes(tempBytes, 0, tempBytes.length);
