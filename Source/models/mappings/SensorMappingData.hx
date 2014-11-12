@@ -15,7 +15,6 @@ class SensorMappingData extends MappingData {
     public var targetFields:Array<String>;
     public var maxDesireds:Array<Float>;
     public var minDesireds:Array<Float>;
-    public var maxPossible:Float;
 
     private var sendTimer:Timer;
 
@@ -29,9 +28,6 @@ class SensorMappingData extends MappingData {
         this.targetFields = targetFields;
         this.minDesireds = minDesireds;
         this.maxDesireds = maxDesireds;
-
-        // TODO: Fix this to grab from sensor data
-        this.maxPossible = 1;
 
         if(isValid() == false)
         {
@@ -88,7 +84,9 @@ class SensorMappingData extends MappingData {
 
     public function getData(index:Int):Float
     {
-        return (sensorData.values[valueIndex] / maxPossible) * (maxDesireds[index] - minDesireds[index]) + minDesireds[index];
+        var sensorMin:Float = sensorData.sensor.minValues[valueIndex];
+        var sensorMax:Float = sensorData.sensor.maxValues[valueIndex];
+        return ((sensorData.values[valueIndex] - sensorMin) / (sensorMax - sensorMin)) * (maxDesireds[index] - minDesireds[index]) + minDesireds[index];
     }
 
     private function isValueIndexValid():Bool

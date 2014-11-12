@@ -10,6 +10,20 @@ class Sensor {
     public var name:String;
     public var id:String;
     public var values:Array<Float> = new Array<Float>();
+    public var maxValues:Array<Float> = [
+        Math.NEGATIVE_INFINITY,
+        Math.NEGATIVE_INFINITY,
+        Math.NEGATIVE_INFINITY,
+        Math.NEGATIVE_INFINITY,
+        Math.NEGATIVE_INFINITY
+    ];
+    public var minValues:Array<Float> = [
+        Math.POSITIVE_INFINITY,
+        Math.POSITIVE_INFINITY,
+        Math.POSITIVE_INFINITY,
+        Math.POSITIVE_INFINITY,
+        Math.POSITIVE_INFINITY
+    ];
     public var valueLabels:Array<String> = new Array<String>();
     public var enabled(default, set):Bool;
     function set_enabled(newEnabled:Bool) {
@@ -41,6 +55,17 @@ class Sensor {
 
     public function update()
     {
+        for(i in 0...values.length)
+        {
+            if(values[i] > maxValues[i])
+            {
+                maxValues[i] = values[i];
+            }
+            if(values[i] < minValues[i])
+            {
+                minValues[i] = values[i];
+            }
+        }
         onUpdate.dispatch(values);
     }
 
