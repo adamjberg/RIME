@@ -30,13 +30,13 @@ haxelib install msignal
 haxelib install haxeui
 ```
 
+From the root RIME directory:
 ```
-From the root RIME directory
 haxelib dev SensorExtension SensorExtension
 ```
 
+From the root RIME directory:
 ```
-From the root RIME directory
 haxelib dev hxudp hxudp
 ```
 
