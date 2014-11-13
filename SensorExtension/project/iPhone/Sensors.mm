@@ -27,15 +27,6 @@ void init()
 
 }
 
-// - (void)didReceiveMemoryWarning
-// {
-//     [super didReceiveMemoryWarning];
-//     // Dispose of any resources that can be recreated.
-    
-//     // CoreMotionManager
-//     motionManager = nil;
-    
-// }
 //Linear Accelerometer Data Access
 bool isAccelerometerAvailable()
 {
