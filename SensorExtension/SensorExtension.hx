@@ -13,6 +13,17 @@ import openfl.utils.JNI;
 
 class SensorExtension {
 
+
+	public static function init (){
+		
+		sensorsextension_init();
+		
+	}
+
+
+
+
+
 	public static function getAccel ():Array<Float> {
 		
 		#if (android && openfl)
@@ -23,12 +34,17 @@ class SensorExtension {
 		array.push(sensorextension_get_accel_z());
 		return array;
 		
-		#else
-		
-		return null;
+		#end
+
+		#if (ios && openfl)
+		var array:Array<Float> = new Array<Float>();
+		array.push(sensorsextension_get_iuseraccelX());
+		array.push(sensorsextension_get_iuseraccelX());
+		array.push(sensorsextension_get_iuseraccelX());
+		return array;
 		
 		#end
-		
+		return null;
 	}
 
 
@@ -41,11 +57,20 @@ class SensorExtension {
 
 		return array;
 		
-		#else
 		
-		return 0;
-		
+
+
 		#end
+
+		#if (ios && openfl)
+		var array:Array<Float> = new Array<Float>();
+		array.push(sensorsextension_get_igyroX());
+		array.push(sensorsextension_get_igyroY());
+		array.push(sensorsextension_get_igyroZ());
+		return array;
+
+		#end
+		return null;
 
 	}
 
@@ -57,10 +82,17 @@ class SensorExtension {
 		array.push(sensorextension_get_gravity_z());
 
 		return array;
+
+		#end
+
+		#if (ios && openfl)
+		var array:Array<Float> = new Array<Float>();
+		array.push(sensorsextension_get_igravX());
+		array.push(sensorsextension_get_igravY());
+		array.push(sensorsextension_get_igravZ());
+
+		return array;
 		
-		#else
-		
-		return 0;
 		
 		#end
 
@@ -74,12 +106,21 @@ class SensorExtension {
 		array.push(sensorextension_get_lnaccel_z());
 
 		return array;
-		
-		#else
-		
-		return 0;
+
+	
 		
 		#end
+		#if (ios && openfl)
+		
+		var array:Array<Float> = new Array<Float>();
+		array.push(sensorsextension_get_iaccelX());
+		array.push(sensorsextension_get_iaccelX());
+		array.push(sensorsextension_get_iaccelX());
+
+		return array;
+		
+		#end
+		return null;
 
 	}
 
@@ -91,10 +132,17 @@ class SensorExtension {
 		array.push(sensorextension_get_orient_z());
 
 		return array;
+
+		#end
 		
-		#else
+		#if (ios && openfl)
+		var array:Array<Float> = new Array<Float>();
+		array.push(sensorsextension_get_iorientX());
+		array.push(sensorsextension_get_iorientX());
+		array.push(sensorsextension_get_iorientX());
+
+		return array;
 		
-		return 0;
 		
 		#end
 
@@ -105,6 +153,8 @@ class SensorExtension {
 		
 		return sensorextension_get_pressure();
 		
+		
+
 		#else
 		
 		return 0;
@@ -135,12 +185,19 @@ class SensorExtension {
 		array.push(sensorextension_get_rotvect_z());
 	
 		return array;
+		#end
 		
-		#else
+		#if (ios && openfl)
+		var array:Array<Float> = new Array<Float>();
+		array.push(sensorsextension_get_irotX());
+		array.push(sensorsextension_get_irotX());
+		array.push(sensorsextension_get_irotX());
+	
+		return array;
 		
-		return 0;
 		
 		#end
+		return null;
 
 	}
 
@@ -179,11 +236,19 @@ class SensorExtension {
 	
 		return array;
 		
-		#else
-		
-		return 0;
+		#end
+
+		#if (ios && openfl)
+
+		var array:Array<Float> = new Array<Float>();
+		array.push(sensorsextension_get_iMagX());
+		array.push(sensorsextension_get_iMagY());
+		array.push(sensorsextension_get_iMagZ());
+	
+		return array;
 		
 		#end
+		return null;
 
 	}
 
@@ -209,11 +274,14 @@ class SensorExtension {
 		
 		return is_accel_supported();
 		
-		#else
+		#end
+		#if (ios && openfl)
 		
-		return 0;
+		return is_iDMSupported();
 		
 		#end
+
+		return null;
 		
 	}
 
@@ -223,11 +291,13 @@ class SensorExtension {
 		
 		return is_gyro_supported();
 		
-		#else
-		
-		return 0;
+		#end
+
+		#if (ios && openfl)
+		return is_igyroSupported();
 		
 		#end
+		return null;
 		
 	}
 
@@ -237,9 +307,11 @@ class SensorExtension {
 		
 		return is_gravity_supported();
 		
-		#else
+		#end
+
+		#if (ios && openfl)
 		
-		return 0;
+		return is_iDMSupported();
 		
 		#end
 		
@@ -251,9 +323,11 @@ class SensorExtension {
 		
 		return is_lnaccel_supported();
 		
-		#else
+		#end
+
+		#if (ios && openfl)
 		
-		return 0;
+		return is_ilnaccelSupported();
 		
 		#end
 		
@@ -265,11 +339,13 @@ class SensorExtension {
 		
 		return is_orient_supported();
 		
-		#else
+		#end
+		#if (ios && openfl)
 		
-		return 0;
+		return is_iDMSupported();
 		
 		#end
+		return null;
 		
 	}
 
@@ -281,7 +357,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
@@ -295,7 +371,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
@@ -307,9 +383,11 @@ class SensorExtension {
 		
 		return is_rotvect_supported();
 		
-		#else
+		#end
+
+		#if (ios && openfl)
 		
-		return 0;
+		return is_iDMSupported();
 		
 		#end
 		
@@ -323,7 +401,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
@@ -337,7 +415,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
@@ -349,11 +427,14 @@ class SensorExtension {
 		
 		return is_magfield_supported();
 		
-		#else
-		
-		return 0;
+		#end
+
+		#if (ios && openfl)
+
+		return is_iDMSupported();
 		
 		#end
+		return null;
 		
 	}
 
@@ -365,7 +446,7 @@ class SensorExtension {
 		
 		#else
 		
-		return 0;
+		return null;
 		
 		#end
 		
@@ -429,8 +510,45 @@ class SensorExtension {
 	private static var is_light_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getlightSupported", "()Z");
 	private static var is_magfield_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "getmagfieldSupported", "()Z");
 	private static var is_humidity_supported = JNI.createStaticMethod ("org.haxe.extension.SensorExtension", "gethumiditySupported", "()Z");
+	#end
+	#if (ios && openfl)
+	private static var sensorsextension_init = Lib.load("SensorExtension", "sensorsextension_init", 0);
+	private static var sensorsextension_get_iaccelX = Lib.load("SensorExtension", "sensorsextension_getiaccelX", 0);
+	private static var sensorsextension_get_iaccelY = Lib.load("SensorExtension", "sensorsextension_getiaccelY", 0);
+	private static var sensorsextension_get_iaccelZ = Lib.load("SensorExtension", "sensorsextension_getiaccelZ", 0);
+	private static var is_ilnaccelSupported= Lib.load("SensorExtension", "sensorsextension_isAccelAvailable", 0);
+
+	private static var sensorsextension_get_iuseraccelX = Lib.load("SensorExtension", "sensorsextension_getiuseraccelX", 0);
+	private static var sensorsextension_get_iuseraccelY = Lib.load("SensorExtension", "sensorsextension_getiuseraccelY", 0);
+	private static var sensorsextension_get_iuseraccelZ = Lib.load("SensorExtension", "sensorsextension_getiuseraccelZ", 0);
 
 
+	private static var sensorsextension_get_igyroX = Lib.load("SensorExtension", "sensorsextension_getigyroX", 0);
+	private static var sensorsextension_get_igyroY = Lib.load("SensorExtension", "sensorsextension_getigyroY", 0);
+	private static var sensorsextension_get_igyroZ = Lib.load("SensorExtension", "sensorsextension_getigyroZ", 0);
+	
+	private static var sensorsextension_get_iorientX = Lib.load("SensorExtension", "sensorsextension_getiorientX", 0);
+	private static var sensorsextension_get_iorientY = Lib.load("SensorExtension", "sensorsextension_getiorientY", 0);
+	private static var sensorsextension_get_iorientZ = Lib.load("SensorExtension", "sensorsextension_getiorientZ", 0);
+	
+	private static var sensorsextension_get_iMagX = Lib.load("SensorExtension", "sensorsextension_getiMagX", 0);
+	private static var sensorsextension_get_iMagY = Lib.load("SensorExtension", "sensorsextension_getiMagY", 0);
+	private static var sensorsextension_get_iMagZ = Lib.load("SensorExtension", "sensorsextension_getiMagZ", 0);
+
+	private static var sensorsextension_get_irotX = Lib.load("SensorExtension", "sensorsextension_getirotX", 0);
+	private static var sensorsextension_get_irotY = Lib.load("SensorExtension", "sensorsextension_getirotY", 0);
+	private static var sensorsextension_get_irotZ = Lib.load("SensorExtension", "sensorsextension_getirotZ", 0);
+
+	private static var sensorsextension_get_igravX = Lib.load("SensorExtension", "sensorsextension_getigravX", 0);
+	private static var sensorsextension_get_igravY = Lib.load("SensorExtension", "sensorsextension_getigravY", 0);
+	private static var sensorsextension_get_igravZ = Lib.load("SensorExtension", "sensorsextension_getigravZ", 0);
+
+
+
+	private static var is_igyroSupported= Lib.load("SensorExtension", "sensorsextension_isGyroAvailable", 0);
+	private static var is_iDMSupported= Lib.load("SensorExtension", "sensorsextension_isDMAvailable", 0);
+
+	
 
 	#end
 	

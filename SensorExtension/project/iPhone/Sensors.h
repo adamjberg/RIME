@@ -1,14 +1,12 @@
 #ifndef SENSOREXTENSION_H
 #define SENSOREXTENSION_H
 
+namespace SensorExtension{
 
-namespace sensorextension {
-	
-	
 	int SampleMethod(int inputValue);
-	
-	
+	float getiaccelX();
+
 }
 
-
 #endif
+
