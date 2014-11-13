@@ -5,10 +5,15 @@
 	<app main="Main" path="Export" file="Rime" />
 
 	<android minimum-sdk-version="19" target-sdk-version="19" />
-	
+	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<window fps="60"/>
+	<window orientation="portrait" />
 	<source path="Source" />
 	
 	<haxelib name="openfl" />
+	<haxelib name="haxeui" />
+	<haxelib name="hxudp" />
+	<haxelib name="msignal" />
 	<haxelib name="SensorExtension"/>
 	
 	<assets path="Assets" rename="assets" exclude="openfl.svg" />
