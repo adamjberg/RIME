@@ -1,12 +1,13 @@
 package views;
 
-import haxe.ui.toolkit.containers.MenuBar;
+import haxe.ui.toolkit.containers.Container;
 import haxe.ui.toolkit.controls.Button;
 import haxe.ui.toolkit.controls.Text;
 import msignal.Signal.Signal0;
 import openfl.events.MouseEvent;
+import openfl.filters.DropShadowFilter;
 
-class HeaderBar extends MenuBar {
+class HeaderBar extends Container {
 
     public var onBackPressed:Signal0 = new Signal0();
 
@@ -15,9 +16,16 @@ class HeaderBar extends MenuBar {
 
     public function new() {
         super();
-
         this.percentWidth = 100;
-        this.style.paddingLeft = 5;
+        this.style.backgroundColor = 0xdfdddd;
+        this.style.filter = new DropShadowFilter(2, 90, 0x808080, 1, 0, 4, 1, 3);
+        this.autoSize = true;
+        this.style.padding = 5;
+    }
+
+    override public function initialize()
+    {
+        super.initialize();
 
         backButton = new Button();
         backButton.text = "Back";
@@ -31,6 +39,7 @@ class HeaderBar extends MenuBar {
         title.autoSize = false;
         title.percentWidth = 100;
         title.percentHeight = 100;
+        title.verticalAlign = "center";
         title.horizontalAlign = "center";
         title.textAlign = "center";
         addChild(title);

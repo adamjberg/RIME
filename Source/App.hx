@@ -30,6 +30,11 @@ class App extends VBox {
 
     public function new () {
         super();
+    }
+
+    override private function initialize()
+    {
+        super.initialize();
 
         percentWidth = 100;
         percentHeight = 100;
