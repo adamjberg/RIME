@@ -14,6 +14,8 @@ class SensorScrollList extends ScrollView {
     {
         super();
 
+        this.inertialScrolling = true;
+
         this.sensors = sensors;
 
         this.style.borderSize = 0;
