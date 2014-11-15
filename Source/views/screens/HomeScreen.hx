@@ -1,80 +1,52 @@
 package views.screens;
 
 import controllers.ScreenManager;
-import haxe.ui.toolkit.containers.VBox;
 import haxe.ui.toolkit.controls.Button;
-import models.sensors.Sensor;
-import models.ServerInfo;
-import controllers.Client;
 import msignal.Signal.Signal0;
 import openfl.events.MouseEvent;
-import views.HeaderBar;
-import views.screens.*;
-import views.SensorScrollList;
-import views.ServerInfoRenderer;
+import views.controls.FullWidthButton;
+import views.screens.Screen;
 
-class HomeScreen extends VBox {
+class HomeScreen extends Screen {
 
-    public var onOpenGestureScreenButtonPressed:Signal0 = new Signal0();
-    public var onOpenPianoButtonScreenButtonPressed:Signal0 = new Signal0();
 
-    private var headerBar:HeaderBar;
-    private var client:Client;
+    public var onConnectionSetupPressed:Signal0 = new Signal0();
+    public var onSensorsPressed:Signal0 = new Signal0();
+    public var onGesturesPressed:Signal0 = new Signal0();
+    public var onPerformPressed:Signal0 = new Signal0();
 
-    private var serverInfo:ServerInfo;
-    private var serverInfoRenderer:ServerInfoRenderer;
+    private var buttonStrings:Array<String> =
+    [
+        "Connection Setup",
+        "Sensors",
+        "Gestures",
+        "Perform"
+    ];
+    private var buttonPressedSignals:Array<Signal0> = new Array<Signal0>();
+    private var openScreenButtons:Array<Button> = new Array<Button>();
 
-    private var sensors:Array<Sensor>;
-
-    public function new(?headerBar:HeaderBar, ?sensors:Array<Sensor>, ?client:Client, ?serverInfo:ServerInfo) {
+    public function new() {
         super();
 
-        this.headerBar;
-        this.sensors = sensors;
-        this.client = client;
-        this.serverInfo = serverInfo;
+        buttonPressedSignals.push(onConnectionSetupPressed);
+        buttonPressedSignals.push(onSensorsPressed);
+        buttonPressedSignals.push(onGesturesPressed);
+        buttonPressedSignals.push(onPerformPressed);
+    }
 
-        percentWidth = 100;
-        percentHeight = 100;
-        style.backgroundColor = 0xDDDDDD;
-        style.paddingBottom = 10;
+    override private function initialize()
+    {
+        super.initialize();
 
-        serverInfoRenderer = new ServerInfoRenderer(serverInfo);
-
-        var sensorList:SensorScrollList = new SensorScrollList(sensors);
-        sensorList.percentHeight = 60;
-        addChild(sensorList);
-
-        var openPianoScreenButton:Button = new Button();
-        openPianoScreenButton.text = "Open Piano Screen";
-        openPianoScreenButton.percentWidth = 100;
-        openPianoScreenButton.percentHeight = 10;
-        openPianoScreenButton.addEventListener(MouseEvent.CLICK, openPianoScreen);
-        addChild(openPianoScreenButton);
-
-        var onOpenGestureScreenButton:Button = new Button();
-        onOpenGestureScreenButton.text = "Open Gesture Screen";
-        onOpenGestureScreenButton.percentWidth = 100;
-        onOpenGestureScreenButton.percentHeight = 10;
-        onOpenGestureScreenButton.onClick = function(e)
+        for(i in 0...buttonStrings.length)
         {
-            onOpenGestureScreenButtonPressed.dispatch();
+            var button:FullWidthButton = new FullWidthButton(buttonStrings[i]);
+            button.onClick = function(e)
+                {
+                    buttonPressedSignals[i].dispatch();
+            }
+            openScreenButtons.push(button);
+            addChild(button);
         }
-        addChild(onOpenGestureScreenButton);
-
-        serverInfoRenderer.percentHeight = 20;
-        addChild(serverInfoRenderer);
-
-        serverInfoRenderer.onSendButtonPressed.add(sendButtonPressed);
-    }
-    
-    private function openPianoScreen(e:MouseEvent)
-    {
-        onOpenPianoButtonScreenButtonPressed.dispatch();
-    }
-
-    private function sendButtonPressed()
-    {
-        client.connect();
     }
 }

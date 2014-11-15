@@ -3,7 +3,6 @@ package views.screens;
 import controllers.Client;
 import controllers.ScreenManager;
 import gestures.controllers.GestureController;
-import haxe.ui.toolkit.containers.VBox;
 import haxe.ui.toolkit.controls.Button;
 import haxe.ui.toolkit.controls.TextInput;
 import haxe.ui.toolkit.events.UIEvent;
@@ -13,8 +12,9 @@ import models.sensors.Accelerometer;
 import openfl.events.MouseEvent;
 import osc.OscMessage;
 import views.GestureList;
+import views.screens.Screen;
 
-class GestureListScreen extends VBox {
+class GestureListScreen extends Screen {
 
     private var gestureList:GestureList;
 
@@ -27,9 +27,6 @@ class GestureListScreen extends VBox {
         super();
 
         this.gestureController = gestureController;
-
-        this.percentWidth = 100;
-        this.percentHeight = 100;
 
         gestureList = new GestureList(gestureController);
         addChild(gestureList);

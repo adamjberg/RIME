@@ -11,6 +11,8 @@ import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
 import views.HeaderBar;
+import views.screens.ConnectionSetupScreen;
+import views.screens.SensorsScreen;
 import views.screens.*;
 
 class App extends VBox {
@@ -19,6 +21,8 @@ class App extends VBox {
     private var gestureScreen:GestureListScreen;
     private var pianoButtonScreen:PianoButtonScreen;
     private var homeScreen:HomeScreen;
+    private var sensorsScreen:SensorsScreen;
+    private var connectionSetupScreen:ConnectionSetupScreen;
 
     private var stack:Stack;
     private var client:Client;
@@ -39,7 +43,6 @@ class App extends VBox {
         percentWidth = 100;
         percentHeight = 100;
         style.backgroundColor = 0xDDDDDD;
-        style.paddingBottom = 10;
 
         headerBar = new HeaderBar();
         addChild(headerBar);
@@ -61,28 +64,36 @@ class App extends VBox {
 
         client = new Client(serverInfo);
 
-        homeScreen = new HomeScreen(
-            headerBar,
-            sensors,
-            client,
-            serverInfo
-        );
-
+        // Screen initialization
+        homeScreen = new HomeScreen();
         pianoButtonScreen = new PianoButtonScreen(client);
+        gestureScreen = new GestureListScreen(gestureController);
+        sensorsScreen = new SensorsScreen(sensors);
+        connectionSetupScreen = new ConnectionSetupScreen(client, serverInfo);
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
         mappingController.addMappingFromFile("mapping1.json");
 
-        homeScreen.onOpenGestureScreenButtonPressed.add(openGestureScreen);
-        homeScreen.onOpenPianoButtonScreenButtonPressed.add(openPianoButtonScreen);
+        homeScreen.onGesturesPressed.add(openGestureScreen);
+        homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
+        homeScreen.onSensorsPressed.add(openSensorsScreen);
 
         ScreenManager.push(homeScreen);
     }
 
     private function openGestureScreen()
     {
-        gestureScreen = new GestureListScreen(gestureController);
         ScreenManager.push(gestureScreen);
+    }
+
+    private function openConnectionSetup()
+    {
+        ScreenManager.push(connectionSetupScreen);
+    }
+
+    private function openSensorsScreen()
+    {
+        ScreenManager.push(sensorsScreen);
     }
 
     private function openPianoButtonScreen()
