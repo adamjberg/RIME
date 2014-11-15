@@ -7,7 +7,7 @@ import haxe.ui.toolkit.containers.VBox;
 import haxe.ui.toolkit.containers.ScrollView;
 import haxe.ui.toolkit.controls.Button;
 import haxe.ui.toolkit.controls.Text;
-import views.GestureEditScreen;
+import views.screens.GestureEditScreen;
 import views.GestureListItem;
 
 class GestureList extends ScrollView {

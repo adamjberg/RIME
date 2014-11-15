@@ -10,10 +10,8 @@ import haxe.ui.toolkit.containers.VBox;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
-import views.GestureListScreen;
 import views.HeaderBar;
-import views.HomeScreen;
-import views.PianoButtonScreen;
+import views.screens.*;
 
 class App extends VBox {
 

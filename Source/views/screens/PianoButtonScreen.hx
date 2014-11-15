@@ -1,4 +1,4 @@
-package views;
+package views.screens;
 
 import controllers.Client;
 import haxe.ui.toolkit.containers.Container;

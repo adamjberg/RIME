@@ -1,4 +1,4 @@
-package views;
+package views.screens;
 
 import controllers.ScreenManager;
 import haxe.ui.toolkit.containers.VBox;
@@ -9,10 +9,9 @@ import controllers.Client;
 import msignal.Signal.Signal0;
 import openfl.events.MouseEvent;
 import views.HeaderBar;
-import views.PianoButtonScreen;
+import views.screens.*;
 import views.SensorScrollList;
 import views.ServerInfoRenderer;
-import views.TestPositionScreen;
 
 class HomeScreen extends VBox {
 
@@ -52,15 +51,6 @@ class HomeScreen extends VBox {
         openPianoScreenButton.percentHeight = 10;
         openPianoScreenButton.addEventListener(MouseEvent.CLICK, openPianoScreen);
         addChild(openPianoScreenButton);
-
-        var openTestScreenButton:Button = new Button();
-        openTestScreenButton.text = "Open Test Screen";
-        openTestScreenButton.percentWidth = 100;
-        openTestScreenButton.percentHeight = 10;
-        openTestScreenButton.addEventListener(MouseEvent.CLICK, function(e:MouseEvent) {
-            ScreenManager.push(new TestPositionScreen(client));
-            });
-        addChild(openTestScreenButton);
 
         var onOpenGestureScreenButton:Button = new Button();
         onOpenGestureScreenButton.text = "Open Gesture Screen";
