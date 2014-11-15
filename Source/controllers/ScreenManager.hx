@@ -27,7 +27,7 @@ class ScreenManager {
     public static function pop()
     {
         ScreenManager.stack.back();
-        ScreenManager.stack.removeChild(screens.pop());
+        ScreenManager.stack.removeChild(screens.pop(), false);
         updateBackButton();
     }
 
