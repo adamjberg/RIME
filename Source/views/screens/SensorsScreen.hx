@@ -22,7 +22,6 @@ class SensorsScreen extends Screen {
         this.sensors = sensors;
 
         var sensorList:SensorScrollList = new SensorScrollList(sensors);
-        sensorList.percentHeight = 100;
         addChild(sensorList);
     }
 }

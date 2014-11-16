@@ -10,5 +10,13 @@ import openfl.Assets;
 class RimeStyles extends Styles {
     public function new() {
         super();
+
+        addStyle("Button.expandable", new Style
+            (
+                {
+                    iconPosition: "left"
+                }
+            )
+        );
     }
 }
