@@ -10,12 +10,12 @@ import styles.RimeStyles;
 import openfl.display.Sprite ;
 
 class Main extends Sprite {
-	
-	
+
 
 
     public function new () {
         super();
+        SensorExtension.init();
         Toolkit.theme = new GradientMobileTheme();
         Toolkit.setTransitionForClass(Stack, "none");
         Toolkit.init();

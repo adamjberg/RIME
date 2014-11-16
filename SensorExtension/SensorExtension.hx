@@ -38,9 +38,9 @@ class SensorExtension {
 
 		#if (ios && openfl)
 		var array:Array<Float> = new Array<Float>();
-		array.push(sensorsextension_get_iuseraccelX());
-		array.push(sensorsextension_get_iuseraccelX());
-		array.push(sensorsextension_get_iuseraccelX());
+		array.push(sensorsextension_get_iaccelX());
+		array.push(sensorsextension_get_iaccelX());
+		array.push(sensorsextension_get_iaccelX());
 		return array;
 		
 		#end
@@ -51,9 +51,9 @@ class SensorExtension {
 	public static function getGyro ():Array<Float>{
 		#if (android && openfl)
 		var array:Array<Float> = new Array<Float>();
-		array.push(sensorextension_get_gyro_x());
-		array.push(sensorextension_get_gyro_y());
-		array.push(sensorextension_get_gyro_z());
+		array.push(sensorsextension_get_irotX());
+		array.push(sensorsextension_get_irotY());
+		array.push(sensorsextension_get_irotZ());
 
 		return array;
 
@@ -89,6 +89,7 @@ class SensorExtension {
 		array.push(sensorsextension_get_igravZ());
 
 		return array;
+
 		
 		#end
 		return null;
@@ -111,9 +112,10 @@ class SensorExtension {
 		
 		var array:Array<Float> = new Array<Float>();
 
-		array.push(sensorsextension_get_iaccelX());
-		array.push(sensorsextension_get_iaccelX());
-		array.push(sensorsextension_get_iaccelX());
+		array.push(sensorsextension_get_iuseraccelX());
+		array.push(sensorsextension_get_iuseraccelY());
+		array.push(sensorsextension_get_iuseraccelZ());
+		
 
 		return array;
 		
@@ -187,9 +189,9 @@ class SensorExtension {
 		
 		#if (ios && openfl)
 		var array:Array<Float> = new Array<Float>();
-		array.push(sensorsextension_get_irotX());
-		array.push(sensorsextension_get_irotX());
-		array.push(sensorsextension_get_irotX());
+		array.push(sensorsextension_get_igyroX());
+		array.push(sensorsextension_get_igyroY());
+		array.push(sensorsextension_get_igyroZ());
 	
 		return array;
 		
