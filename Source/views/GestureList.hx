@@ -20,6 +20,8 @@ class GestureList extends ScrollView {
     {
         super();
 
+        this._scrollSensitivity = 1;
+
         this.gestureController = gestureController;
 
         this.style.borderSize = 0;

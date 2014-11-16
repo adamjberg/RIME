@@ -47,6 +47,8 @@ import sys.io.FileOutput;
         this.currentGesture = new Gesture();
         this.classifier = new Classifier();
 
+        loadGesturesFromFile();
+
         setupGesturesDirectory();
 
         sensorDataController.defaultFilteredSensorDatas[0].onUpdate.add(update);
@@ -157,24 +159,24 @@ import sys.io.FileOutput;
         }
     }
 
-    private function loadGesturesFromFile()
+    public function loadGesturesFromFile()
     {
         if(FileSystem.exists(FULL_FILENAME))
         {
-            var file:FileInput = File.read(FULL_FILENAME, false);
+            var file:FileInput = File.read(FULL_FILENAME, true);
             classifier = Classifier.fromFile(file);
             file.close();
         }
     }
 
-    private function writeGesturesToFile()
+    public function writeGesturesToFile()
     {
         if(FileSystem.exists(FULL_FILENAME))
         {
             FileSystem.deleteFile(FULL_FILENAME);
         }
 
-        var file:FileOutput = File.write(FULL_FILENAME, false);
+        var file:FileOutput = File.write(FULL_FILENAME, true);
         classifier.writeToFile(file);
         file.close();
     }

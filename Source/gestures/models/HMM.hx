@@ -221,11 +221,11 @@ class HMM {
 
         for(i in 0...numStates)
         {
-            file.writeFloat(initialProbabilitiesForState[i]);
+            file.writeDouble(initialProbabilitiesForState[i]);
             for(j in 0...numStates)
             {
-                file.writeFloat(a[i][j]);
-                file.writeFloat(b[i][j]);
+                file.writeDouble(a[i][j]);
+                file.writeDouble(b[i][j]);
             }
         }
     }
@@ -242,14 +242,13 @@ class HMM {
 
         for(i in 0...numStates)
         {
-            result.initialProbabilitiesForState[i] = file.readFloat();
+            result.initialProbabilitiesForState[i] = file.readDouble();
             for(j in 0...numStates)
             {
-                result.a[i][j] = file.readFloat();
-                result.b[i][j] = file.readFloat();
+                result.a[i][j] = file.readDouble();
+                result.b[i][j] = file.readDouble();
             }
         }
-
         return result;
     }
 
