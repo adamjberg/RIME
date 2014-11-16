@@ -1,5 +1,7 @@
 package;
 
+import haxe.ui.toolkit.containers.ExpandablePanel;
+import haxe.ui.toolkit.containers.Accordion;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.core.Root;
 import haxe.ui.toolkit.core.Toolkit;
@@ -15,6 +17,8 @@ class Main extends Sprite {
         super();
         Toolkit.theme = new GradientMobileTheme();
         Toolkit.setTransitionForClass(Stack, "none");
+        Toolkit.setTransitionForClass(Accordion, "none");
+        Toolkit.setTransitionForClass(ExpandablePanel, "none");
         Toolkit.init();
         Toolkit.openFullscreen(function(root:Root) {
             StyleManager.instance.addStyles(new RimeStyles());

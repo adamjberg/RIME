@@ -9,16 +9,15 @@ import models.ServerInfo;
 import msignal.Signal;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
+import views.controls.FullWidthButton;
+import views.controls.LabelledTextInput;
 
 class ServerInfoRenderer extends VBox {
 
     public var onSendButtonPressed:Signal0 = new Signal0();
 
-    private var hBox:HBox;
-    private var ipAddressLabel:Text;
-    private var ipAddress:TextInput;
-    private var portNumberLabel:Text;
-    private var portNumber:TextInput;
+    private var ipAddress:LabelledTextInput;
+    private var portNumber:LabelledTextInput;
     private var sendButton:Button;
 
     private var serverInfo:ServerInfo;
@@ -26,57 +25,40 @@ class ServerInfoRenderer extends VBox {
     public function new(?serverInfo:ServerInfo)
     {
         super();
-
         this.serverInfo = serverInfo;
-
         percentWidth = 100;
+        percentHeight = 100;
+    }
 
-        hBox = new HBox();
-        hBox.percentWidth = 100;
-        hBox.horizontalAlign = "center";
-        addChild(hBox);
+    override private function initialize()
+    {
+        super.initialize();
 
-        ipAddressLabel = new Text();
-        ipAddressLabel.text = "IP:";
-        ipAddressLabel.verticalAlign = "center";
-        hBox.addChild(ipAddressLabel);
-
-        ipAddress = new TextInput();
-        ipAddress.maxChars = 15;
-        ipAddress.percentWidth = 50;
-        ipAddress.percentHeight = 100;
+        ipAddress = new LabelledTextInput("IP:");
         ipAddress.verticalAlign = "center";
-        ipAddress.text = serverInfo.ipAddress;
+        ipAddress.setText(serverInfo.ipAddress);
         ipAddress.addEventListener(Event.CHANGE, ipAddressChanged);
-        hBox.addChild(ipAddress);
+        addChild(ipAddress);
 
-        portNumberLabel = new Text();
-        portNumberLabel.text = "Port:";
-        hBox.addChild(portNumberLabel);
-
-        portNumber = new TextInput();
+        portNumber = new LabelledTextInput("Port:");
         portNumber.verticalAlign = "center";
-        portNumber.text = Std.string(serverInfo.portNumber);
+        portNumber.setText(Std.string(serverInfo.portNumber));
         portNumber.addEventListener(Event.CHANGE, portNumberChanged);
-        portNumber.percentWidth = 50;
-        portNumber.percentHeight = 100;
-        hBox.addChild(portNumber);
+        addChild(portNumber);
 
-        sendButton = new Button();
-        sendButton.text = "Send";
-        sendButton.percentHeight = 100;
+        sendButton = new FullWidthButton("Send");
         sendButton.addEventListener(MouseEvent.CLICK, sendButtonPressed);
-        hBox.addChild(sendButton);
+        addChild(sendButton);
     }
 
     private function portNumberChanged(e:Event)
     {
-        serverInfo.portNumber = Std.parseInt(portNumber.text);
+        serverInfo.portNumber = Std.parseInt(portNumber.getText());
     }
 
     private function ipAddressChanged(e:Event)
     {
-        serverInfo.ipAddress = ipAddress.text;
+        serverInfo.ipAddress = ipAddress.getText();
     }
 
     private function sendButtonPressed(e:Event)
