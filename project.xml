@@ -4,7 +4,6 @@
 	<meta title="Rime" package="com.example.rime" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="Rime" />
 
-	<android minimum-sdk-version="19" target-sdk-version="19" />
 	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<window fps="60"/>
 	<window orientation="portrait" />

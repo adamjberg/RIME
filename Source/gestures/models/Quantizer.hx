@@ -25,11 +25,8 @@ class Quantizer {
     public function new(numStates:Int)
     {
         this.numStates = numStates;
-        centeroids = [
-            new Array<Float>(),
-            new Array<Float>(),
-            new Array<Float>()
-        ];
+        centeroids = new Array<Array<Float>>();
+        ArrayUtils.init2DFloatArray(centeroids, 14);
         areCenteroidsTrained = false;
     }
 
@@ -213,13 +210,13 @@ class Quantizer {
     public function writeToFile(file:FileOutput)
     {
         file.writeInt8(numStates);
-        file.writeFloat(radius);
+        file.writeDouble(radius);
 
         for(i in 0...centeroids.length)
         {
             for(j in 0...centeroids[i].length)
             {
-                file.writeFloat(centeroids[i][j]);
+                file.writeDouble(centeroids[i][j]);
             }
         }
     }
@@ -230,17 +227,17 @@ class Quantizer {
         trace("Quantizer:fromFile numStates " + numStates);
 
         var result:Quantizer = new Quantizer(numStates);
-        result.radius = file.readFloat();
+        result.radius = file.readDouble();
         trace("Quantizer:fromFile radius " + result.radius);
 
-        var centeroidsLength:Int = 3;
-        var centeroidsInnerLength:Int = 14;
+        var centeroidsLength:Int = 14;
+        var centeroidsInnerLength:Int = 3;
 
         for(i in 0...centeroidsLength)
         {
             for(j in 0...centeroidsInnerLength)
             {
-                result.centeroids[i][j] = file.readFloat();
+                result.centeroids[i][j] = file.readDouble();
             }
         }
 

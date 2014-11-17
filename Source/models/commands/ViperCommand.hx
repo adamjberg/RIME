@@ -8,6 +8,7 @@ class ViperCommand {
     public static var YPOS_STRING:String = "yPos";
 
     private static var ADDR_PATTERN:String = "rime";
+    private static var DEVICE_ID_STRING:String = "deviceId";
     private static var METHOD_STRING:String = "method";
 
     private static var ID_STRING:String = "id";
@@ -35,7 +36,10 @@ class ViperCommand {
         {
             oscMessage = new OscMessage(ADDR_PATTERN);
         }
-        oscMessage.addString( METHOD_STRING );
+
+        oscMessage.addString(DEVICE_ID_STRING);
+        oscMessage.addString(System.deviceID);
+        oscMessage.addString(METHOD_STRING);
         oscMessage.addString(method);
         oscMessage.addString(ID_STRING);
         oscMessage.addInt(id);

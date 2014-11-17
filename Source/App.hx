@@ -1,6 +1,7 @@
 package;
 
 import controllers.MappingController;
+import controllers.media.ViperMediaController;
 import controllers.ScreenManager;
 import controllers.SensorController;
 import controllers.SensorDataController;
@@ -10,10 +11,11 @@ import haxe.ui.toolkit.containers.VBox;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
-import views.GestureListScreen;
 import views.HeaderBar;
-import views.HomeScreen;
-import views.PianoButtonScreen;
+import views.screens.ConnectionSetupScreen;
+import views.screens.SensorsScreen;
+import views.screens.ViperMediaScreen;
+import views.screens.*;
 
 class App extends VBox {
 
@@ -21,6 +23,9 @@ class App extends VBox {
     private var gestureScreen:GestureListScreen;
     private var pianoButtonScreen:PianoButtonScreen;
     private var homeScreen:HomeScreen;
+    private var sensorsScreen:SensorsScreen;
+    private var connectionSetupScreen:ConnectionSetupScreen;
+    private var viperMediaScreen:ViperMediaScreen;
 
     private var stack:Stack;
     private var client:Client;
@@ -29,14 +34,19 @@ class App extends VBox {
     private var sensors:Array<Sensor>;
     private var gestureController:GestureController;
     private var sensorDataController:SensorDataController;
+    private var viperMediaController:ViperMediaController;
 
     public function new () {
         super();
+    }
+
+    override private function initialize()
+    {
+        super.initialize();
 
         percentWidth = 100;
         percentHeight = 100;
         style.backgroundColor = 0xDDDDDD;
-        style.paddingBottom = 10;
 
         headerBar = new HeaderBar();
         addChild(headerBar);
@@ -57,33 +67,50 @@ class App extends VBox {
         gestureController = new GestureController(sensorDataController);
 
         client = new Client(serverInfo);
+        
+        viperMediaController = new ViperMediaController(client);
 
-        homeScreen = new HomeScreen(
-            headerBar,
-            sensors,
-            client,
-            serverInfo
-        );
-
+        // Screen initialization
+        homeScreen = new HomeScreen();
         pianoButtonScreen = new PianoButtonScreen(client);
+        gestureScreen = new GestureListScreen(gestureController);
+        sensorsScreen = new SensorsScreen(sensors);
+        connectionSetupScreen = new ConnectionSetupScreen(client, serverInfo);
+        viperMediaScreen = new ViperMediaScreen(viperMediaController);
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
         mappingController.addMappingFromFile("mapping1.json");
 
-        homeScreen.onOpenGestureScreenButtonPressed.add(openGestureScreen);
-        homeScreen.onOpenPianoButtonScreenButtonPressed.add(openPianoButtonScreen);
+        homeScreen.onGesturesPressed.add(openGestureScreen);
+        homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
+        homeScreen.onMediaPressed.add(openMediaScreen);
+        homeScreen.onSensorsPressed.add(openSensorsScreen);
 
         ScreenManager.push(homeScreen);
     }
 
     private function openGestureScreen()
     {
-        gestureScreen = new GestureListScreen(gestureController);
         ScreenManager.push(gestureScreen);
+    }
+
+    private function openConnectionSetup()
+    {
+        ScreenManager.push(connectionSetupScreen);
+    }
+
+    private function openSensorsScreen()
+    {
+        ScreenManager.push(sensorsScreen);
     }
 
     private function openPianoButtonScreen()
     {
         ScreenManager.push(pianoButtonScreen);
+    }
+
+    private function openMediaScreen()
+    {
+        ScreenManager.push(viperMediaScreen);
     }
 }

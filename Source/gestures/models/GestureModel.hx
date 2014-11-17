@@ -130,7 +130,7 @@ class GestureModel {
         file.writeString(name);
         file.writeInt8(numStates);
         file.writeInt8(numObservations);
-        file.writeFloat(defaultProbability);
+        file.writeDouble(defaultProbability);
         markovModel.writeToFile(file);
         quantizer.writeToFile(file);
     }
@@ -150,7 +150,7 @@ class GestureModel {
         result.numObservations = file.readInt8();
         trace("GestureModel:fromFile numObservations " + result.numObservations);
 
-        result.defaultProbability = file.readFloat();
+        result.defaultProbability = file.readDouble();
         trace("GestureModel:fromFile defaultProbability " + result.defaultProbability);
 
         result.markovModel = HMM.fromFile(file);
