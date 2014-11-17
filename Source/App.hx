@@ -1,6 +1,7 @@
 package;
 
 import controllers.MappingController;
+import controllers.media.ViperMediaController;
 import controllers.ScreenManager;
 import controllers.SensorController;
 import controllers.SensorDataController;
@@ -13,6 +14,7 @@ import controllers.Client;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
 import views.screens.SensorsScreen;
+import views.screens.ViperMediaScreen;
 import views.screens.*;
 
 class App extends VBox {
@@ -23,6 +25,7 @@ class App extends VBox {
     private var homeScreen:HomeScreen;
     private var sensorsScreen:SensorsScreen;
     private var connectionSetupScreen:ConnectionSetupScreen;
+    private var viperMediaScreen:ViperMediaScreen;
 
     private var stack:Stack;
     private var client:Client;
@@ -31,6 +34,7 @@ class App extends VBox {
     private var sensors:Array<Sensor>;
     private var gestureController:GestureController;
     private var sensorDataController:SensorDataController;
+    private var viperMediaController:ViperMediaController;
 
     public function new () {
         super();
@@ -63,6 +67,8 @@ class App extends VBox {
         gestureController = new GestureController(sensorDataController);
 
         client = new Client(serverInfo);
+        
+        viperMediaController = new ViperMediaController(client);
 
         // Screen initialization
         homeScreen = new HomeScreen();
@@ -70,12 +76,14 @@ class App extends VBox {
         gestureScreen = new GestureListScreen(gestureController);
         sensorsScreen = new SensorsScreen(sensors);
         connectionSetupScreen = new ConnectionSetupScreen(client, serverInfo);
+        viperMediaScreen = new ViperMediaScreen(viperMediaController);
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
         mappingController.addMappingFromFile("mapping1.json");
 
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
+        homeScreen.onMediaPressed.add(openMediaScreen);
         homeScreen.onSensorsPressed.add(openSensorsScreen);
 
         ScreenManager.push(homeScreen);
@@ -99,5 +107,10 @@ class App extends VBox {
     private function openPianoButtonScreen()
     {
         ScreenManager.push(pianoButtonScreen);
+    }
+
+    private function openMediaScreen()
+    {
+        ScreenManager.push(viperMediaScreen);
     }
 }
