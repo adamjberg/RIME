@@ -16,7 +16,9 @@ class SensorExtension {
 
 	public static function init (){
 		
+		#if (ios && openfl)
 		sensorsextension_init();
+		#end
 		
 	}
 
