@@ -4,7 +4,6 @@ import controllers.Client;
 import haxe.ui.toolkit.events.UIEvent;
 import models.commands.ViperCommand;
 import models.ServerInfo;
-import system.System;
 import views.controls.LabelledTextInput;
 import views.screens.Screen;
 import views.ServerInfoRenderer;

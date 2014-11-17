@@ -1,7 +1,6 @@
 package models.commands;
 
 import osc.OscMessage;
-import system.System;
 
 class ViperCommand {
 
