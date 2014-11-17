@@ -6,8 +6,8 @@ import haxe.ui.toolkit.controls.TextInput;
 
 class LabelledTextInput extends HBox {
 
-    private var label:Text;
-    private var input:TextInput;
+    public var label:Text;
+    public var input:TextInput;
 
     public function new(?labelString:String)
     {
