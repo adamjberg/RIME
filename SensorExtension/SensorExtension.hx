@@ -41,8 +41,8 @@ class SensorExtension {
 		#if (ios && openfl)
 		var array:Array<Float> = new Array<Float>();
 		array.push(sensorsextension_get_iaccelX());
-		array.push(sensorsextension_get_iaccelX());
-		array.push(sensorsextension_get_iaccelX());
+		array.push(sensorsextension_get_iaccelY());
+		array.push(sensorsextension_get_iaccelZ());
 		return array;
 		
 		#end
@@ -140,8 +140,8 @@ class SensorExtension {
 		#if (ios && openfl)
 		var array:Array<Float> = new Array<Float>();
 		array.push(sensorsextension_get_iorientX());
-		array.push(sensorsextension_get_iorientX());
-		array.push(sensorsextension_get_iorientX());
+		array.push(sensorsextension_get_iorientY());
+		array.push(sensorsextension_get_iorientZ());
 
 		return array;
 		
