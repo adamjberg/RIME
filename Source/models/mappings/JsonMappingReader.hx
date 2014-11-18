@@ -43,7 +43,7 @@ class JsonMappingReader {
 
             for(mappingDataObj in mappingDataArray)
             {
-                switch(mappingDataObj.type)
+                switch(mappingDataObj.eventTriggerType)
                 {
                     case(MappingData.TYPE_SENSOR):
                         var sensorName:String = mappingDataObj.sensor;
@@ -75,6 +75,7 @@ class JsonMappingReader {
                         {
                             trace("Could not map to sensor: " + sensorName);
                         }
+
                     case(MappingData.TYPE_PIANO):
                         var viperCommands:Array<ViperCommand> = getArrayOfViperCommandsFromJson(mappingDataObj.commands);
                         mappingData = new PianoMappingData
@@ -86,6 +87,7 @@ class JsonMappingReader {
                         {
                             mappingData.addViperCommand(viperCommand);
                         }
+
                     case(MappingData.TYPE_GESTURE):
                         var viperCommands:Array<ViperCommand> = getArrayOfViperCommandsFromJson(mappingDataObj.commands);
                         mappingData = new GestureMappingData
