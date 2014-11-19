@@ -53,9 +53,9 @@ class SensorExtension {
 	public static function getGyro ():Array<Float>{
 		#if (android && openfl)
 		var array:Array<Float> = new Array<Float>();
-		array.push(sensorsextension_get_irotX());
-		array.push(sensorsextension_get_irotY());
-		array.push(sensorsextension_get_irotZ());
+		array.push(sensorextension_get_gyro_x());
+		array.push(sensorextension_get_gyro_y());
+		array.push(sensorextension_get_gyro_z());
 
 		return array;
 
