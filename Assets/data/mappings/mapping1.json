@@ -5,21 +5,20 @@
             "eventTriggerType":"sensor",
             "sensor":"Orientation",
             "valueIndex":0,
-            "dynamicParameters":[
-                {
-                    
-                    "targetFields":[  
-                        "transparency"
-                    ],
-                    "minOutputs":[  
-                        0
-                    ],
-                    "maxOutputs":[  
-                        255
-                    ]
+            "dynamicParameters":
+            {
                 
-                }
-            ],
+                "targetFields":[  
+                    "setTransparency"
+                ],
+                "minOutputs":[  
+                    0
+                ],
+                "maxOutputs":[  
+                    255
+                ]
+            
+            },
             
             "staticParameters":[
                 {
