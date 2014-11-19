@@ -70,11 +70,9 @@ class MappingController {
     {
         if(mapping.targetIds.length == 0)
         {
-            trace("send failed no targets");
             return;
         }
 
-        trace("sending mapping data");
         var oscMessage:OscMessage = null;
         for(targetId in mapping.targetIds)
         {
