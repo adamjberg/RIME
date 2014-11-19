@@ -15,7 +15,7 @@ class MappingPopupContent extends VBox {
         percentWidth = 100;
 
         fileName = new LabelledTextInput("Filename:");
-        fileName.setText(SystemPath.documentsDirectory); 
+        fileName.setText("mapping1.json"); 
         addChild(fileName);
     }
 
