@@ -6,10 +6,10 @@
 #define NEKO_COMPATIBLE
 #endif
 
+#if defined(IPHONE)
 
 #include <hx/CFFI.h>
 #include "Sensors2.h"
-
 
 using namespace SensorExtension;
 
@@ -156,12 +156,6 @@ DEFINE_PRIM(sensorsextension_isDMAvailable, 0);
 
 //end
 
-
-
-
-
-
-
 extern "C" void sensorextension_main () {
 	
 	val_int(0); // Fix Neko init
@@ -172,3 +166,5 @@ DEFINE_ENTRY_POINT (sensorextension_main);
 
 
 extern "C" int sensorextension_register_prims () { return 0; }
+
+#endif

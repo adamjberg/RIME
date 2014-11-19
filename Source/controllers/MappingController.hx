@@ -28,6 +28,18 @@ class MappingController {
         jsonMappingReader = new JsonMappingReader(pianoButtons, gestureController, sensorDataController);
     }
 
+    public function getMappingWithName(name:String):Mapping
+    {
+        for(mapping in mappings)
+        {
+            if(mapping.name == name)
+            {
+                return mapping;
+            }
+        }
+        return null;
+    }
+
     public function addMappingFromFile(filename:String)
     {
         addMapping(jsonMappingReader.getMapping(filename));
@@ -58,19 +70,21 @@ class MappingController {
     {
         if(mapping.targetIds.length == 0)
         {
+            trace("send failed no targets");
             return;
         }
 
+        trace("sending mapping data");
         var oscMessage:OscMessage = null;
         for(targetId in mapping.targetIds)
         {
             for(command in mappingData.getViperCommands())
             {
                 command.id = targetId;
-                command.addParam("deviceId", "oijgoaij2ojgawojfiawfjoa");
                 oscMessage = command.fillOscMessage(oscMessage);
             }
+            client.send(oscMessage);
+            oscMessage = null;
         }
-        client.send(oscMessage);
     }
 }
