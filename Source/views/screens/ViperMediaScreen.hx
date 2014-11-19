@@ -4,6 +4,7 @@ import controllers.MappingController;
 import controllers.media.ViperMediaController;
 import haxe.ui.toolkit.core.PopupManager;
 import haxe.ui.toolkit.events.UIEvent;
+import models.media.ViperMedia;
 import views.controls.FullWidthButton;
 import views.screens.Screen;
 import views.ViperMediaPopupContent;
@@ -50,7 +51,11 @@ class ViperMediaScreen extends Screen {
             {
                 if(button == PopupButton.CONFIRM)
                 {
-                    viperMediaController.addMediaFromFilename(viperMediaPopupContent.getFileName());
+                    var media:ViperMedia = viperMediaController.getMediaFromFilename(viperMediaPopupContent.getFileName());
+                    media.type = viperMediaPopupContent.getType();
+                    media.xPos = viperMediaPopupContent.getX();
+                    media.yPos = viperMediaPopupContent.getY();
+                    viperMediaController.addMedia(media);
                 }
             }
         );
