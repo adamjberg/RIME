@@ -30,6 +30,12 @@ class EditMediaScreen extends Screen {
         this.mappingController = mappingController;
         this.viperMedia = viperMedia;
 
+        mappingList.dataSource.add(
+                {
+                    text: "none"
+                }
+            );
+
         for(mapping in mappingController.mappings)
         {
             mappingList.dataSource.add(

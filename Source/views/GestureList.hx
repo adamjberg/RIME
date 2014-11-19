@@ -28,7 +28,6 @@ class GestureList extends ScrollView {
         this.style.spacingY = 10;
 
         this.percentWidth = 95;
-        this.percentHeight = 40;
         this.horizontalAlign = "center";
         
         vBox = new VBox();

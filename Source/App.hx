@@ -13,7 +13,9 @@ import models.ServerInfo;
 import controllers.Client;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
+import views.screens.GestureRecognizeScreen;
 import views.screens.MappingsScreen;
+import views.screens.PerformSelectScreen;
 import views.screens.SensorsScreen;
 import views.screens.ViperMediaScreen;
 import views.screens.*;
@@ -28,6 +30,8 @@ class App extends VBox {
     private var connectionSetupScreen:ConnectionSetupScreen;
     private var viperMediaScreen:ViperMediaScreen;
     private var mappingsScreen:MappingsScreen;
+    private var performSelectScreen:PerformSelectScreen;
+    private var gestureRecognizeScreen:GestureRecognizeScreen;
 
     private var stack:Stack;
     private var client:Client;
@@ -78,6 +82,8 @@ class App extends VBox {
         gestureScreen = new GestureListScreen(gestureController);
         sensorsScreen = new SensorsScreen(sensors);
         connectionSetupScreen = new ConnectionSetupScreen(client, serverInfo);
+        performSelectScreen = new PerformSelectScreen();
+        gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
 
@@ -89,6 +95,9 @@ class App extends VBox {
         homeScreen.onMediaPressed.add(openMediaScreen);
         homeScreen.onSensorsPressed.add(openSensorsScreen);
         homeScreen.onMappingsPressed.add(openMappingsScreen);
+        homeScreen.onPerformPressed.add(openPerformSelectScreen);
+
+        performSelectScreen.onOpenGesturePressed.add(openGestureRecognitionScreen);
 
         ScreenManager.push(homeScreen);
     }
@@ -121,5 +130,15 @@ class App extends VBox {
     private function openMappingsScreen()
     {
         ScreenManager.push(mappingsScreen);
+    }
+
+    private function openPerformSelectScreen()
+    {
+        ScreenManager.push(performSelectScreen);
+    }
+
+    private function openGestureRecognitionScreen()
+    {
+        ScreenManager.push(gestureRecognizeScreen);
     }
 }
