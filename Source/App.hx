@@ -13,6 +13,7 @@ import models.ServerInfo;
 import controllers.Client;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
+import views.screens.MappingsScreen;
 import views.screens.SensorsScreen;
 import views.screens.ViperMediaScreen;
 import views.screens.*;
@@ -26,6 +27,7 @@ class App extends VBox {
     private var sensorsScreen:SensorsScreen;
     private var connectionSetupScreen:ConnectionSetupScreen;
     private var viperMediaScreen:ViperMediaScreen;
+    private var mappingsScreen:MappingsScreen;
 
     private var stack:Stack;
     private var client:Client;
@@ -79,12 +81,14 @@ class App extends VBox {
         viperMediaScreen = new ViperMediaScreen(viperMediaController);
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
-        mappingController.addMappingFromFile("mapping1.json");
+
+        mappingsScreen = new MappingsScreen(mappingController);
 
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
         homeScreen.onMediaPressed.add(openMediaScreen);
         homeScreen.onSensorsPressed.add(openSensorsScreen);
+        homeScreen.onMappingsPressed.add(openMappingsScreen);
 
         ScreenManager.push(homeScreen);
     }
@@ -112,5 +116,10 @@ class App extends VBox {
     private function openMediaScreen()
     {
         ScreenManager.push(viperMediaScreen);
+    }
+
+    private function openMappingsScreen()
+    {
+        ScreenManager.push(mappingsScreen);
     }
 }

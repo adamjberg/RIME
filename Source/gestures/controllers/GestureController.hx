@@ -51,7 +51,15 @@ import sys.io.FileOutput;
 
         setupGesturesDirectory();
 
-        sensorDataController.defaultFilteredSensorDatas[0].onUpdate.add(update);
+        if(sensorDataController.defaultFilteredSensorDatas.length > 0)
+        {
+            sensorDataController.defaultFilteredSensorDatas[0].onUpdate.add(update);
+        }
+        else
+        {
+            // TODO: This needs to be less sloppy
+            trace("Can't find Linear Accelerometer");
+        }
     }
 
     public function startTraining()
