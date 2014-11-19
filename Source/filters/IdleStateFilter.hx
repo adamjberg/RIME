@@ -1,8 +1,13 @@
 package filters;
 
 class IdleStateFilter extends Filter {
-
+    #if (android && openfl)
     private static var DEFAULT_SENSITIVITY:Float = 0.5 * 9.8;
+    
+    #else 
+    private static var DEFAULT_SENSITIVITY:Float = 0.5;
+    #end
+
     private static var DEFAULT_REST_VALUE:Float = 0;
 
     private var restValue:Float = DEFAULT_REST_VALUE;
