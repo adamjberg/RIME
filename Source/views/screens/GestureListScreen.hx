@@ -1,16 +1,8 @@
 package views.screens;
 
-import controllers.Client;
 import controllers.ScreenManager;
 import gestures.controllers.GestureController;
-import haxe.ui.toolkit.controls.Button;
-import haxe.ui.toolkit.controls.TextInput;
-import haxe.ui.toolkit.events.UIEvent;
-import models.commands.ViperCreateImageCommand;
-import models.commands.ViperUpdatePositionCommand;
-import models.sensors.Accelerometer;
-import openfl.events.MouseEvent;
-import osc.OscMessage;
+import views.controls.FullWidthButton;
 import views.GestureList;
 import views.screens.Screen;
 
@@ -19,8 +11,7 @@ class GestureListScreen extends Screen {
     private var gestureList:GestureList;
 
     private var gestureController:GestureController;
-    private var addGestureButton:Button;
-    private var recognizeButton:Button;
+    private var addGestureButton:FullWidthButton;
 
     public function new(?gestureController:GestureController)
     {
@@ -29,20 +20,10 @@ class GestureListScreen extends Screen {
         this.gestureController = gestureController;
 
         gestureList = new GestureList(gestureController);
+        gestureList.percentHeight = 100;
         addChild(gestureList);
 
-        recognizeButton = new Button();
-        recognizeButton.text = "Recognize";
-        recognizeButton.percentWidth = 100;
-        recognizeButton.percentHeight = 30;
-        recognizeButton.addEventListener(MouseEvent.MOUSE_DOWN, recognizeButtonDown);
-        recognizeButton.addEventListener(MouseEvent.MOUSE_UP, recognizeButtonUp);
-        addChild(recognizeButton); 
-
-        addGestureButton = new Button();
-        addGestureButton.text = "Add Gesture";
-        addGestureButton.percentWidth = 100;
-        addGestureButton.percentHeight = 30;
+        addGestureButton = new FullWidthButton("Add Gesture");
         addGestureButton.onClick = addGestureButtonClicked;
         addChild(addGestureButton); 
     }
@@ -50,15 +31,5 @@ class GestureListScreen extends Screen {
     private function addGestureButtonClicked(e)
     {
         ScreenManager.push(new GestureEditScreen(gestureController));
-    }
-
-    private function recognizeButtonDown(e)
-    {
-        gestureController.startRecognizing();
-    }
-
-    private function recognizeButtonUp(e)
-    {
-        gestureController.stopRecognizing();
     }
 }

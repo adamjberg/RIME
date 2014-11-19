@@ -24,7 +24,7 @@ class GestureListItem extends HBox {
         percentWidth = 100;
 
         style.backgroundColor = 0xFFFFFF;
-        style.padding = 20;
+        style.padding = 5;
 
         name = new Text();
         name.text = gesture.name;

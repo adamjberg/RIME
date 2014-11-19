@@ -24,7 +24,7 @@ class ViperMediaListItem extends HBox {
         percentWidth = 100;
 
         style.backgroundColor = 0xFFFFFF;
-        style.padding = 20;
+        style.padding = 5;
 
         idField = new Text();
         addChild(idField);
