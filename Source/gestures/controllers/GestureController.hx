@@ -14,6 +14,7 @@ import msignal.Signal.Signal2;
 import openfl.display.Stage;
 import openfl.events.MouseEvent;
 import openfl.events.TimerEvent;
+import openfl.feedback.Haptic;
 import openfl.utils.SystemPath;
 import openfl.utils.Timer;
 import sys.FileSystem;
@@ -152,7 +153,8 @@ import sys.io.FileOutput;
     {
         var gestureModel:GestureModel = getGestureModels()[id];
 
-        PopupManager.instance.showSimple(gestureModel.name, "Gesture!");
+        Haptic.vibrate(0, 250);
+        PopupManager.instance.showBusy(gestureModel.name, 500);
 
         trace("Firing Gesture: " + gestureModel.name + " prob: " + prob);
         onGestureDetected.dispatch(id, prob);
