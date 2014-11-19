@@ -12,9 +12,11 @@ import controllers.Client;
 import views.controls.FullWidthButton;
 import views.MappingPopupContent;
 import views.screens.Screen;
+import openfl.utils.SystemPath;
+
 
 class MappingsScreen extends Screen {
-
+    //private static var DIRECTORY:String = SystemPath.applicationStorageDirectory + "/jsonfile";
     private var mappingController:MappingController;
     private var addMappingButton:FullWidthButton;
 
@@ -41,7 +43,12 @@ class MappingsScreen extends Screen {
             {
                 if(button == PopupButton.CONFIRM)
                 {
-                    mappingController.addMappingFromFile(mappingPopupContent.getFileName());
+                    #if (ios && openfl)
+                    mappingController.addMappingFromFile(SystemPath.applicationStorageDirectory +"/"+ mappingPopupContent.getFileName());
+                    #else
+        
+                    mappingController.addMappingFromFile(SystemPath.documentsDirectory +"/Download/" + mappingPopupContent.getFileName());
+                    #end
                 }
             }
         );
