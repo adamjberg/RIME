@@ -7,10 +7,13 @@ import models.commands.ViperCommand;
 import models.mappings.JsonMappingReader;
 import models.mappings.Mapping;
 import models.mappings.MappingData;
+import msignal.Signal.Signal0;
 import osc.OscMessage;
 import views.PianoButton;
 
 class MappingController {
+
+    public var onUpdated:Signal0 = new Signal0();
 
     public var mappings:Array<Mapping>;
 
@@ -36,6 +39,17 @@ class MappingController {
         {
             mapping.onRequestSend.add(send);
             mappings.push(mapping);
+
+            onUpdated.dispatch();
+        }
+    }
+
+    public function deleteMapping(mapping:Mapping)
+    {
+        if(mapping != null)
+        {
+            mappings.remove(mapping);
+            onUpdated.dispatch();
         }
     }
 
