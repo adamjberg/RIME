@@ -45,9 +45,10 @@ class MappingsScreen extends Screen {
                 {
                     #if (ios && openfl)
                     mappingController.addMappingFromFile(SystemPath.applicationStorageDirectory +"/"+ mappingPopupContent.getFileName());
-                    #else
-        
+                    #elsif(android)
                     mappingController.addMappingFromFile(SystemPath.documentsDirectory +"/Download/" + mappingPopupContent.getFileName());
+                    #else
+                    mappingController.addMappingFromFile(SystemPath.userDirectory + "/" + mappingPopupContent.getFileName());
                     #end
                 }
             }
