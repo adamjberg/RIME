@@ -1,9 +1,12 @@
 package filters;
 
 class DirectionalEquivalenceFilter extends Filter {
-
+    #if (android && openfl)
     private static var DEFAULT_SENSITIVITY:Float = 0.2 * 9.8;
-
+    
+    #else
+    private static var DEFAULT_SENSITIVITY:Float = 0.2;
+    #end
     private var sensitivity:Float = DEFAULT_SENSITIVITY;
 
     public function new(?sensitivity:Float)

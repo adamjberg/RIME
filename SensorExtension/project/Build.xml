@@ -7,10 +7,13 @@
 		<compilerflag value="-Iinclude"/>
 		
 		<file name="common/ExternalInterface.cpp"/>
-		<file name="common/SensorExtension.cpp"/>
 		
 	</files>
-	
+	 <!-- When compiling for iphone we use this -->
+    <files id="iphone">
+      <file name="iPhone/Sensors.mm"/>
+    </files>
+
 	<set name="SLIBEXT" value=".lib" if="windows"/>
 	<set name="SLIBEXT" value=".a" unless="windows"/>
 	<set name="SLIBEXT" value=".so" if="webos"/>
@@ -22,6 +25,7 @@
 		<outdir name="../ndll/${BINDIR}"/>
 		<ext value=".ndll" if="windows || mac || linux"/>
 		<files id="common"/>
+		<files id="iphone" if="iphone"/>
 		
 	</target>
 	

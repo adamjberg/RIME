@@ -28,6 +28,7 @@ class Client {
     {
         #if !neko
             socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
+            send(new OscMessage());
         #end
     }
 
