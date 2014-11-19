@@ -1,22 +1,28 @@
 package views;
 
+import controllers.MappingController;
 import controllers.media.ViperMediaController;
+import controllers.ScreenManager;
 import haxe.ui.toolkit.containers.ScrollView;
 import haxe.ui.toolkit.containers.VBox;
+import haxe.ui.toolkit.events.UIEvent;
 import models.media.ViperMedia;
+import views.screens.EditMediaScreen;
 import views.ViperMediaListItem;
 
 class ViperMediaScrollList extends ScrollView {
 
     private var viperMediaController:ViperMediaController;
+    private var mappingController:MappingController;
     private var viperMediaList:Array<ViperMedia>;
 
     private var vBox:VBox;
 
-    public function new(?viperMediaController:ViperMediaController)
+    public function new(?viperMediaController:ViperMediaController, ?mappingController:MappingController)
     {
         super();
         this.viperMediaController = viperMediaController;
+        this.mappingController = mappingController;
         this.viperMediaList = viperMediaController.activeMediaList;
 
         this._scrollSensitivity = 1;
@@ -41,9 +47,16 @@ class ViperMediaScrollList extends ScrollView {
         for(media in viperMediaList)
         {
             var viperMediaListItem:ViperMediaListItem = new ViperMediaListItem(media);
+            viperMediaListItem.onClick = itemClicked;
             viperMediaListItem.onDeleteButtonPressed.add(deleteViperMedia);
             vBox.addChild(viperMediaListItem);
         }
+    }
+
+    private function itemClicked(e:UIEvent)
+    {
+        var viperMediaListItem:ViperMediaListItem = cast(e.component, ViperMediaListItem);
+        ScreenManager.push(new EditMediaScreen(mappingController, viperMediaListItem.media));
     }
 
     private function deleteViperMedia(viperMedia:ViperMedia)

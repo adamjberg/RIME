@@ -10,7 +10,7 @@ class ViperMediaListItem extends HBox {
 
     public var onDeleteButtonPressed:Signal1<ViperMedia> = new Signal1<ViperMedia>();
 
-    private var media:ViperMedia;
+    public var media:ViperMedia;
 
     private var idField:Text;
     private var filenameField:Text;

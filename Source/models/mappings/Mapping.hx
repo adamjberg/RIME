@@ -11,14 +11,11 @@ class Mapping {
     public var onRequestSend:Signal2<Mapping, MappingData> = new Signal2<Mapping, MappingData>();
 
     public var name:String = "";
-    private var deviceId:Int = 0;
     private var mappingDatas:Array<MappingData> = new Array<MappingData>();
     public var targetIds:Array<Int> = new Array<Int>();
 
     public function new()
     {
-        // TODO: This is for testing, we should specify a target via UI
-        targetIds.push(0);
     }
 
     public function addMappingData(mappingData:MappingData)
@@ -32,7 +29,11 @@ class Mapping {
 
     public function addTarget(id:Int)
     {
-        targetIds.push(id);
+        // Only add the new id if it didn't already exist
+        if(targetIds.indexOf(id) == -1)
+        {
+            targetIds.push(id);
+        }
     }
 
     public function removeTarget(id:Int)
