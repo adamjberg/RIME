@@ -10,6 +10,7 @@ class Mapping {
 
     public var onRequestSend:Signal2<Mapping, MappingData> = new Signal2<Mapping, MappingData>();
 
+    public var name:String = "";
     private var deviceId:Int = 0;
     private var mappingDatas:Array<MappingData> = new Array<MappingData>();
     public var targetIds:Array<Int> = new Array<Int>();
