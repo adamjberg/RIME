@@ -48,6 +48,7 @@ class MappingController {
     {
         if(mapping != null)
         {
+            mapping.onRequestSend.remove(send);
             mappings.remove(mapping);
             onUpdated.dispatch();
         }

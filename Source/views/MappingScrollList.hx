@@ -46,6 +46,7 @@ class MappingScrollList extends ScrollView {
         for(mapping in mappings)
         {
             var mappingListItem:MappingListItem = new MappingListItem(mapping);
+            mappingListItem.onDeleteButtonPressed.add(deleteMapping);
             mappingListItems.push(mappingListItem);
             vBox.addChild(mappingListItem);
         }

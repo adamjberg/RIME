@@ -10,12 +10,12 @@ import models.mappings.MappingData;
 import models.mappings.PianoMappingData;
 import models.sensors.data.SensorData;
 import openfl.Assets;
+import sys.FileSystem;
+import sys.io.File;
 import views.PianoButton;
 
 class JsonMappingReader {
     //private static var MAPPING_DIR:String = SystemPath.applicationStorageDirectory + "/mappings/";
-
-    private static var MAPPING_DIR:String = "assets/data/mappings/";
 
     private var pianoButtons:Array<PianoButton>;
     private var sensorDataController:SensorDataController;
@@ -31,10 +31,10 @@ class JsonMappingReader {
     public function getMapping(filename:String):Mapping
     {
         var mapping:Mapping = null;
-        var fullPath:String = MAPPING_DIR + filename;
-        if(Assets.exists(fullPath))
+        var fullPath:String = filename;
+        if(FileSystem.exists(fullPath))
         {
-            var jsonContent:String = Assets.getText(fullPath);
+            var jsonContent:String = File.getContent(fullPath);
             var mappingObj:Dynamic = Json.parse(jsonContent);
 
             mapping = new Mapping();
