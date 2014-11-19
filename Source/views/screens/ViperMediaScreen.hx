@@ -16,6 +16,7 @@ class ViperMediaScreen extends Screen {
 
     private var viperMediaScrollList:ViperMediaScrollList;
     private var newMediaButton:FullWidthButton;
+    private var requestViperBtn:FullWidthButton;
 
     public function new(?viperMediaController:ViperMediaController, ?mappingController:MappingController)
     {
@@ -31,6 +32,12 @@ class ViperMediaScreen extends Screen {
         addChild(newMediaButton);
 
         newMediaButton.onClick = newMediaPressed;
+
+        requestViperBtn = new FullWidthButton("Request Files");
+        addChild(requestViperBtn);
+
+        requestViperBtn.onClick = requestViperMedia;
+
     }
 
     private function newMediaPressed(e:UIEvent)
@@ -47,5 +54,11 @@ class ViperMediaScreen extends Screen {
                 }
             }
         );
+    }
+
+    private function requestViperMedia(e:UIEvent)
+    {
+        viperMediaController.requestMedia();
+        removeChild(requestViperBtn);
     }
 }

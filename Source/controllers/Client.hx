@@ -1,6 +1,9 @@
 package controllers;
 
 import hxudp.UdpSocket;
+import haxe.io.Bytes;
+import haxe.io.BytesInput;
+
 import models.sensors.Sensor;
 import models.ServerInfo;
 import openfl.events.AccelerometerEvent;
@@ -52,5 +55,28 @@ class Client {
             trace("Trying to send null message");
         }
         
+    }
+
+    public function receive(message:OscMessage):String
+    {
+        trace("requested receive");
+
+        var b = Bytes.alloc(500);
+        trace("server receive: " + socket.receive(b));
+        trace("server receive dump:");
+        var input = new BytesInput(b);
+        var str = "";
+        var byte = input.readByte();
+        var char = String.fromCharCode(byte);
+        var n = 0;
+            var str = "";
+            for (j in 0...409)
+            {
+                var byte = input.readByte();
+                var char = String.fromCharCode(byte);
+                str += (byte >= 30 && byte < 127 ? char : "");
+            }
+        trace(str);
+        return str;
     }
 }
