@@ -38,6 +38,7 @@ class JsonMappingReader {
             var mappingObj:Dynamic = Json.parse(jsonContent);
 
             mapping = new Mapping();
+            mapping.name = mappingObj.name;
             var mappingData:MappingData = null;
             var mappingDataArray:Array<Dynamic> = mappingObj.mappingData;
 
