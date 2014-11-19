@@ -5,7 +5,7 @@ class ServerInfo {
     public var portNumber:Int;
 
     public function new() {
-        ipAddress = "206.87.123.138";
+        ipAddress = "206.87.125.46";
         portNumber = 12000;
     }
 }

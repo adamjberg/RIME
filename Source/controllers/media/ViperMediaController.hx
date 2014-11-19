@@ -8,6 +8,8 @@ import models.commands.ViperMessage;
 import osc.OscMessage;
 import models.media.ViperMedia;
 import msignal.Signal.Signal0;
+import haxe.io.Bytes;
+import haxe.io.BytesInput;
 
 class ViperMediaController {
 
@@ -16,6 +18,8 @@ class ViperMediaController {
     public var onUpdated:Signal0 = new Signal0();
 
     public var activeMediaList:Array<ViperMedia> = new Array<ViperMedia>();
+
+    public var fileList:Array<String> = new Array<String>();
 
     private var client:Client;
 
@@ -64,6 +68,31 @@ class ViperMediaController {
         var command:ViperCommand = new ViperCommand();
         command.method = "dataList";
         client.send(command.fillOscMessage());
-        client.receive(message);
+        var str = client.receive(message);
+
+        trace ("String is " + str);
+        trace("String is " + str.length + " long.");
+
+        var clipName = "";
+        var x = 0;
+        var fileList:Array<String> = new Array<String>();
+        for(x in 0...str.length)
+        {
+            if (str.charAt(x) != ",")
+                clipName += str.charAt(x);
+            else
+            {
+            trace(clipName);
+            fileList.push(clipName);
+            clipName = "";
+            }
+        }
+        trace("FileList: ");
+        trace(fileList);
+        trace("");
+        fileList.shift();
+        fileList.shift();
+        trace("Removed first two elements: ");
+        trace(fileList);
     }
 }

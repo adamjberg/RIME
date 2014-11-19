@@ -45,7 +45,6 @@ class Client {
     {
         if(message != null)
         {
-        trace("send request for filenames");
             #if !neko
                 socket.send(message.getBytes());
             #end 
@@ -57,27 +56,26 @@ class Client {
         
     }
 
-    public function receive(message:OscMessage)
+    public function receive(message:OscMessage):String
     {
         trace("requested receive");
-        trace("server bind 11999: " + socket.bind(11999));
-        trace("server setNonBlocking false: " + socket.setNonBlocking(false));
-        trace("server getMaxMsgSize: " + socket.getMaxMsgSize());
-        trace("server getReceiveBufferSize: " + socket.getReceiveBufferSize());
 
-        var b = Bytes.alloc(8000);
+        var b = Bytes.alloc(2000);
         trace("server receive: " + socket.receive(b));
         trace("server receive dump:");
         var input = new BytesInput(b);
         var str = "";
         var byte = input.readByte();
         var char = String.fromCharCode(byte);
-        while (char != "~")
-        {
-            var char = String.fromCharCode(byte);
-            str +=  char;
-            var byte = input.readByte();
-        }
+        var n = 0;
+            var str = "";
+            for (j in 0...500)
+            {
+                var byte = input.readByte();
+                var char = String.fromCharCode(byte);
+                str += (byte >= 30 && byte < 127 ? char : "");
+            }
         trace(str);
+        return str;
     }
 }
