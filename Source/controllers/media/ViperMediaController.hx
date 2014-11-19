@@ -3,6 +3,9 @@ package controllers.media;
 import controllers.Client;
 import models.commands.ViperCreateCommand;
 import models.commands.ViperDeleteCommand;
+import models.commands.ViperCommand;
+import models.commands.ViperMessage;
+import osc.OscMessage;
 import models.media.ViperMedia;
 import msignal.Signal.Signal0;
 
@@ -52,5 +55,15 @@ class ViperMediaController {
             activeMediaList.remove(media);
             onUpdated.dispatch();
         }
+    }
+
+// Requesting media from Viper server
+    public function requestMedia()
+    {
+        var message:OscMessage = new OscMessage();
+        var command:ViperCommand = new ViperCommand();
+        command.method = "dataList";
+        client.send(command.fillOscMessage());
+        client.receive(message);
     }
 }

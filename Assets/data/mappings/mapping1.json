@@ -1,7 +1,6 @@
 {  
     "mappingData":[  
 
-        // Sensor Event Mapping 
         {  
             "eventTriggerType":"sensor",
             "sensor":"Orientation",
@@ -19,7 +18,6 @@
             "intervalInMs":50
         },
 
-        //Gesture Event Mapping 
         {  
             "eventTriggerType":"gesture",
             "gestureId":0,

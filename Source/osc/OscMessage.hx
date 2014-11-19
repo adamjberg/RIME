@@ -120,4 +120,13 @@ class OscMessage {
             byteArray.writeByte(0x0);
         }
     }
+
+    /*public function getString(val:String)
+    {
+        var tempBytes:ByteArray = new ByteArray();
+        typeTag.readByte(0x73); // s
+        tempBytes.readUTFBytes(val);
+        padToMultipleOf4Bytes(tempBytes);
+        data.readBytes(tempBytes, 0, tempBytes.length);
+    }*/
 }
