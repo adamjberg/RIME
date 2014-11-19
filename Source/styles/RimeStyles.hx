@@ -18,5 +18,12 @@ class RimeStyles extends Styles {
                 }
             )
         );
+        addStyle("ListSelector", new Style
+            (
+                {
+                    iconPosition: "right"
+                }
+            )
+        );
     }
 }

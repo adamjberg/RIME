@@ -33,7 +33,9 @@ class ViperMediaController {
         if(media != null)
         {
             var command:ViperCreateCommand = new ViperCreateCommand(media.id);
-            command.addParam("filename", media.filename);
+            command.addParam("image", media.filename);
+            command.addParam("posX", 100);
+            command.addParam("posY", 100);
             client.send(command.fillOscMessage());
 
             activeMediaList.push(media);
@@ -46,7 +48,6 @@ class ViperMediaController {
         if(media != null)
         {
             var command:ViperDeleteCommand = new ViperDeleteCommand(media.id);
-            command.addParam("filename", media.filename);
             client.send(command.fillOscMessage());
             
             activeMediaList.remove(media);
