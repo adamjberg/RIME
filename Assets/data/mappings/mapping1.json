@@ -1,28 +1,38 @@
 {  
     "name": "mapping1",
     "mappingData":[  
-
         {  
             "eventTriggerType":"sensor",
             "sensor":"Orientation",
             "valueIndex":0,
-            "method":"update",
-            "targetFields":[  
-                "transparency"
+            "dynamicParameters":[
+                {
+                    
+                    "targetFields":[  
+                        "transparency"
+                    ],
+                    "minOutputs":[  
+                        0
+                    ],
+                    "maxOutputs":[  
+                        255
+                    ]
+                
+                }
             ],
-            "minOutputs":[  
-                0
+            
+            "staticParameters":[
+                {
+                    "method":"update"
+                }
             ],
-            "maxOutputs":[  
-                255
-            ],
+
             "intervalInMs":50
         },
-
         {  
             "eventTriggerType":"gesture",
             "gestureId":0,
-            "commands":[  
+            "staticParameters":[  
                 {  
                     "method":"create",
                     "targetFields":[  
@@ -41,7 +51,7 @@
         {  
             "eventTriggerType":"gesture",
             "gestureId":1,
-            "commands":[  
+            "staticParameters":[  
                 {  
                     "method":"update",
                     "targetFields":[  
