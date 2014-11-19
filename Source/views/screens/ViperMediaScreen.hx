@@ -34,6 +34,7 @@ class ViperMediaScreen extends Screen {
         addChild(requestViperBtn);
 
         requestViperBtn.onClick = requestViperMedia;
+
     }
 
     private function newMediaPressed(e:UIEvent)
@@ -55,5 +56,6 @@ class ViperMediaScreen extends Screen {
     private function requestViperMedia(e:UIEvent)
     {
         viperMediaController.requestMedia();
+        removeChild(requestViperBtn);
     }
 }

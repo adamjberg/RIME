@@ -60,7 +60,7 @@ class Client {
     {
         trace("requested receive");
 
-        var b = Bytes.alloc(2000);
+        var b = Bytes.alloc(500);
         trace("server receive: " + socket.receive(b));
         trace("server receive dump:");
         var input = new BytesInput(b);
@@ -69,7 +69,7 @@ class Client {
         var char = String.fromCharCode(byte);
         var n = 0;
             var str = "";
-            for (j in 0...500)
+            for (j in 0...409)
             {
                 var byte = input.readByte();
                 var char = String.fromCharCode(byte);
