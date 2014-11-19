@@ -40,6 +40,14 @@ class MappingController {
         return null;
     }
 
+    public function removeIdFromAllMappings(id:Int)
+    {
+        for(mapping in mappings)
+        {
+            mapping.removeTarget(id);
+        }
+    }
+
     public function addMappingFromFile(filename:String)
     {
         addMapping(jsonMappingReader.getMapping(filename));
