@@ -81,7 +81,6 @@ class App extends VBox {
         viperMediaScreen = new ViperMediaScreen(viperMediaController);
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
-        mappingController.addMappingFromFile("mapping1.json");
 
         mappingsScreen = new MappingsScreen(mappingController);
 
