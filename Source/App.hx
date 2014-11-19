@@ -73,8 +73,6 @@ class App extends VBox {
         gestureController = new GestureController(sensorDataController);
 
         client = new Client(serverInfo);
-        
-        viperMediaController = new ViperMediaController(client);
 
         // Screen initialization
         homeScreen = new HomeScreen();
@@ -86,6 +84,7 @@ class App extends VBox {
         gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
+        viperMediaController = new ViperMediaController(client, mappingController);
 
         viperMediaScreen = new ViperMediaScreen(viperMediaController, mappingController);
         mappingsScreen = new MappingsScreen(mappingController);

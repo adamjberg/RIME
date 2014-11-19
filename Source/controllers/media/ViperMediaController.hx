@@ -1,6 +1,7 @@
 package controllers.media;
 
 import controllers.Client;
+import controllers.MappingController;
 import models.commands.ViperCreateCommand;
 import models.commands.ViperDeleteCommand;
 import models.commands.ViperCommand;
@@ -22,10 +23,12 @@ class ViperMediaController {
     public var fileList:Array<String> = new Array<String>();
 
     private var client:Client;
+    private var mappingController:MappingController;
 
-    public function new(?client:Client)
+    public function new(?client:Client, ?mappingController:MappingController)
     {
         this.client = client;
+        this.mappingController = mappingController;
     }
 
     public function addMediaFromFilename(fileName:String)
@@ -54,6 +57,7 @@ class ViperMediaController {
     {
         if(media != null)
         {
+            mappingController.removeIdFromAllMappings(media.id);
             var command:ViperDeleteCommand = new ViperDeleteCommand(media.id);
             client.send(command.fillOscMessage());
             
