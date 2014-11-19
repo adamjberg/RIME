@@ -31,21 +31,21 @@ class ViperMediaController {
         this.mappingController = mappingController;
     }
 
-    public function addMediaFromFilename(fileName:String)
+    public function getMediaFromFilename(fileName:String):ViperMedia
     {
         var media:ViperMedia = new ViperMedia(currentId, fileName);
         currentId++;
-        addMedia(media);
+        return media;
     }
 
-    private function addMedia(media:ViperMedia)
+    public function addMedia(media:ViperMedia)
     {
         if(media != null)
         {
             var command:ViperCreateCommand = new ViperCreateCommand(media.id);
-            command.addParam("image", media.filename);
-            command.addParam("posX", 100);
-            command.addParam("posY", 100);
+            command.addParam(media.type, media.filename);
+            command.addParam("posX", media.xPos);
+            command.addParam("posY", media.yPos);
             client.send(command.fillOscMessage());
 
             activeMediaList.push(media);
