@@ -5,7 +5,6 @@ import controllers.MappingController;
 import models.commands.ViperCreateCommand;
 import models.commands.ViperDeleteCommand;
 import models.commands.ViperCommand;
-import models.commands.ViperMessage;
 import osc.OscMessage;
 import models.media.ViperMedia;
 import msignal.Signal.Signal0;
@@ -69,20 +68,28 @@ class ViperMediaController {
 // Requesting media from Viper server
     public function requestMedia()
     {
+
+        // Sends Osc Message to prepare Viper to send RIME the file list
         var message:OscMessage = new OscMessage();
         var command:ViperCommand = new ViperCommand();
         command.method = "dataList";
         client.send(command.fillOscMessage());
+
+        // Preps RIME to receive the message from Viper
+        //client.setTimeoutReceive(5);
         var str = client.receive(message);
+
 
         trace ("String is " + str);
         trace("String is " + str.length + " long.");
 
+        // Parses continuous string into an array of strings to separate names
         var clipName = "";
         var x = 0;
         var fileList:Array<String> = new Array<String>();
         for(x in 0...str.length)
         {
+            // Viper's string Uses "," as separator to indicate different objects, use as indicator to move on to next item
             if (str.charAt(x) != ",")
                 clipName += str.charAt(x);
             else
@@ -92,9 +99,12 @@ class ViperMediaController {
             clipName = "";
             }
         }
+
         trace("FileList: ");
         trace(fileList);
         trace("");
+
+        // Removes the first two objects in the list, as they are just the ID and identifier, not needed in our array.
         fileList.shift();
         fileList.shift();
         trace("Removed first two elements: ");

@@ -57,13 +57,20 @@ class Client {
         
     }
 
+    // Command to receive the string of file names from Viper
+    // Referenced hxudp/test/UdpTest.hx
     public function receive(message:OscMessage):String
     {
         trace("requested receive");
 
+        // Allocate bytes to be populated by Viper's OSC message to RIME
+        trace("server setNonBlocking true: " + socket.setNonBlocking(true));
         var b = Bytes.alloc(500);
+        // Opens the socket to receive a message
         trace("server receive: " + socket.receive(b));
         trace("server receive dump:");
+
+        // Saves bytes from receiving into a string and returns it to the code calling the receive function()
         var input = new BytesInput(b);
         var str = "";
         var byte = input.readByte();
@@ -78,5 +85,9 @@ class Client {
             }
         trace(str);
         return str;
+    }
+    public function setTimeoutReceive(seconds:Int):Void
+    {
+        socket.setTimeoutReceive(seconds);
     }
 }
