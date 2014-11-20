@@ -76,7 +76,7 @@ class ViperMediaController {
         client.send(command.fillOscMessage());
 
         // Preps RIME to receive the message from Viper
-        //client.setTimeoutReceive(5);
+        client.setTimeoutReceive(5);
         var str = client.receive(message);
 
 
