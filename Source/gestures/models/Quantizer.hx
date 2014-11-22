@@ -224,12 +224,8 @@ class Quantizer {
     public static function fromFile(file:FileInput):Quantizer
     {
         var numStates = file.readInt8();
-        trace("Quantizer:fromFile numStates " + numStates);
-
         var result:Quantizer = new Quantizer(numStates);
         result.radius = file.readDouble();
-        trace("Quantizer:fromFile radius " + result.radius);
-
         var centeroidsLength:Int = 14;
         var centeroidsInnerLength:Int = 3;
 
