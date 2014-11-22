@@ -5,6 +5,7 @@ import controllers.media.ViperMediaController;
 import controllers.ScreenManager;
 import controllers.SensorController;
 import controllers.SensorDataController;
+import database.Database;
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
@@ -63,7 +64,7 @@ class App extends VBox {
         ScreenManager.init(stack, headerBar);
         addChild(stack);
 
-        serverInfo = new ServerInfo();
+        serverInfo = Database.instance.getServerInfo();
 
         sensorController = new SensorController();
         sensors = sensorController.sensors;
