@@ -4,7 +4,9 @@ import haxe.format.JsonParser;
 import haxe.Json;
 import models.ServerInfo;
 import openfl.Assets;
+import openfl.events.TimerEvent;
 import openfl.utils.SystemPath;
+import openfl.utils.Timer;
 import sys.FileSystem;
 import sys.io.File;
 
@@ -15,10 +17,12 @@ class Database {
     private static function get_instance():Database {
         if (_instance == null) {
             _instance = new Database();
-            System.deviceID = _instance.getDeviceId();
+            System.deviceID = _instance.getDeviceID();
         }
         return _instance;
     }
+
+    private static inline var SAVE_INTERVAL_MS:Int = 5000;
 
     private static var userDatabaseFileName:String = 
     #if (ios || android)
@@ -28,10 +32,15 @@ class Database {
     #end
     private static inline var defaultDBLocation:String = "assets/data/default_database.json";
 
+    private var saveTimer:Timer;
     private var db:Dynamic;
+    private var dirty:Bool = false;
 
     public function new()
     {
+        saveTimer = new Timer(SAVE_INTERVAL_MS, 0);
+        saveTimer.addEventListener(TimerEvent.TIMER, writeToFile);
+        saveTimer.start();
         // Attempt to load user database first
         trace("Attempting to load database: " + userDatabaseFileName);
         if(FileSystem.exists(userDatabaseFileName))
@@ -59,7 +68,6 @@ class Database {
             {
                 var dbText:String = Assets.getText(defaultDBLocation);                
                 db = JsonParser.parse(dbText);
-                writeToFile();
                 trace("Default database successfully loaded");
             }
             catch(msg:String)
@@ -73,9 +81,15 @@ class Database {
         }
     }
 
-    public function getDeviceId():String
+    public function getDeviceID():String
     {
-        return db.deviceId;
+        return db.deviceID;
+    }
+
+    public function saveDeviceID(deviceID:String)
+    {
+        dirty = true;
+        db.deviceID = deviceID;
     }
 
     public function getServerInfo():ServerInfo
@@ -88,18 +102,24 @@ class Database {
 
     public function saveServerInfo(serverInfo:ServerInfo)
     {
+        dirty = true;
         db.serverInfo.ipAddress = serverInfo.ipAddress;
         db.serverInfo.portNumber = serverInfo.portNumber;
-        writeToFile();
     }
 
-    public function writeToFile()
+    public function writeToFile(?e:TimerEvent)
     {
+        if(dirty == false)
+        {
+            return;
+        }
+
         if(FileSystem.exists(userDatabaseFileName))
         {
             FileSystem.deleteFile(userDatabaseFileName);
         }
         File.saveContent(userDatabaseFileName, Json.stringify(db, null, "\t"));
+        dirty = false;
     }
 
 }
