@@ -25,15 +25,17 @@ class Database {
     private static inline var SAVE_INTERVAL_MS:Int = 5000;
 
     private static var userDatabaseFileName:String = 
-    #if (ios || android)
+    #if (ios)
         SystemPath.documentsDirectory + "/rimedb.json";
+    #elseif (android)
+        SystemPath.documentsDirectory + "/RIME/rimedb.json";
     #else
         SystemPath.applicationStorageDirectory + "/rimedb.json";
     #end
     private static inline var defaultDBLocation:String = "assets/data/default_database.json";
 
     private var saveTimer:Timer;
-    private var db:Dynamic;
+    public var db:Dynamic;
     private var dirty:Bool = false;
 
     public function new()
@@ -41,6 +43,7 @@ class Database {
         saveTimer = new Timer(SAVE_INTERVAL_MS, 0);
         saveTimer.addEventListener(TimerEvent.TIMER, writeToFile);
         saveTimer.start();
+
         // Attempt to load user database first
         trace("Attempting to load database: " + userDatabaseFileName);
         if(FileSystem.exists(userDatabaseFileName))
@@ -61,7 +64,7 @@ class Database {
          * If there is no user database load our default one
          * then immediately save it to the user database location
          */ 
-        trace("Loading default databse: " + defaultDBLocation);
+        trace("Loading default database: " + defaultDBLocation);
         if(Assets.exists(defaultDBLocation))
         {
             try
@@ -114,11 +117,20 @@ class Database {
             return;
         }
 
+        #if (android)
+        if(FileSystem.exists(SystemPath.documentsDirectory + "/RIME") == false)
+        {
+            FileSystem.createDirectory(SystemPath.documentsDirectory + "/RIME");
+        }
+        #end
+
         if(FileSystem.exists(userDatabaseFileName))
         {
             FileSystem.deleteFile(userDatabaseFileName);
         }
-        File.saveContent(userDatabaseFileName, Json.stringify(db, null, "\t"));
+        var fileOutput = File.write(userDatabaseFileName, false);
+        fileOutput.writeString(Json.stringify(db, null, "\t"));
+        fileOutput.close();
         dirty = false;
     }
 

@@ -9,7 +9,6 @@ import views.screens.Screen;
 
 class HomeScreen extends Screen {
 
-    public var onMappingsPressed:Signal0 = new Signal0();
     public var onConnectionSetupPressed:Signal0 = new Signal0();
     public var onMediaPressed:Signal0 = new Signal0();
     public var onSensorsPressed:Signal0 = new Signal0();
@@ -19,7 +18,6 @@ class HomeScreen extends Screen {
     private var buttonStrings:Array<String> =
     [
         "Connection Setup",
-        "Mappings",
         "Media",
         "Sensors",
         "Gestures",
@@ -32,7 +30,6 @@ class HomeScreen extends Screen {
         super();
 
         buttonPressedSignals.push(onConnectionSetupPressed);
-        buttonPressedSignals.push(onMappingsPressed);
         buttonPressedSignals.push(onMediaPressed);
         buttonPressedSignals.push(onSensorsPressed);
         buttonPressedSignals.push(onGesturesPressed);

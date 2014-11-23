@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.SensorDataController;
+import database.Database;
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.controls.Button;
 import models.commands.ViperCommand;
@@ -25,7 +26,18 @@ class MappingController {
         this.client = client;
 
         mappings = new Array<Mapping>();
+
         jsonMappingReader = new JsonMappingReader(pianoButtons, gestureController, sensorDataController);
+        loadMappingsFromDB();
+    }
+
+    public function loadMappingsFromDB()
+    {
+        var mappings:Array<Mapping> = Database.instance.db.mappings;
+        for(mappingObj in mappings)
+        {
+            addMappingFromJson(mappingObj);
+        }
     }
 
     public function getMappingWithName(name:String):Mapping
@@ -48,9 +60,9 @@ class MappingController {
         }
     }
 
-    public function addMappingFromFile(filename:String)
+    public function addMappingFromJson(jsonObject:Dynamic)
     {
-        addMapping(jsonMappingReader.getMapping(filename));
+        addMapping(jsonMappingReader.getMapping(jsonObject));
     }
 
     public function addMapping(mapping:Mapping)
@@ -70,6 +82,7 @@ class MappingController {
         {
             mapping.onRequestSend.remove(send);
             mappings.remove(mapping);
+
             onUpdated.dispatch();
         }
     }

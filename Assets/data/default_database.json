@@ -1,7 +1,63 @@
-{
-    "deviceID": "",
-    "serverInfo":{
-        "ipAddress": "",
-        "portNumber": "11000"
-    }
+{  
+    "deviceID":"",
+    "serverInfo":{  
+        "ipAddress":"",
+        "portNumber":"11000"
+    },
+    "mappings":[  
+        {  
+            "name":"Orientation - alpha",
+            "mappingData":[  
+                {  
+                    "eventTriggerType":"sensor",
+                    "sensor":"Orientation",
+                    "valueIndex":0,
+                    "dynamicParameters":{  
+                        "targetFields":[  
+                            "setTransparency"
+                        ],
+                        "minOutputs":[  
+                            0
+                        ],
+                        "maxOutputs":[  
+                            255
+                        ]
+                    },
+                    "staticParameters":[  
+                        {  
+                            "method":"update"
+                        }
+                    ],
+                    "intervalInMs":50
+                }
+            ]
+        },
+        {  
+            "name":"Orientation - green",
+            "mappingData":[  
+                {  
+                    "eventTriggerType":"sensor",
+                    "sensor":"Orientation",
+                    "valueIndex":0,
+                    "dynamicParameters":{  
+                        "targetFields":[  
+                            "setGreen"
+                        ],
+                        "minOutputs":[  
+                            0
+                        ],
+                        "maxOutputs":[  
+                            255
+                        ]
+                    },
+                    "staticParameters":[  
+                        {  
+                            "method":"update"
+                        }
+                    ],
+                    "intervalInMs":50
+                }
+            ]
+        }
+    ]
 }
