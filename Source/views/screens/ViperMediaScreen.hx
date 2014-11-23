@@ -44,10 +44,11 @@ class ViperMediaScreen extends Screen {
     private function newMediaPressed(e:UIEvent)
     {
         var viperMediaPopupContent:ViperMediaPopupContent = new ViperMediaPopupContent();
-        var buttons:Int = 0;
-        buttons |= PopupButton.CONFIRM;
-        buttons |= PopupButton.CANCEL;
-        PopupManager.instance.showCustom(viperMediaPopupContent, "Create Media", buttons, function(button)
+        var config:Dynamic = {};
+        config.buttons = 0;
+        config.buttons |= PopupButton.CONFIRM;
+        config.buttons |= PopupButton.CANCEL;
+        PopupManager.instance.showCustom(viperMediaPopupContent, "Create Media", config, function(button)
             {
                 if(button == PopupButton.CONFIRM)
                 {
