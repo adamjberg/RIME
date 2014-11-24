@@ -27,6 +27,8 @@ import sys.io.FileOutput;
 
  class GestureController {
 
+    private static var MIN_VALUES_BEFORE_RECOGNITION:Int = 8;
+
     private static var DIRECTORY:String = SystemPath.applicationStorageDirectory + "/gestures";
     private static var FILENAME:String = "gestures.rime";
     private static var FULL_FILENAME:String = DIRECTORY + "/" + FILENAME;
@@ -147,7 +149,7 @@ import sys.io.FileOutput;
         if(analyzing)
         {
             trace("Stopping Recognition");
-            if(currentGesture.getCountOfData() > 0)
+            if(currentGesture.getCountOfData() > MIN_VALUES_BEFORE_RECOGNITION)
             {
                 trace("Comparing gesture with " + classifier.getCountOfGestures() + " other gestures");
                 var gesture:Gesture = new Gesture(currentGesture);
@@ -177,7 +179,7 @@ import sys.io.FileOutput;
     {
         var gestureModel:GestureModel = getGestureModels()[id];
 
-        //Haptic.vibrate(0, 250);
+        Haptic.vibrate(0, 250);
         PopupManager.instance.showBusy(gestureModel.name, 500, "Gesture Detected!");
 
         trace("Firing Gesture: " + gestureModel.name + " prob: " + prob);
