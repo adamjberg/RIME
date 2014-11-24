@@ -1,6 +1,7 @@
 package views.screens;
 
 import controllers.Client;
+import database.Database;
 import haxe.ui.toolkit.events.UIEvent;
 import models.commands.ViperCommand;
 import models.ServerInfo;
@@ -13,7 +14,7 @@ class ConnectionSetupScreen extends Screen {
     private var client:Client;
     private var serverInfo:ServerInfo;
 
-    private var deviceId:LabelledTextInput;
+    private var deviceID:LabelledTextInput;
     private var serverInfoRenderer:ServerInfoRenderer;
 
     public function new(?client:Client, ?serverInfo:ServerInfo)
@@ -23,11 +24,11 @@ class ConnectionSetupScreen extends Screen {
         this.client = client;
         this.serverInfo = serverInfo;
 
-        deviceId = new LabelledTextInput("Device ID:");
-        deviceId.setText(System.deviceID);
-        addChild(deviceId);
+        deviceID = new LabelledTextInput("Device ID:");
+        deviceID.setText(System.deviceID);
+        addChild(deviceID);
 
-        deviceId.input.addEventListener(UIEvent.CHANGE, onDeviceIdChanged);
+        deviceID.input.addEventListener(UIEvent.CHANGE, ondeviceIDChanged);
 
         serverInfoRenderer = new ServerInfoRenderer(serverInfo);
         serverInfoRenderer.onSendButtonPressed.add(sendButtonPressed);
@@ -39,9 +40,10 @@ class ConnectionSetupScreen extends Screen {
         super.initialize();
     }
 
-    private function onDeviceIdChanged(e:UIEvent)
+    private function ondeviceIDChanged(e:UIEvent)
     {
-        System.deviceID = deviceId.getText();
+        System.deviceID = deviceID.getText();
+        Database.instance.saveDeviceID(System.deviceID);
     }
 
     private function sendButtonPressed()

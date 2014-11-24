@@ -113,8 +113,6 @@ class Classifier {
     {
         var result:Classifier = new Classifier();
         var numGestures:Int = file.readInt8();
-
-        trace("Classifier:fromFile numGestures " + numGestures);
         
         for(i in 0...numGestures)
         {

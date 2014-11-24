@@ -233,11 +233,7 @@ class HMM {
     public static function fromFile(file:FileInput):HMM
     {
         var numStates:Int = file.readInt8();
-        trace("HMM:fromFile numStates " + numStates);
-
         var numObservations:Int = file.readInt8();
-        trace("HMM:fromFile numObservations " + numObservations);
-
         var result:HMM = new HMM(numStates, numObservations);
 
         for(i in 0...numStates)

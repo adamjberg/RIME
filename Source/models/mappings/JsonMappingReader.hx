@@ -15,8 +15,6 @@ import sys.io.File;
 import views.PianoButton;
 
 class JsonMappingReader {
-    //private static var MAPPING_DIR:String = SystemPath.applicationStorageDirectory + "/mappings/";
-
     private var pianoButtons:Array<PianoButton>;
     private var sensorDataController:SensorDataController;
     private var gestureController:GestureController;
@@ -28,111 +26,96 @@ class JsonMappingReader {
         this.sensorDataController = sensorDataController;
     }
 
-    public function getMapping(filename:String):Mapping
+    public function getMapping(mappingObj:Dynamic):Mapping
     {
         var mapping:Mapping = null;
-        var fullPath:String = filename;
-        if(FileSystem.exists(fullPath))
+
+        mapping = new Mapping();
+        mapping.name = mappingObj.name;
+        var mappingData:MappingData = null;
+        var mappingDataArray:Array<Dynamic> = mappingObj.mappingData;
+
+        for(mappingDataObj in mappingDataArray)
         {
-            var jsonContent:String = File.getContent(fullPath);
-            var mappingObj:Dynamic = Json.parse(jsonContent);
-
-            mapping = new Mapping();
-            mapping.name = mappingObj.name;
-            var mappingData:MappingData = null;
-            var mappingDataArray:Array<Dynamic> = mappingObj.mappingData;
-
-            for(mappingDataObj in mappingDataArray)
+            switch(mappingDataObj.eventTriggerType)
             {
-                switch(mappingDataObj.eventTriggerType)
-                {
-                    case(MappingData.TYPE_SENSOR):
-                        var sensorName:String = mappingDataObj.sensor;
-                        var sensorData:SensorData = null;
-                        var staticParameters:Array<ViperCommand> = getArrayOfStaticParameters(mappingDataObj.staticParameters); 
-                        if(mappingDataObj.rawData != null && mappingDataObj.rawData == "true")
-                        {
-                            sensorData = sensorDataController.getRawWithName(sensorName);
-                        }
-                        else
-                        {
-                            sensorData = sensorDataController.getFilteredWithName(sensorName);
-                        }
+                case(MappingData.TYPE_SENSOR):
+                    var sensorName:String = mappingDataObj.sensor;
+                    var sensorData:SensorData = null;
+                    var staticParameters:Array<ViperCommand> = getArrayOfStaticParameters(mappingDataObj.staticParameters); 
+                    if(mappingDataObj.rawData != null && mappingDataObj.rawData == "true")
+                    {
+                        sensorData = sensorDataController.getRawWithName(sensorName);
+                    }
+                    else
+                    {
+                        sensorData = sensorDataController.getFilteredWithName(sensorName);
+                    }
 
-                        if(sensorData != null)
-                        {
-                            var targetFields:Array<String> = mappingDataObj.dynamicParameters.targetFields;
-                            var minOutputs:Array<Float> = mappingDataObj.dynamicParameters.minOutputs;
-                            var maxOutputs:Array<Float> = mappingDataObj.dynamicParameters.maxOutputs;
-                            mappingData = new SensorMappingData(
-                                sensorData,
-                                mappingDataObj.intervalInMs,
-                                mappingDataObj.valueIndex,
-                                targetFields,
-                                minOutputs,
-                                maxOutputs
-                            );
-
-                             if(staticParameters != null){
-                                trace("static parameters don't equal null. I've got viper comands");
-                                for(staticParameter in staticParameters){
-                                    mappingData.addViperCommand(staticParameter);
-                                }
-                            } else {
-                                trace("static prameters equals null DUUDE!");
-                            }
-                        } else
-                        {
-                            trace("Could not map to sensor: " + sensorName);
-                        }
-
-                       
-
-                        
-
-                    //Add piano specific data to the piano mapping 
-                    case(MappingData.TYPE_PIANO):
-                    var staticParameters:Array<ViperCommand> = getArrayOfStaticParameters(mappingDataObj.staticParameters);
-                        mappingData = new PianoMappingData
-                        (
-                            pianoButtons[mappingDataObj.buttonId],
-                            mappingDataObj.pressType
+                    if(sensorData != null)
+                    {
+                        var targetFields:Array<String> = mappingDataObj.dynamicParameters.targetFields;
+                        var minOutputs:Array<Float> = mappingDataObj.dynamicParameters.minOutputs;
+                        var maxOutputs:Array<Float> = mappingDataObj.dynamicParameters.maxOutputs;
+                        mappingData = new SensorMappingData(
+                            sensorData,
+                            mappingDataObj.intervalInMs,
+                            mappingDataObj.valueIndex,
+                            targetFields,
+                            minOutputs,
+                            maxOutputs
                         );
-                    if(staticParameters != null){
-                        trace("static parameters don't equal null. I've got viper comands");
-                        for(staticParameter in staticParameters){
-                            mappingData.addViperCommand(staticParameter);
-                        }
-                    } else {
-                        trace("static prameters equals null DUUDE!");
-                    }    
 
-                    //Add gesture specific data to the gesture mapping 
-                    case(MappingData.TYPE_GESTURE):
-                    var staticParameters:Array<ViperCommand> = getArrayOfStaticParameters(mappingDataObj.staticParameters);
-                        mappingData = new GestureMappingData
-                        (
-                            gestureController,
-                            mappingDataObj.gestureId
-                        );   
-                    if(staticParameters != null){
-                        trace("static parameters don't equal null. I've got viper comands");
-                        for(staticParameter in staticParameters){
-                            mappingData.addViperCommand(staticParameter);
+                         if(staticParameters != null){
+                            trace("static parameters don't equal null. I've got viper comands");
+                            for(staticParameter in staticParameters){
+                                mappingData.addViperCommand(staticParameter);
+                            }
+                        } else {
+                            trace("static prameters equals null DUUDE!");
                         }
-                    } else {
-                        trace("static prameters equals null DUUDE!");
-                    } 
-                }
+                    } else
+                    {
+                        trace("Could not map to sensor: " + sensorName);
+                    }
 
-                //add all the data to the mapping object 
-                mapping.addMappingData(mappingData);
+                //Add piano specific data to the piano mapping 
+                case(MappingData.TYPE_PIANO):
+                var staticParameters:Array<ViperCommand> = getArrayOfStaticParameters(mappingDataObj.staticParameters);
+                    mappingData = new PianoMappingData
+                    (
+                        pianoButtons[mappingDataObj.buttonId],
+                        mappingDataObj.pressType
+                    );
+                if(staticParameters != null){
+                    trace("static parameters don't equal null. I've got viper comands");
+                    for(staticParameter in staticParameters){
+                        mappingData.addViperCommand(staticParameter);
+                    }
+                } else {
+                    trace("static prameters equals null DUUDE!");
+                }    
+
+                //Add gesture specific data to the gesture mapping 
+                case(MappingData.TYPE_GESTURE):
+                var staticParameters:Array<ViperCommand> = getArrayOfStaticParameters(mappingDataObj.staticParameters);
+                    mappingData = new GestureMappingData
+                    (
+                        gestureController,
+                        mappingDataObj.gestureId
+                    );   
+                if(staticParameters != null){
+                    trace("static parameters don't equal null. I've got viper comands");
+                    for(staticParameter in staticParameters){
+                        mappingData.addViperCommand(staticParameter);
+                    }
+                } else {
+                    trace("static prameters equals null DUUDE!");
+                } 
             }
 
-        }
-        else
-        {
-            trace("Mapping file " + filename + " not found");
+            //add all the data to the mapping object 
+            mapping.addMappingData(mappingData);
         }
         return mapping;
     }

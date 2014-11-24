@@ -139,20 +139,11 @@ class GestureModel {
     {
         var result:GestureModel = new GestureModel();
         var nameLength:Int = file.readInt8();
-        trace("GestureModel:fromFile nameLength " + nameLength);
         
         result.name = file.readString(nameLength);
-        trace("GestureModel:fromFile name " + result.name);
-
         result.numStates = file.readInt8();
-        trace("GestureModel:fromFile numStates " + result.numStates);
-
         result.numObservations = file.readInt8();
-        trace("GestureModel:fromFile numObservations " + result.numObservations);
-
         result.defaultProbability = file.readDouble();
-        trace("GestureModel:fromFile defaultProbability " + result.defaultProbability);
-
         result.markovModel = HMM.fromFile(file);
         result.quantizer = Quantizer.fromFile(file);
 

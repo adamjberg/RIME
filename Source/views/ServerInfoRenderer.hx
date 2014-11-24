@@ -1,5 +1,6 @@
 package views;
 
+import database.Database;
 import haxe.ui.toolkit.containers.HBox;
 import haxe.ui.toolkit.containers.VBox;
 import haxe.ui.toolkit.controls.Button;
@@ -54,11 +55,13 @@ class ServerInfoRenderer extends VBox {
     private function portNumberChanged(e:Event)
     {
         serverInfo.portNumber = Std.parseInt(portNumber.getText());
+        Database.instance.saveServerInfo(serverInfo);
     }
 
     private function ipAddressChanged(e:Event)
     {
         serverInfo.ipAddress = ipAddress.getText();
+        Database.instance.saveServerInfo(serverInfo);
     }
 
     private function sendButtonPressed(e:Event)

@@ -5,6 +5,7 @@ import controllers.media.ViperMediaController;
 import controllers.ScreenManager;
 import controllers.SensorController;
 import controllers.SensorDataController;
+import database.Database;
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
@@ -14,7 +15,6 @@ import controllers.Client;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
 import views.screens.GestureRecognizeScreen;
-import views.screens.MappingsScreen;
 import views.screens.PerformSelectScreen;
 import views.screens.SensorsScreen;
 import views.screens.ViperMediaScreen;
@@ -29,7 +29,6 @@ class App extends VBox {
     private var sensorsScreen:SensorsScreen;
     private var connectionSetupScreen:ConnectionSetupScreen;
     private var viperMediaScreen:ViperMediaScreen;
-    private var mappingsScreen:MappingsScreen;
     private var performSelectScreen:PerformSelectScreen;
     private var gestureRecognizeScreen:GestureRecognizeScreen;
 
@@ -63,7 +62,7 @@ class App extends VBox {
         ScreenManager.init(stack, headerBar);
         addChild(stack);
 
-        serverInfo = new ServerInfo();
+        serverInfo = Database.instance.getServerInfo();
 
         sensorController = new SensorController();
         sensors = sensorController.sensors;
@@ -87,13 +86,11 @@ class App extends VBox {
         viperMediaController = new ViperMediaController(client, mappingController);
 
         viperMediaScreen = new ViperMediaScreen(viperMediaController, mappingController);
-        mappingsScreen = new MappingsScreen(mappingController);
 
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
         homeScreen.onMediaPressed.add(openMediaScreen);
         homeScreen.onSensorsPressed.add(openSensorsScreen);
-        homeScreen.onMappingsPressed.add(openMappingsScreen);
         homeScreen.onPerformPressed.add(openPerformSelectScreen);
 
         performSelectScreen.onOpenGesturePressed.add(openGestureRecognitionScreen);
@@ -124,11 +121,6 @@ class App extends VBox {
     private function openMediaScreen()
     {
         ScreenManager.push(viperMediaScreen);
-    }
-
-    private function openMappingsScreen()
-    {
-        ScreenManager.push(mappingsScreen);
     }
 
     private function openPerformSelectScreen()
