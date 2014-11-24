@@ -69,6 +69,26 @@ import sys.io.FileOutput;
         }
     }
 
+    public function enableNoButtonTraining()
+    {
+        if(linearAccelFilteredData != null)
+        {
+            var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
+            changeDetectFilter.onChangeStarted.add(startTraining);
+            changeDetectFilter.onChangeStopped.add(stopTraining);
+        }
+    }
+
+    public function disableNoButtonTraining()
+    {
+        if(linearAccelFilteredData != null)
+        {
+            var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
+            changeDetectFilter.onChangeStarted.remove(startTraining);
+            changeDetectFilter.onChangeStopped.remove(stopTraining);
+        }
+    }
+
     public function enableNoButtonDetection()
     {
         if(linearAccelFilteredData != null)
@@ -103,12 +123,13 @@ import sys.io.FileOutput;
         if(learning)
         {
             trace("Training Stopped");
-            if(currentGesture.getCountOfData() > 0)
+            if(currentGesture.getCountOfData() > MIN_VALUES_BEFORE_RECOGNITION)
             {
                 trace("Recorded " + currentGesture.getCountOfData() + " values");
                 var gesture:Gesture = new Gesture(currentGesture);
                 trainSequence.push(gesture);
                 currentGesture = new Gesture();
+                Haptic.vibrate(0, 250);
             }
             else
             {
@@ -116,6 +137,11 @@ import sys.io.FileOutput;
             }
             learning = false;
         }
+    }
+
+    public function clearCurrentGesture()
+    {
+        trainSequence = new Array<Gesture>();
     }
 
     public function saveGesture(gestureModel:GestureModel)

@@ -1,9 +1,12 @@
 package controllers;
 
 import haxe.ui.toolkit.containers.Stack;
+import msignal.Signal.Signal0;
 import views.HeaderBar;
 
 class ScreenManager {
+    public static var onBackPressed:Signal0 = new Signal0();
+
     public static var stack:Stack;
     public static var headerBar:HeaderBar;
 
@@ -13,7 +16,8 @@ class ScreenManager {
     {
         ScreenManager.stack = stack;
         ScreenManager.headerBar = headerBar;
-        headerBar.onBackPressed.add(pop);
+        headerBar.onBackPressed.add(backButtonPressed);
+
     }
 
     public static function push(?screen)
@@ -41,5 +45,11 @@ class ScreenManager {
         {
             headerBar.showBackButton();
         }
+    }
+
+    private static function backButtonPressed()
+    {
+        onBackPressed.dispatch();
+        pop();
     }
 }
