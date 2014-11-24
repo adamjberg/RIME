@@ -2,9 +2,11 @@ package models.sensors;
 
 class Proximity extends Sensor {
 
+    public static inline var NAME:String = "Proximity";
+
     public function new()
     {
-        super("Proximity", "pro", ["proximity"]);
+        super(NAME, "pro", ["proximity"]);
     }
 
     override public function isSupported():Bool

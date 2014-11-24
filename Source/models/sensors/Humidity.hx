@@ -2,9 +2,11 @@ package models.sensors;
 
 class Humidity extends Sensor {
 
+    public static inline var NAME:String = "Humidity";
+
     public function new()
     {
-        super("Humidity", "hum", ["humidity"]);
+        super(NAME, "hum", ["humidity"]);
     }
 
     override public function isSupported():Bool

@@ -2,6 +2,8 @@ package models.sensors;
 
 class Gravity extends Sensor {
 
+    public static inline var NAME:String = "Gravity";
+
     public var gravityX(get, null):Float;
     function get_gravityX():Float {
         return values[0];
@@ -19,7 +21,7 @@ class Gravity extends Sensor {
 
     public function new()
     {
-        super("Gravity", "gra", ["X", "Y", "Z"]);
+        super(NAME, "gra", ["X", "Y", "Z"]);
     }
 
     override public function isSupported():Bool

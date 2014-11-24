@@ -8,6 +8,7 @@ import gestures.models.GestureModel;
 import haxe.ui.toolkit.core.PopupManager;
 import models.sensors.Accelerometer;
 import models.sensors.data.FilteredSensorData;
+import models.sensors.LinearAccelerometer;
 import models.sensors.Sensor;
 import msignal.Signal.Signal0;
 import msignal.Signal.Signal2;
@@ -52,13 +53,13 @@ import sys.io.FileOutput;
 
         setupGesturesDirectory();
 
-        if(sensorDataController.defaultFilteredSensorDatas.length > 0)
+        var linearAccelFilteredData = sensorDataController.getFilteredWithName(LinearAccelerometer.NAME);
+        if(linearAccelFilteredData != null)
         {
-            sensorDataController.defaultFilteredSensorDatas[0].onUpdate.add(update);
+            linearAccelFilteredData.onUpdate.add(update);
         }
         else
         {
-            // TODO: This needs to be less sloppy
             trace("Can't find Linear Accelerometer");
         }
     }

@@ -2,9 +2,11 @@ package models.sensors;
 
 class AmbientTemperature extends Sensor {
 
+    public static inline var NAME:String = "Ambient Temperature";
+
     public function new()
     {
-        super("Ambient Temperature", "amt", ["temperature"]);
+        super(NAME, "amt", ["temperature"]);
     }
 
     override public function isSupported():Bool
