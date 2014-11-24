@@ -2,12 +2,15 @@
 
 import controllers.SensorController;
 import controllers.SensorDataController;
+import filters.ChangeDetectFilter;
+import filters.Filter;
 import gestures.models.Classifier;
 import gestures.models.Gesture;
 import gestures.models.GestureModel;
 import haxe.ui.toolkit.core.PopupManager;
 import models.sensors.Accelerometer;
 import models.sensors.data.FilteredSensorData;
+import models.sensors.LinearAccelerometer;
 import models.sensors.Sensor;
 import msignal.Signal.Signal0;
 import msignal.Signal.Signal2;
@@ -24,6 +27,8 @@ import sys.io.FileOutput;
 
  class GestureController {
 
+    private static var MIN_VALUES_BEFORE_RECOGNITION:Int = 8;
+
     private static var DIRECTORY:String = SystemPath.applicationStorageDirectory + "/gestures";
     private static var FILENAME:String = "gestures.rime";
     private static var FULL_FILENAME:String = DIRECTORY + "/" + FILENAME;
@@ -39,6 +44,7 @@ import sys.io.FileOutput;
     private var analyzing:Bool;
 
     private var sensorDataController:SensorDataController;
+    private var linearAccelFilteredData:FilteredSensorData;
     
     public function new(sensorDataController:SensorDataController)
     {
@@ -52,14 +58,54 @@ import sys.io.FileOutput;
 
         setupGesturesDirectory();
 
-        if(sensorDataController.defaultFilteredSensorDatas.length > 0)
+        linearAccelFilteredData = sensorDataController.getFilteredWithName(LinearAccelerometer.NAME);
+        if(linearAccelFilteredData != null)
         {
-            sensorDataController.defaultFilteredSensorDatas[0].onUpdate.add(update);
+            linearAccelFilteredData.onUpdate.add(update);
         }
         else
         {
-            // TODO: This needs to be less sloppy
             trace("Can't find Linear Accelerometer");
+        }
+    }
+
+    public function enableNoButtonTraining()
+    {
+        if(linearAccelFilteredData != null)
+        {
+            var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
+            changeDetectFilter.onChangeStarted.add(startTraining);
+            changeDetectFilter.onChangeStopped.add(stopTraining);
+        }
+    }
+
+    public function disableNoButtonTraining()
+    {
+        if(linearAccelFilteredData != null)
+        {
+            var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
+            changeDetectFilter.onChangeStarted.remove(startTraining);
+            changeDetectFilter.onChangeStopped.remove(stopTraining);
+        }
+    }
+
+    public function enableNoButtonDetection()
+    {
+        if(linearAccelFilteredData != null)
+        {
+            var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
+            changeDetectFilter.onChangeStarted.add(startRecognizing);
+            changeDetectFilter.onChangeStopped.add(stopRecognizing);
+        }
+    }
+
+    public function disableNoButtonDetection()
+    {
+        if(linearAccelFilteredData != null)
+        {
+            var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
+            changeDetectFilter.onChangeStarted.remove(startRecognizing);
+            changeDetectFilter.onChangeStopped.remove(stopRecognizing);
         }
     }
 
@@ -77,12 +123,13 @@ import sys.io.FileOutput;
         if(learning)
         {
             trace("Training Stopped");
-            if(currentGesture.getCountOfData() > 0)
+            if(currentGesture.getCountOfData() > MIN_VALUES_BEFORE_RECOGNITION)
             {
                 trace("Recorded " + currentGesture.getCountOfData() + " values");
                 var gesture:Gesture = new Gesture(currentGesture);
                 trainSequence.push(gesture);
                 currentGesture = new Gesture();
+                Haptic.vibrate(0, 250);
             }
             else
             {
@@ -90,6 +137,11 @@ import sys.io.FileOutput;
             }
             learning = false;
         }
+    }
+
+    public function clearCurrentGesture()
+    {
+        trainSequence = new Array<Gesture>();
     }
 
     public function saveGesture(gestureModel:GestureModel)
@@ -123,7 +175,7 @@ import sys.io.FileOutput;
         if(analyzing)
         {
             trace("Stopping Recognition");
-            if(currentGesture.getCountOfData() > 0)
+            if(currentGesture.getCountOfData() > MIN_VALUES_BEFORE_RECOGNITION)
             {
                 trace("Comparing gesture with " + classifier.getCountOfGestures() + " other gestures");
                 var gesture:Gesture = new Gesture(currentGesture);
@@ -154,7 +206,7 @@ import sys.io.FileOutput;
         var gestureModel:GestureModel = getGestureModels()[id];
 
         Haptic.vibrate(0, 250);
-        PopupManager.instance.showBusy(gestureModel.name, 500);
+        PopupManager.instance.showBusy(gestureModel.name, 500, "Gesture Detected!");
 
         trace("Firing Gesture: " + gestureModel.name + " prob: " + prob);
         onGestureDetected.dispatch(id, prob);

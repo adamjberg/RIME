@@ -2,9 +2,11 @@ package models.sensors;
 
 class Pressure extends Sensor {
 
+    public static inline var NAME:String = "Pressure";
+
     public function new()
     {
-        super("Pressure", "pre", ["pressure"]);
+        super(NAME, "pre", ["pressure"]);
     }
 
     override public function isSupported():Bool

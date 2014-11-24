@@ -2,9 +2,11 @@ package models.sensors;
 
 class Rotation extends Sensor {
 
+    public static inline var NAME:String = "Rotation";
+
     public function new()
     {
-        super("Rotation", "rot", ["X", "Y", "Z"]);
+        super(NAME, "rot", ["X", "Y", "Z"]);
     }
 
     override public function isSupported():Bool

@@ -2,9 +2,11 @@ package models.sensors;
 
 class Magnetic extends Sensor {
 
+    public static inline var NAME:String = "Magnetic";
+
     public function new()
     {
-        super("Magnetic", "mag", ["X", "Y", "Z"]);
+        super(NAME, "mag", ["X", "Y", "Z"]);
     }
 
     override public function isSupported():Bool

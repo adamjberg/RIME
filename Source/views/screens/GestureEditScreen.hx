@@ -12,11 +12,14 @@ import haxe.ui.toolkit.events.UIEvent;
 import models.commands.ViperCreateImageCommand;
 import models.commands.ViperUpdatePositionCommand;
 import models.sensors.Accelerometer;
+import openfl.events.Event;
 import openfl.events.MouseEvent;
 import osc.OscMessage;
+import views.controls.FullWidthButton;
 import views.controls.LabelledTextInput;
+import views.screens.Screen;
 
-class GestureEditScreen extends VBox {
+class GestureEditScreen extends Screen {
 
     private static var EDIT_MODE:Int = 0;
     private static var CREATE_MODE:Int = 1;
@@ -26,6 +29,7 @@ class GestureEditScreen extends VBox {
     private var nameInput:LabelledTextInput;
     private var recordButton:Button;
     private var recognizeButton:Button;
+    private var enableNoButtonTrainingButton:FullWidthButton;
     private var saveGestureButton:Button;
 
     private var gestureModel:GestureModel;
@@ -50,24 +54,39 @@ class GestureEditScreen extends VBox {
         this.percentWidth = 100;
         this.percentHeight = 100;
 
-        nameInput = new LabelledTextInput("name:");
+        nameInput = new LabelledTextInput("Name:");
         nameInput.horizontalAlign = "center";
         addChild(nameInput);
 
-        saveGestureButton = new Button();
-        saveGestureButton.percentWidth = 100;
-        saveGestureButton.percentHeight = 33;
-        saveGestureButton.text = "Save Gesture";
-        saveGestureButton.onClick = saveGesture;
-        addChild(saveGestureButton);
-
-        recordButton = new Button();
-        recordButton.percentWidth = 100;
-        recordButton.percentHeight = 33;
-        recordButton.text = "Record";
+        recordButton = new FullWidthButton("Record");
+        recordButton.percentHeight = 100;
         recordButton.addEventListener(MouseEvent.MOUSE_DOWN, recordDown);
         recordButton.addEventListener(MouseEvent.MOUSE_UP, recordUp);
         addChild(recordButton);
+
+        enableNoButtonTrainingButton = new FullWidthButton("No Button Training");
+        enableNoButtonTrainingButton.toggle = true;
+        enableNoButtonTrainingButton.addEventListener(UIEvent.CHANGE, noButtonTrainingButtonChanged);
+        addChild(enableNoButtonTrainingButton);
+
+        saveGestureButton = new FullWidthButton("Save Gesture");
+        saveGestureButton.onClick = saveGesture;
+        addChild(saveGestureButton);
+
+        addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
+
+        ScreenManager.onBackPressed.addOnce(backPressed);
+    }
+
+    private function removedFromStage(?e)
+    {
+        ScreenManager.onBackPressed.remove(backPressed);
+        gestureController.disableNoButtonTraining();
+    }
+
+    private function backPressed()
+    {
+        gestureController.clearCurrentGesture();
     }
 
     private function recordDown(?e:MouseEvent)
@@ -78,6 +97,18 @@ class GestureEditScreen extends VBox {
     private function recordUp(?e:MouseEvent)
     {
         gestureController.stopTraining();
+    }
+
+    private function noButtonTrainingButtonChanged(?e)
+    {
+        if(enableNoButtonTrainingButton.selected)
+        {
+            gestureController.enableNoButtonTraining();
+        }
+        else
+        {
+            gestureController.disableNoButtonTraining();
+        }
     }
 
     private function saveGesture(e:UIEvent)

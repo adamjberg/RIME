@@ -2,6 +2,7 @@ package views.screens;
 
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.controls.Text;
+import openfl.events.Event;
 import openfl.events.MouseEvent;
 import views.screens.Screen;
 
@@ -19,22 +20,21 @@ class GestureRecognizeScreen extends Screen {
         this.style.backgroundColor = 0xDDDDDD;
 
         helpText = new Text();
-        helpText.text = "Press anywhere to start gesture";
+        helpText.text = "Gestures will automatically be detected";
         helpText.horizontalAlign = "center";
         addChild(helpText);
 
-        addEventListener(MouseEvent.MOUSE_DOWN, startRecognize);
-        addEventListener(MouseEvent.MOUSE_UP, stopRecognize);
+        addEventListener(Event.ADDED_TO_STAGE, addedToStage);
+        addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
     }
 
-    private function startRecognize(e)
+    private function addedToStage(e)
     {
-        trace("start");
-        gestureController.startRecognizing();
+        gestureController.enableNoButtonDetection();
     }
 
-    private function stopRecognize(e)
+    private function removedFromStage(e)
     {
-        gestureController.stopRecognizing();
+        gestureController.disableNoButtonDetection();
     }
 }

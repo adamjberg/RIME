@@ -1,9 +1,13 @@
 package filters;
 
+import msignal.Signal.Signal0;
 import openfl.events.TimerEvent;
 import openfl.utils.Timer;
 
 class ChangeDetectFilter extends Filter {
+
+    public var onChangeStarted:Signal0 = new Signal0();
+    public var onChangeStopped:Signal0 = new Signal0();
 
     private static var DEFAULT_TIME_IDLE:Float = 190;
 
@@ -43,6 +47,7 @@ class ChangeDetectFilter extends Filter {
             // The value has started changing
             if(isChanging == false)
             {
+                onChangeStarted.dispatch();
                 isChanging = true;
             }
         }
@@ -54,6 +59,7 @@ class ChangeDetectFilter extends Filter {
 
     private function changeStopped(e:TimerEvent)
     {
+        onChangeStopped.dispatch();
         reset();
     }
 }

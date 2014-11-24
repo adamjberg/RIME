@@ -2,9 +2,11 @@ package models.sensors;
 
 class Light extends Sensor {
 
+    public static inline var NAME:String = "Light";
+
     public function new()
     {
-        super("Light", "lig", ["light"]);
+        super(NAME, "lig", ["light"]);
     }
 
     override public function isSupported():Bool

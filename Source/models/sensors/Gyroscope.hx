@@ -2,6 +2,8 @@ package models.sensors;
 
 class Gyroscope extends Sensor {
 
+    public static inline var NAME:String = "Gyroscope";
+
     public var rotationX(get, null):Float;
     function get_rotationX():Float {
         return values[0];
@@ -19,7 +21,7 @@ class Gyroscope extends Sensor {
 
     public function new()
     {
-        super("Gyroscope", "gyr", ["X", "Y", "Z"]);
+        super(NAME, "gyr", ["X", "Y", "Z"]);
     }
 
     override public function isSupported():Bool

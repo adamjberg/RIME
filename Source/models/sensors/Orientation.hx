@@ -2,6 +2,8 @@ package models.sensors;
 
 class Orientation extends Sensor {
 
+    public static inline var NAME:String = "Orientation";
+
     public var orientX(get, null):Float;
     function get_orientX():Float {
         return values[0];
@@ -19,7 +21,7 @@ class Orientation extends Sensor {
 
     public function new()
     {
-        super("Orientation", "ori", ["X", "Y", "Z"]);
+        super(NAME, "ori", ["X", "Y", "Z"]);
     }
 
     override public function isSupported():Bool

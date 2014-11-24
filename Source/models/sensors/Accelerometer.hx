@@ -2,6 +2,8 @@ package models.sensors;
 
 class Accelerometer extends Sensor {
 
+    public static inline var NAME:String = "Accelerometer";
+
     public var accelerationX(get, null):Float;
     function get_accelerationX():Float {
         return values[0];
@@ -19,7 +21,7 @@ class Accelerometer extends Sensor {
 
     public function new()
     {
-        super("Accelerometer", "acc", ["X", "Y", "Z"]);
+        super(NAME, "acc", ["X", "Y", "Z"]);
     }
 
     override public function isSupported():Bool
