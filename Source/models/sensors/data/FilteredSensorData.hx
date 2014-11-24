@@ -14,6 +14,18 @@ class FilteredSensorData extends SensorData {
         super(sensor);
     }
 
+    public function getFilter(filterClass:Dynamic):Filter
+    {
+        for(filter in filters)
+        {
+            if(Std.is(filter, filterClass))
+            {
+                return filter;
+            }
+        }
+        return null;
+    }
+
     override private function update(newValues:Array<Float>)
     {
         var filteredNewValues:Array<Float> = newValues.copy();

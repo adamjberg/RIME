@@ -32,7 +32,7 @@ class SensorDataController {
         }
     }
 
-    public function getFilteredWithName(sensorName:String):SensorData
+    public function getFilteredWithName(sensorName:String):FilteredSensorData
     {
         for(sensorData in defaultFilteredSensorDatas)
         {

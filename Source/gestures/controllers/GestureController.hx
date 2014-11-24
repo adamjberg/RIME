@@ -2,6 +2,8 @@
 
 import controllers.SensorController;
 import controllers.SensorDataController;
+import filters.ChangeDetectFilter;
+import filters.Filter;
 import gestures.models.Classifier;
 import gestures.models.Gesture;
 import gestures.models.GestureModel;
@@ -40,6 +42,7 @@ import sys.io.FileOutput;
     private var analyzing:Bool;
 
     private var sensorDataController:SensorDataController;
+    private var linearAccelFilteredData:FilteredSensorData;
     
     public function new(sensorDataController:SensorDataController)
     {
@@ -53,7 +56,7 @@ import sys.io.FileOutput;
 
         setupGesturesDirectory();
 
-        var linearAccelFilteredData = sensorDataController.getFilteredWithName(LinearAccelerometer.NAME);
+        linearAccelFilteredData = sensorDataController.getFilteredWithName(LinearAccelerometer.NAME);
         if(linearAccelFilteredData != null)
         {
             linearAccelFilteredData.onUpdate.add(update);
@@ -61,6 +64,26 @@ import sys.io.FileOutput;
         else
         {
             trace("Can't find Linear Accelerometer");
+        }
+    }
+
+    public function enableNoButtonDetection()
+    {
+        if(linearAccelFilteredData != null)
+        {
+            var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
+            changeDetectFilter.onChangeStarted.add(startRecognizing);
+            changeDetectFilter.onChangeStopped.add(stopRecognizing);
+        }
+    }
+
+    public function disableNoButtonDetection()
+    {
+        if(linearAccelFilteredData != null)
+        {
+            var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
+            changeDetectFilter.onChangeStarted.remove(startRecognizing);
+            changeDetectFilter.onChangeStopped.remove(stopRecognizing);
         }
     }
 
@@ -154,8 +177,8 @@ import sys.io.FileOutput;
     {
         var gestureModel:GestureModel = getGestureModels()[id];
 
-        Haptic.vibrate(0, 250);
-        PopupManager.instance.showBusy(gestureModel.name, 500);
+        //Haptic.vibrate(0, 250);
+        PopupManager.instance.showBusy(gestureModel.name, 500, "Gesture Detected!");
 
         trace("Firing Gesture: " + gestureModel.name + " prob: " + prob);
         onGestureDetected.dispatch(id, prob);
