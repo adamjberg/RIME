@@ -20,7 +20,7 @@ class GestureRecognizeScreen extends Screen {
         this.style.backgroundColor = 0xDDDDDD;
 
         helpText = new Text();
-        helpText.text = "Press anywhere to start gesture";
+        helpText.text = "Gestures will automatically be detected";
         helpText.horizontalAlign = "center";
         addChild(helpText);
 
@@ -36,16 +36,5 @@ class GestureRecognizeScreen extends Screen {
     private function removedFromStage(e)
     {
         gestureController.disableNoButtonDetection();
-    }
-
-    private function startRecognize(e)
-    {
-        trace("start");
-        gestureController.startRecognizing();
-    }
-
-    private function stopRecognize(e)
-    {
-        gestureController.stopRecognizing();
     }
 }
