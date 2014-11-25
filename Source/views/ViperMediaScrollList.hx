@@ -23,7 +23,7 @@ class ViperMediaScrollList extends ScrollView {
         super();
         this.viperMediaController = viperMediaController;
         this.mappingController = mappingController;
-        this.viperMediaList = viperMediaController.activeMediaList;
+        this.viperMediaList = viperMediaController.mediaList;
 
         this._scrollSensitivity = 1;
         this.style.borderSize = 0;
@@ -56,7 +56,7 @@ class ViperMediaScrollList extends ScrollView {
     private function itemClicked(e:UIEvent)
     {
         var viperMediaListItem:ViperMediaListItem = cast(e.component, ViperMediaListItem);
-        ScreenManager.push(new EditMediaScreen(mappingController, viperMediaListItem.media));
+        ScreenManager.push(new EditMediaScreen(viperMediaController, mappingController, viperMediaListItem.media));
     }
 
     private function deleteViperMedia(viperMedia:ViperMedia)

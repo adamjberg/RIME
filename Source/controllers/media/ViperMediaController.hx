@@ -2,9 +2,11 @@ package controllers.media;
 
 import controllers.Client;
 import controllers.MappingController;
+import database.Database;
 import models.commands.ViperCreateCommand;
 import models.commands.ViperDeleteCommand;
 import models.commands.ViperCommand;
+import models.mappings.Mapping;
 import osc.OscMessage;
 import models.media.ViperMedia;
 import msignal.Signal.Signal0;
@@ -17,7 +19,7 @@ class ViperMediaController {
 
     public var onUpdated:Signal0 = new Signal0();
 
-    public var activeMediaList:Array<ViperMedia> = new Array<ViperMedia>();
+    public var mediaList:Array<ViperMedia> = new Array<ViperMedia>();
 
     public var fileList:Array<String> = new Array<String>();
 
@@ -28,6 +30,38 @@ class ViperMediaController {
     {
         this.client = client;
         this.mappingController = mappingController;
+        loadMediaListFromDB();
+    }
+
+    private function loadMediaListFromDB()
+    {
+        var viperMediaListObj:Array<Dynamic> = Database.instance.db.viperMedia;
+        if(viperMediaListObj == null)
+        {
+            return;
+        }
+
+        for(viperMediaObj in viperMediaListObj)
+        {
+            var media:ViperMedia = new ViperMedia();
+            media.id = viperMediaObj.id;
+            media.filename = viperMediaObj.filename;
+            media.type = viperMediaObj.type;
+            media.name = viperMediaObj.name;
+            media.xPos = viperMediaObj.xPos;
+            media.yPos = viperMediaObj.yPos;
+
+            var mapping:Mapping = mappingController.getMappingWithName(viperMediaObj.mapping);
+            media.mapping = mapping;
+            addMedia(media);
+
+            // If the medias ID is larger than our current id we need to
+            // Set the current ID to a bigger number to prevent ID clashes
+            if(media.id >= currentId)
+            {
+                currentId = media.id + 1;
+            }
+        }
     }
 
     public function getMediaFromFilename(fileName:String):ViperMedia
@@ -37,18 +71,42 @@ class ViperMediaController {
         return media;
     }
 
+    public function createMediaOnViper(media:ViperMedia)
+    {
+        var command:ViperCreateCommand = new ViperCreateCommand(media.id);
+        command.addParam(media.type, media.filename);
+        command.addParam("posX", media.xPos);
+        command.addParam("posY", media.yPos);
+        client.send(command.fillOscMessage());
+
+        if(media.mapping != null)
+        {
+            media.mapping.addTarget(media.id);
+        }
+    }
+
+    public function removeMediaFromViper(media:ViperMedia)
+    {
+        if(media != null)
+        {
+            mappingController.removeIdFromAllMappings(media.id);
+            var command:ViperDeleteCommand = new ViperDeleteCommand(media.id);
+            client.send(command.fillOscMessage());
+
+            if(media.mapping != null)
+            {
+                media.mapping.removeTarget(media.id);
+            }
+        }
+    }
+
     public function addMedia(media:ViperMedia)
     {
         if(media != null)
         {
-            var command:ViperCreateCommand = new ViperCreateCommand(media.id);
-            command.addParam(media.type, media.filename);
-            command.addParam("posX", media.xPos);
-            command.addParam("posY", media.yPos);
-            client.send(command.fillOscMessage());
-
-            activeMediaList.push(media);
+            mediaList.push(media);
             onUpdated.dispatch();
+            writeToDatabase();
         }
     }
 
@@ -56,13 +114,36 @@ class ViperMediaController {
     {
         if(media != null)
         {
-            mappingController.removeIdFromAllMappings(media.id);
-            var command:ViperDeleteCommand = new ViperDeleteCommand(media.id);
-            client.send(command.fillOscMessage());
+            removeMediaFromViper(media);
             
-            activeMediaList.remove(media);
+            mediaList.remove(media);
             onUpdated.dispatch();
+            writeToDatabase();
         }
+    }
+
+    private function writeToDatabase()
+    {
+        var viperMediaListObj:Array<Dynamic> = new Array<Dynamic>();
+
+        for(media in mediaList)
+        {
+            var viperMediaObj:Dynamic = {};
+            viperMediaObj.name = media.name;
+            viperMediaObj.filename = media.filename;
+            viperMediaObj.id = media.id;
+            viperMediaObj.type = media.type;
+            viperMediaObj.xPos = media.xPos;
+            viperMediaObj.yPos = media.yPos;
+
+            if(media.mapping != null)
+            {
+                viperMediaObj.mapping = media.mapping.name;
+            }
+            viperMediaListObj.push(viperMediaObj);
+        }
+
+        Database.instance.writeJSONObj("viperMedia", viperMediaListObj);
     }
 
 // Requesting media from Viper server

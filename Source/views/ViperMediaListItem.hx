@@ -12,7 +12,7 @@ class ViperMediaListItem extends HBox {
 
     public var media:ViperMedia;
 
-    private var idField:Text;
+    private var nameField:Text;
     private var filenameField:Text;
     private var deleteButton:Button;
 
@@ -26,9 +26,9 @@ class ViperMediaListItem extends HBox {
         style.backgroundColor = 0xFFFFFF;
         style.padding = 5;
 
-        idField = new Text();
-        addChild(idField);
-        idField.text = "ID: " + Std.string(media.id);
+        nameField = new Text();
+        addChild(nameField);
+        nameField.text = media.name;
 
         filenameField = new Text();
         filenameField.percentWidth = 100;

@@ -9,12 +9,16 @@ class ViperMediaPopupContent extends VBox {
     private var yPos:LabelledTextInput;
     private var type:LabelledTextInput;
     private var fileName:LabelledTextInput;
+    private var name:LabelledTextInput;
 
     public function new()
     {
         super();
 
         percentWidth = 100;
+
+        name = new LabelledTextInput("Name:");
+        addChild(name);
 
         type = new LabelledTextInput("Type:");
         type.setText("image");
@@ -31,6 +35,11 @@ class ViperMediaPopupContent extends VBox {
 
         addChild(xPos);
         addChild(yPos);
+    }
+
+    public function getName():String
+    {
+        return name.getText();
     }
 
     public function getX():Int
