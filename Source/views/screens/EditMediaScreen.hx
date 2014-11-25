@@ -45,11 +45,14 @@ class EditMediaScreen extends Screen {
                     text: mappingController.mappings[i].name
                 }
             );
-            if(mappingController.mappings[i].name == viperMedia.mapping.name)
+            if(viperMedia.mapping != null)
             {
-                // Select the mapping with the same name
-                // Plus one because we added the none option
-                mappingList.selectedIndex = i + 1;
+                if(mappingController.mappings[i].name == viperMedia.mapping.name)
+                {
+                    // Select the mapping with the same name
+                    // Plus one because we added the none option
+                    mappingList.selectedIndex = i + 1;
+                }
             }
         }
 

@@ -36,6 +36,10 @@ class ViperMediaController {
     private function loadMediaListFromDB()
     {
         var viperMediaListObj:Array<Dynamic> = Database.instance.db.viperMedia;
+        if(viperMediaListObj == null)
+        {
+            return;
+        }
 
         for(viperMediaObj in viperMediaListObj)
         {
@@ -75,7 +79,10 @@ class ViperMediaController {
         command.addParam("posY", media.yPos);
         client.send(command.fillOscMessage());
 
-        media.mapping.addTarget(media.id);
+        if(media.mapping != null)
+        {
+            media.mapping.addTarget(media.id);
+        }
     }
 
     public function removeMediaFromViper(media:ViperMedia)
@@ -85,7 +92,11 @@ class ViperMediaController {
             mappingController.removeIdFromAllMappings(media.id);
             var command:ViperDeleteCommand = new ViperDeleteCommand(media.id);
             client.send(command.fillOscMessage());
-            media.mapping.removeTarget(media.id);
+
+            if(media.mapping != null)
+            {
+                media.mapping.removeTarget(media.id);
+            }
         }
     }
 
@@ -95,6 +106,7 @@ class ViperMediaController {
         {
             mediaList.push(media);
             onUpdated.dispatch();
+            writeToDatabase();
         }
     }
 
@@ -106,7 +118,32 @@ class ViperMediaController {
             
             mediaList.remove(media);
             onUpdated.dispatch();
+            writeToDatabase();
         }
+    }
+
+    private function writeToDatabase()
+    {
+        var viperMediaListObj:Array<Dynamic> = new Array<Dynamic>();
+
+        for(media in mediaList)
+        {
+            var viperMediaObj:Dynamic = {};
+            viperMediaObj.name = media.name;
+            viperMediaObj.filename = media.filename;
+            viperMediaObj.id = media.id;
+            viperMediaObj.type = media.type;
+            viperMediaObj.xPos = media.xPos;
+            viperMediaObj.yPos = media.yPos;
+
+            if(media.mapping != null)
+            {
+                viperMediaObj.mapping = media.mapping.name;
+            }
+            viperMediaListObj.push(viperMediaObj);
+        }
+
+        Database.instance.writeJSONObj("viperMedia", viperMediaListObj);
     }
 
 // Requesting media from Viper server

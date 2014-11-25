@@ -24,6 +24,8 @@ class Database {
 
     private static inline var SAVE_INTERVAL_MS:Int = 5000;
 
+    private static inline var CURRENT_DATABASE_VERSION:Int = 1;
+
     private static var userDatabaseFileName:String = 
     #if (ios)
         SystemPath.documentsDirectory + "/rimedb.json";
@@ -51,8 +53,18 @@ class Database {
             try
             {
                 db = JsonParser.parse(File.getContent(userDatabaseFileName));
-                trace("User Database successfully loaded");
-                return;
+                
+
+                if(db.version == CURRENT_DATABASE_VERSION)
+                {
+                    trace("User Database successfully loaded");
+                    return;
+                }
+                else
+                {
+                    trace("User Database is out of date, loading default");
+                }
+
             }
             catch(msg:String)
             {
@@ -108,6 +120,12 @@ class Database {
         dirty = true;
         db.serverInfo.ipAddress = serverInfo.ipAddress;
         db.serverInfo.portNumber = serverInfo.portNumber;
+    }
+
+    public function writeJSONObj(fieldName:String, value:Dynamic)
+    {
+        Reflect.setField(db, fieldName, value);
+        dirty = true;
     }
 
     public function writeToFile(?e:TimerEvent)
