@@ -22,6 +22,17 @@ class SensorData {
         return sensor.name;
     }
 
+    public function getMagnitude():Float
+    {
+        var mag:Float = 0;
+        for(val in values)
+        {
+            mag += Math.pow(val, 2);
+        }
+        mag = Math.sqrt(mag);
+        return mag;
+    }
+
     private function update(newValues:Array<Float>)
     {
         var hasChanged:Bool = false;

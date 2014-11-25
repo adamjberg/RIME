@@ -15,10 +15,16 @@ class SensorMappingData extends MappingData {
     public var targetFields:Array<String>;
     public var maxDesireds:Array<Float>;
     public var minDesireds:Array<Float>;
+    public var absoluteValue:Bool;
+    public var magnitude:Bool;
 
     private var sendTimer:Timer;
 
-    public function new(sensorData:SensorData, intervalInMs:Int, valueIndex:Int, targetFields:Array<String>, minDesireds:Array<Float>, maxDesireds:Array<Float>)
+    public function new(sensorData:SensorData, intervalInMs:Int,
+            valueIndex:Int, targetFields:Array<String>,
+            minDesireds:Array<Float>, maxDesireds:Array<Float>,
+            absoluteValue:Bool, magnitude:Bool
+    )
     {
         super();
 
@@ -28,6 +34,9 @@ class SensorMappingData extends MappingData {
         this.targetFields = targetFields;
         this.minDesireds = minDesireds;
         this.maxDesireds = maxDesireds;
+            
+        this.absoluteValue = absoluteValue;
+        this.magnitude = magnitude;
 
         if(isValid() == false)
         {
@@ -86,7 +95,16 @@ class SensorMappingData extends MappingData {
     {
         var sensorMin:Float = sensorData.sensor.minValues[valueIndex];
         var sensorMax:Float = sensorData.sensor.maxValues[valueIndex];
-        return ((sensorData.values[valueIndex] - sensorMin) / (sensorMax - sensorMin)) * (maxDesireds[index] - minDesireds[index]) + minDesireds[index];
+        var valToUse = sensorData.values[valueIndex];
+        if(magnitude == true)
+        {
+            valToUse = sensorData.getMagnitude();
+        }
+        else if(absoluteValue == true)
+        {
+            valToUse = Math.abs(valToUse);
+        }
+        return ((valToUse - sensorMin) / (sensorMax - sensorMin)) * (maxDesireds[index] - minDesireds[index]) + minDesireds[index];
     }
 
     private function isValueIndexValid():Bool
