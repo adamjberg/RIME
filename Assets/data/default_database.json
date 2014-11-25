@@ -59,5 +59,16 @@
                 }
             ]
         }
+    ],
+    "viperMedia": [
+        {
+            "id":1,
+            "name":"fish1",
+            "filename":"fish1.gif",
+            "type":"image",
+            "xPox":0,
+            "yPos":0,
+            "mapping":"Orientation - green"
+        }
     ]
 }

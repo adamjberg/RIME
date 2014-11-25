@@ -23,7 +23,7 @@ class ViperMediaScrollList extends ScrollView {
         super();
         this.viperMediaController = viperMediaController;
         this.mappingController = mappingController;
-        this.viperMediaList = viperMediaController.activeMediaList;
+        this.viperMediaList = viperMediaController.mediaList;
 
         this._scrollSensitivity = 1;
         this.style.borderSize = 0;

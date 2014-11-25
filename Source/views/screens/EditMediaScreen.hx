@@ -23,26 +23,34 @@ class EditMediaScreen extends Screen {
         mappingList = new ListSelector();
         mappingList.text = "Mapping";
         mappingList.height = 50;
-            mappingList.percentWidth = 100;
+        mappingList.percentWidth = 100;
 
         addChild(mappingList);
 
         this.mappingController = mappingController;
         this.viperMedia = viperMedia;
 
-        mappingList.dataSource.add(
-                {
-                    text: "none"
-                }
-            );
+        mappingList.listSize = mappingController.mappings.length + 1;
 
-        for(mapping in mappingController.mappings)
+        mappingList.dataSource.add(
+            {
+                text: "none"
+            }
+        );
+
+        for(i in 0...mappingController.mappings.length)
         {
             mappingList.dataSource.add(
                 {
-                    text: mapping.name
+                    text: mappingController.mappings[i].name
                 }
             );
+            if(mappingController.mappings[i].name == viperMedia.mapping.name)
+            {
+                // Select the mapping with the same name
+                // Plus one because we added the none option
+                mappingList.selectedIndex = i + 1;
+            }
         }
 
         saveButton = new FullWidthButton("Save");
