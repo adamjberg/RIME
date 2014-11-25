@@ -2,7 +2,7 @@ package views.screens;
 
 import controllers.MappingController;
 import controllers.ScreenManager;
-import haxe.ui.toolkit.controls.selection.ListSelector;
+import haxe.ui.toolkit.controls.selection.ListSelector; 
 import haxe.ui.toolkit.events.UIEvent;
 import models.mappings.Mapping;
 import models.media.ViperMedia;
@@ -12,7 +12,7 @@ class EditMediaScreen extends Screen {
 
     private var mappingController:MappingController;
     private var viperMedia:ViperMedia;
-    private var mappingList:ListSelector;
+    private var mappingList:ListSelector;   
 
     private var saveButton:FullWidthButton;
 
@@ -23,7 +23,7 @@ class EditMediaScreen extends Screen {
         mappingList = new ListSelector();
         mappingList.text = "Mapping";
         mappingList.height = 50;
-            mappingList.percentWidth = 100;
+        mappingList.percentWidth = 100;
 
         addChild(mappingList);
 

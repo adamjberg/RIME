@@ -1,14 +1,15 @@
 package views;
-
 import haxe.ui.toolkit.containers.VBox;
 import views.controls.LabelledTextInput;
+import haxe.ui.toolkit.controls.selection.ListSelector;
+import controllers.media.ViperMediaController;
 
 class ViperMediaPopupContent extends VBox {
-
+    
     private var xPos:LabelledTextInput;
     private var yPos:LabelledTextInput;
     private var type:LabelledTextInput;
-    private var fileName:LabelledTextInput;
+    private var fileName:ListSelector;
 
     public function new()
     {
@@ -20,8 +21,24 @@ class ViperMediaPopupContent extends VBox {
         type.setText("image");
         addChild(type);
 
-        fileName = new LabelledTextInput("Filename:");
+        fileName = new ListSelector();
+        fileName.text = "Files";
+        fileName.percentWidth = 100;
         addChild(fileName);
+
+        fileName.dataSource.add(
+                {
+                    text: "none"
+                }
+            );
+
+        for (i in ViperMediaController.fileList.length)
+        {
+            fileName.dataSource.add(
+                {
+                    text: ViperMediaController.fileList[i]
+                });
+        }
 
         xPos = new LabelledTextInput("X:");
         xPos.setText("0");
