@@ -43,13 +43,13 @@ class JsonMappingReader {
                     var sensorName:String = mappingDataObj.sensor;
                     var sensorData:SensorData = null;
                     var staticParameters:Array<ViperCommand> = getArrayOfStaticParameters(mappingDataObj.staticParameters); 
-                    if(mappingDataObj.rawData != null && mappingDataObj.rawData == "true")
+                    if(mappingDataObj.filtered != null && mappingDataObj.filtered == "true")
                     {
-                        sensorData = sensorDataController.getRawWithName(sensorName);
+                        sensorData = sensorDataController.getFilteredWithName(sensorName);
                     }
                     else
                     {
-                        sensorData = sensorDataController.getFilteredWithName(sensorName);
+                        sensorData = sensorDataController.getRawWithName(sensorName);
                     }
 
                     if(sensorData != null)
@@ -63,7 +63,9 @@ class JsonMappingReader {
                             mappingDataObj.valueIndex,
                             targetFields,
                             minOutputs,
-                            maxOutputs
+                            maxOutputs,
+                            mappingDataObj.absoluteValue,
+                            mappingDataObj.magnitude
                         );
 
                          if(staticParameters != null){
