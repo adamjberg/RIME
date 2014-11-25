@@ -83,6 +83,7 @@ class Database {
             {
                 var dbText:String = Assets.getText(defaultDBLocation);                
                 db = JsonParser.parse(dbText);
+                dirty = true;
                 trace("Default database successfully loaded");
             }
             catch(msg:String)
