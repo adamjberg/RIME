@@ -1,6 +1,7 @@
 package views.screens;
 
 import controllers.MappingController;
+import controllers.media.ViperMediaController;
 import controllers.ScreenManager;
 import haxe.ui.toolkit.controls.selection.ListSelector;
 import haxe.ui.toolkit.events.UIEvent;
@@ -14,9 +15,13 @@ class EditMediaScreen extends Screen {
     private var viperMedia:ViperMedia;
     private var mappingList:ListSelector;
 
+    private var viperMediaController:ViperMediaController;
+
+    private var viperCreateButton:FullWidthButton;
+    private var viperDeleteButton:FullWidthButton;
     private var saveButton:FullWidthButton;
 
-    public function new(?mappingController:MappingController, ?viperMedia:ViperMedia)
+    public function new(?viperMediaController:ViperMediaController, ?mappingController:MappingController, ?viperMedia:ViperMedia)
     {
         super();
 
@@ -27,6 +32,7 @@ class EditMediaScreen extends Screen {
 
         addChild(mappingList);
 
+        this.viperMediaController = viperMediaController;
         this.mappingController = mappingController;
         this.viperMedia = viperMedia;
 
@@ -56,9 +62,27 @@ class EditMediaScreen extends Screen {
             }
         }
 
+        viperCreateButton = new FullWidthButton("Create On Viper");
+        viperCreateButton.onClick = viperCreatePressed;
+        addChild(viperCreateButton);
+
+        viperDeleteButton = new FullWidthButton("Delete On Viper");
+        viperDeleteButton.onClick = viperDeletePressed;
+        addChild(viperDeleteButton);
+
         saveButton = new FullWidthButton("Save");
         saveButton.onClick = saveButtonPressed;
         addChild(saveButton);
+    }
+
+    private function viperCreatePressed(e:UIEvent)
+    {
+        viperMediaController.createMediaOnViper(viperMedia);
+    }
+
+    private function viperDeletePressed(e:UIEvent)
+    {
+        viperMediaController.removeMediaFromViper(viperMedia);
     }
 
     // TODO: this is a little sloppy

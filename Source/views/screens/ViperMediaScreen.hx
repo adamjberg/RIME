@@ -56,6 +56,7 @@ class ViperMediaScreen extends Screen {
                     media.type = viperMediaPopupContent.getType();
                     media.xPos = viperMediaPopupContent.getX();
                     media.yPos = viperMediaPopupContent.getY();
+                    media.name = viperMediaPopupContent.getName();
                     viperMediaController.addMedia(media);
                 }
             }
