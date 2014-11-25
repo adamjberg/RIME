@@ -19,7 +19,6 @@ class EditMediaScreen extends Screen {
 
     private var viperCreateButton:FullWidthButton;
     private var viperDeleteButton:FullWidthButton;
-    private var saveButton:FullWidthButton;
 
     public function new(?viperMediaController:ViperMediaController, ?mappingController:MappingController, ?viperMedia:ViperMedia)
     {
@@ -62,6 +61,8 @@ class EditMediaScreen extends Screen {
             }
         }
 
+        mappingList.addEventListener(UIEvent.CHANGE, mappingSelected);
+
         viperCreateButton = new FullWidthButton("Create On Viper");
         viperCreateButton.onClick = viperCreatePressed;
         addChild(viperCreateButton);
@@ -69,24 +70,10 @@ class EditMediaScreen extends Screen {
         viperDeleteButton = new FullWidthButton("Delete On Viper");
         viperDeleteButton.onClick = viperDeletePressed;
         addChild(viperDeleteButton);
-
-        saveButton = new FullWidthButton("Save");
-        saveButton.onClick = saveButtonPressed;
-        addChild(saveButton);
-    }
-
-    private function viperCreatePressed(e:UIEvent)
-    {
-        viperMediaController.createMediaOnViper(viperMedia);
-    }
-
-    private function viperDeletePressed(e:UIEvent)
-    {
-        viperMediaController.removeMediaFromViper(viperMedia);
     }
 
     // TODO: this is a little sloppy
-    private function saveButtonPressed(e:UIEvent)
+    private function mappingSelected(e:UIEvent)
     {
         for(mapping in mappingController.mappings)
         {
@@ -102,6 +89,15 @@ class EditMediaScreen extends Screen {
         {
             trace("no mapping found with name: " + mappingList.text);
         }
-        ScreenManager.pop();
+    }
+
+    private function viperCreatePressed(e:UIEvent)
+    {
+        viperMediaController.createMediaOnViper(viperMedia);
+    }
+
+    private function viperDeletePressed(e:UIEvent)
+    {
+        viperMediaController.removeMediaFromViper(viperMedia);
     }
 }
