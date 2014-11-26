@@ -43,7 +43,7 @@ class ViperMediaScreen extends Screen {
 
     private function newMediaPressed(e:UIEvent)
     {
-        var viperMediaPopupContent:ViperMediaPopupContent = new ViperMediaPopupContent();
+        var viperMediaPopupContent:ViperMediaPopupContent = new ViperMediaPopupContent(viperMediaController);
         var config:Dynamic = {};
         config.buttons = 0;
         config.buttons |= PopupButton.CONFIRM;
@@ -66,6 +66,5 @@ class ViperMediaScreen extends Screen {
     private function requestViperMedia(e:UIEvent)
     {
         viperMediaController.requestMedia();
-        removeChild(requestViperBtn);
     }
 }

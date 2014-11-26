@@ -10,12 +10,19 @@ class ViperMediaPopupContent extends VBox {
     private var yPos:LabelledTextInput;
     private var type:LabelledTextInput;
     private var fileName:ListSelector;
+    private var name:LabelledTextInput;
 
-    public function new()
+    private var viperMediaController:ViperMediaController;
+
+    public function new(?viperMediaController:ViperMediaController)
     {
+        this.viperMediaController = viperMediaController;
         super();
 
         percentWidth = 100;
+
+        name = new LabelledTextInput("Name:");
+        addChild(name);
 
         type = new LabelledTextInput("Type:");
         type.setText("image");
@@ -26,17 +33,11 @@ class ViperMediaPopupContent extends VBox {
         fileName.percentWidth = 100;
         addChild(fileName);
 
-        fileName.dataSource.add(
-                {
-                    text: "none"
-                }
-            );
-
-        for (i in ViperMediaController.fileList.length)
+        for (i in 0...viperMediaController.fileList.length)
         {
             fileName.dataSource.add(
                 {
-                    text: ViperMediaController.fileList[i]
+                    text: viperMediaController.fileList[i]
                 });
         }
 
@@ -65,8 +66,13 @@ class ViperMediaPopupContent extends VBox {
         return type.getText();
     }
 
+    public function getName():String
+    {
+        return name.getText();
+    }
+
     public function getFileName():String
     {
-        return fileName.getText();
+        return fileName.text;
     }
 }

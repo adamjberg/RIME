@@ -64,7 +64,7 @@ class Client {
         trace("requested receive");
 
         // Allocate bytes to be populated by Viper's OSC message to RIME
-        trace("server setNonBlocking true: " + socket.setNonBlocking(true));
+        //trace("server setNonBlocking true: " + socket.setNonBlocking(true));
         var b = Bytes.alloc(500);
         // Opens the socket to receive a message
         trace("server receive: " + socket.receive(b));
