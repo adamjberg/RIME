@@ -31,7 +31,7 @@ class ViperMediaController {
         this.client = client;
         this.mappingController = mappingController;
         loadMediaListFromDB();
-        fileList.push("none");
+        fileList.push("None");
     }
 
     private function loadMediaListFromDB()
@@ -158,38 +158,51 @@ class ViperMediaController {
         client.send(command.fillOscMessage());
 
         // Preps RIME to receive the message from Viper
-        client.setTimeoutReceive(5);
         var str = client.receive(message);
 
 
         trace ("String is " + str);
         trace("String is " + str.length + " long.");
 
-        // Parses continuous string into an array of strings to separate names
-        var clipName = "";
-        var x = 0;
-        for(x in 0...str.length)
+        if (str.length != 0)
         {
-            // Viper's string Uses "," as separator to indicate different objects, use as indicator to move on to next item
-            if (str.charAt(x) != ",")
-                clipName += str.charAt(x);
-            else
+            // Cleans current fileList
+            for (i in 0...fileList.length)
             {
-            trace(clipName);
-            fileList.push(clipName);
-            clipName = "";
+                fileList.shift();
             }
+
+            // Parses continuous string into an array of strings to separate names
+            var clipName = "";
+            var x = 0;
+            for(x in 0...str.length)
+            {
+                // Viper's string Uses "," as separator to indicate different objects, use as indicator to move on to next item
+                if (str.charAt(x) != ",")
+                    clipName += str.charAt(x);
+                else
+                {
+                trace(clipName);
+
+                fileList.push(clipName);
+                clipName = "";
+                }
+            }
+
+            trace("FileList: ");
+            trace(fileList);
+            trace("");
+
+            // Removes the first two objects in the list, as they are just the ID and identifier, not needed in our array.
+            fileList.shift();
+            fileList.shift();
+            trace("Removed first two elements: ");
+            trace(fileList);
         }
-
-        trace("FileList: ");
-        trace(fileList);
-        trace("");
-
-        // Removes the first two objects in the list, as they are just the ID and identifier, not needed in our array.
-        fileList.shift();
-        fileList.shift();
-        fileList.shift();
-        trace("Removed first three elements: ");
-        trace(fileList);
+        else
+        {
+            trace("No response");
+        }
+        client.connect();
     }
 }

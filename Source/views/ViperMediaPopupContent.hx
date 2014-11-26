@@ -3,6 +3,8 @@ import haxe.ui.toolkit.containers.VBox;
 import views.controls.LabelledTextInput;
 import haxe.ui.toolkit.controls.selection.ListSelector;
 import controllers.media.ViperMediaController;
+import haxe.ui.toolkit.events.UIEvent;
+
 
 class ViperMediaPopupContent extends VBox {
     
@@ -49,7 +51,11 @@ class ViperMediaPopupContent extends VBox {
 
         addChild(xPos);
         addChild(yPos);
+
+         fileName.addEventListener(UIEvent.CHANGE, fileNameSelected);
     }
+
+
 
     public function getX():Int
     {
@@ -74,5 +80,26 @@ class ViperMediaPopupContent extends VBox {
     public function getFileName():String
     {
         return fileName.text;
+    }
+
+    // Code for UIEVENT when fileNameList is selected goes here... working off EditmediaScreen mappingSelected code
+    // which I'm assuming is what creates the isolation of the popup list
+    private function fileNameSelected(e:UIEvent)
+    {
+
+        /*for(mapping in mappingController.mappings)
+        {
+            mapping.removeTarget(viperMedia.id);
+        }
+
+        var selectedMapping:Mapping = mappingController.getMappingWithName(mappingList.text);
+        if(selectedMapping != null)
+        {
+            selectedMapping.addTarget(viperMedia.id);
+        }
+        else
+        {
+            trace("no mapping found with name: " + mappingList.text);
+        }*/
     }
 }
