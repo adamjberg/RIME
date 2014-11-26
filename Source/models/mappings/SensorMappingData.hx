@@ -81,30 +81,39 @@ class SensorMappingData extends MappingData {
     override public function getViperCommands():Array<ViperCommand>
     {
         clearViperCommands();
+        var command:ViperCommand = new ViperCommand();
+        command.method = method;
         for(i in 0...targetFields.length)
         {
-            var command:ViperCommand = new ViperCommand();
-            command.method = method;
             command.addParam(targetFields[i], getData(i));
-            addViperCommand(command);
         }
+        addViperCommand(command);
         return super.getViperCommands();
     }
 
     public function getData(index:Int):Float
     {
-        var sensorMin:Float = sensorData.sensor.minValues[valueIndex];
-        var sensorMax:Float = sensorData.sensor.maxValues[valueIndex];
+        var minValue:Float = sensorData.sensor.minValues[valueIndex];
+        var maxValue:Float = sensorData.sensor.maxValues[valueIndex];
         var valToUse = sensorData.values[valueIndex];
         if(magnitude == true)
         {
             valToUse = sensorData.getMagnitude();
+            minValue = 0;
+            maxValue = 0;
+
+            for(maxVal in sensorData.sensor.maxValues)
+            {
+                maxValue += Math.pow(maxVal, 2);
+            }
+            maxValue = Math.sqrt(maxValue);
         }
         else if(absoluteValue == true)
         {
             valToUse = Math.abs(valToUse);
+            minValue = 0;
         }
-        return ((valToUse - sensorMin) / (sensorMax - sensorMin)) * (maxDesireds[index] - minDesireds[index]) + minDesireds[index];
+        return ((valToUse - minValue) / (maxValue - minValue)) * (maxDesireds[index] - minDesireds[index]) + minDesireds[index];
     }
 
     private function isValueIndexValid():Bool
