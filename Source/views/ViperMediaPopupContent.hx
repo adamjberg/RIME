@@ -33,6 +33,7 @@ class ViperMediaPopupContent extends VBox {
         fileName = new ListSelector();
         fileName.text = "Files";
         fileName.percentWidth = 100;
+        fileName.applyStyle();
         addChild(fileName);
 
         for (i in 0...viperMediaController.fileList.length)
@@ -87,12 +88,12 @@ class ViperMediaPopupContent extends VBox {
     private function fileNameSelected(e:UIEvent)
     {
 
-        /*for(mapping in mappingController.mappings)
+        /*for(fileName in )
         {
-            mapping.removeTarget(viperMedia.id);
+            mapping.removeTarget(ViperMediaPopupContent);
         }
 
-        var selectedMapping:Mapping = mappingController.getMappingWithName(mappingList.text);
+        /*var selectedMapping:Mapping = mappingController.getMappingWithName(mappingList.text);
         if(selectedMapping != null)
         {
             selectedMapping.addTarget(viperMedia.id);

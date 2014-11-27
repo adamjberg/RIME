@@ -203,6 +203,7 @@ class ViperMediaController {
         {
             trace("No response");
         }
+        client.disconnect();
         client.connect();
     }
 }

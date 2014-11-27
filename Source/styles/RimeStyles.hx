@@ -29,5 +29,12 @@ class RimeStyles extends Styles {
                 }
             )
         );
+        addStyle("Popup", new Style
+            (
+                {
+                    height: Math.round((Client.instance.windowHeight * 0.9) / Toolkit.scaleFactor)
+                }
+            )
+        );
     }
 }
