@@ -16,7 +16,10 @@ before_install:
   - haxelib install swf
   - haxelib install layout
   - haxelib install format
+  - haxelib install haxeui
   - haxelib dev RIME $(pwd)
+  - haxelib dev hxudp $(pwd)/hxudp
+  - haxelib dev SensorExtension $(pwd)/SensorExtension
 
 script:
   - haxelib run openfl build $(pwd) neko
