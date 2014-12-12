@@ -1,0 +1,23 @@
+language: c++
+
+before_install:
+  - sudo add-apt-repository ppa:eyecreate/haxe -y
+  - sudo apt-get update
+  - sudo apt-get install haxe -y --force-yes
+  - sudo apt-get install g++-multilib gcc-multilib
+  - mkdir ~/haxelib
+  - haxelib setup ~/haxelib
+  - haxelib install openfl
+  - haxelib install lime
+  - haxelib install lime-tools
+  - haxelib install hxcpp
+  - haxelib install openfl-native
+  - haxelib install actuate
+  - haxelib install swf
+  - haxelib install layout
+  - haxelib install format
+  - haxelib dev RIME $(pwd)
+
+script:
+  - haxelib run openfl build $(pwd) neko
+  - haxelib run openfl build $(pwd) linux
