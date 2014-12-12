@@ -17,6 +17,7 @@ before_install:
   - haxelib install layout
   - haxelib install format
   - haxelib install haxeui
+  - haxelib install msignal
   - haxelib dev RIME $(pwd)
   - haxelib dev hxudp $(pwd)/hxudp
   - haxelib dev SensorExtension $(pwd)/SensorExtension
