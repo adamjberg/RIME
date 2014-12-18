@@ -11,9 +11,9 @@
 	
 	<haxelib name="openfl" />
 	<haxelib name="haxeui" />
-	<haxelib name="hxudp" />
 	<haxelib name="msignal" />
-	<haxelib name="SensorExtension"/>
+	<include path="hxudp" />
+	<include path="SensorExtension"/>
 	
 	<assets path="Assets" rename="assets" exclude="openfl.svg" />
 	<icon path="Assets/openfl.svg" />
