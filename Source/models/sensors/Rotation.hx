@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Rotation extends Sensor {
 
     public static inline var NAME:String = "Rotation";
@@ -11,12 +13,12 @@ class Rotation extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isRotationSupported();
+        return Sensors.isRotationSupported();
     }
 
     override public function update()
     {
-        values = SensorExtension.getRotvect();
+        values = Sensors.getRotvect();
         super.update();
     }
 }

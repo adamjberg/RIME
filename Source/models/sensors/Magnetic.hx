@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Magnetic extends Sensor {
 
     public static inline var NAME:String = "Magnetic";
@@ -11,12 +13,12 @@ class Magnetic extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isMagneticSupported();
+        return Sensors.isMagneticFieldSupported();
     }
 
     override public function update()
     {
-        values = SensorExtension.getMagneticField();
+        values = Sensors.getMagneticField();
         super.update();
     }
 }

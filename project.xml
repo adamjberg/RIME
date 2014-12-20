@@ -12,8 +12,9 @@
 	<haxelib name="openfl" />
 	<haxelib name="haxeui" />
 	<haxelib name="msignal" />
+	<haxelib name="inthebox-macros" />
 	<include path="hxudp" />
-	<include path="SensorExtension"/>
+	<include path="Sensors"/>
 	
 	<assets path="Assets" rename="assets" exclude="openfl.svg" />
 	<icon path="Assets/openfl.svg" />

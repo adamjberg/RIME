@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Pressure extends Sensor {
 
     public static inline var NAME:String = "Pressure";
@@ -11,12 +13,12 @@ class Pressure extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isPressureSupported();
+        return Sensors.isPressureSupported();
     }
 
     override public function update()
     {
-        values[0] = SensorExtension.getPressure();
+        values[0] = Sensors.getPressure();
         super.update();
     }
 }

@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Humidity extends Sensor {
 
     public static inline var NAME:String = "Humidity";
@@ -11,12 +13,12 @@ class Humidity extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isHumiditySupported();
+        return Sensors.isHumiditySupported();
     }
 
     override public function update()
     {
-        values[0] = SensorExtension.getHumidity();
+        values[0] = Sensors.getHumidity();
         super.update();
     }
 }

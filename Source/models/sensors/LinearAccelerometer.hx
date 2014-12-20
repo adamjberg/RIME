@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class LinearAccelerometer extends Sensor {
 
     public static inline var NAME:String = "Linear Accelerometer";
@@ -26,12 +28,12 @@ class LinearAccelerometer extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isLinearAccelerometerSupported();
+        return Sensors.isLinearAccelerometerSupported();
     }
 
     override public function update()
     {
-        values = SensorExtension.getLnaccel();
+        values = Sensors.getLnaccel();
         super.update();
     }
 }

@@ -1,0 +1,24 @@
+<xml>
+	
+	<include name="${HXCPP}/build-tool/BuildCommon.xml"/>
+	
+	<set name="SLIBEXT" value=".lib" if="windows"/>
+	<set name="SLIBEXT" value=".a" unless="windows"/>
+	<set name="SLIBEXT" value=".so" if="webos"/>
+	
+	<set name="DEBUGEXTRA" value="-debug" if="fulldebug" />
+	
+	<target id="NDLL" output="${LIBPREFIX}sensors${MSVC_LIB_VERSION}${DEBUGEXTRA}${LIBEXTRA}" tool="linker" toolid="${STD_MODULE_LINK}" if="iphone">
+		
+		<outdir name="../ndll/${BINDIR}"/>
+		<ext value=".ndll" if="windows || mac || linux"/>
+		
+	</target>
+	
+	<target id="default">
+		
+		<target id="NDLL" if="iphone"/>
+		
+	</target>
+	
+</xml>

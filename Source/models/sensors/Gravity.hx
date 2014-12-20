@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Gravity extends Sensor {
 
     public static inline var NAME:String = "Gravity";
@@ -26,12 +28,12 @@ class Gravity extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isGravitySupported();
+        return Sensors.isGravitySupported();
     }
 
     override public function update()
     {
-        values = SensorExtension.getGravity();
+        values = Sensors.getGravity();
         super.update();
     }
 }

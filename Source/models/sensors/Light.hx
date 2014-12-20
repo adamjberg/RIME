@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Light extends Sensor {
 
     public static inline var NAME:String = "Light";
@@ -11,12 +13,12 @@ class Light extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isLightSupported();
+        return Sensors.isLightSupported();
     }
 
     override public function update()
     {
-        values[0] = SensorExtension.getLight();
+        values[0] = Sensors.getLight();
         super.update();
     }
 }
