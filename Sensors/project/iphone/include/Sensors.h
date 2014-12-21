@@ -1,7 +1,7 @@
-#ifndef SENSOREXTENSION_H
-#define SENSOREXTENSION_H
+#ifndef SENSORS_H
+#define SENSORS_H
 
-namespace SensorExtension{
+namespace sensors {
 
 	void init();
 	float getiaccelX();

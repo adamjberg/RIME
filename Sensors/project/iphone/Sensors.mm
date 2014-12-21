@@ -1,17 +1,11 @@
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreMotion/CoreMotion.h>
-//#import <"Sensors.h">
-//@implementation SensorExtension
+#import "Sensors.h"
 
-
-
-namespace SensorExtension{
-
+namespace sensors {
 
 CMMotionManager *motionManager;
-
 
 void init()
 {
@@ -23,8 +17,6 @@ void init()
     [motionManager startMagnetometerUpdates];
     motionManager.gyroUpdateInterval = 0.01;
     motionManager.magnetometerUpdateInterval =0.01;
-    
-
 }
 
 //Linear Accelerometer Data Access
@@ -82,12 +74,6 @@ float getiorientYaw(){
     return z;
 }
 
-//end
-
-
-
-
-
 //Gyoscope Data Access
 bool isGyroAvailable()
 {
@@ -109,7 +95,6 @@ float getigyroZ(){
     return z;
 }
 //end
-
 
 //Is deviceMotion Available
 bool isdeviceMotionAvailalbe(){
@@ -171,22 +156,6 @@ float getirotZ(){
    double z=motionManager.deviceMotion.rotationRate.z;
     return z;
 }
-
-//end
-
-
-
-
-
-    
-    
-    // if (motionManager.accelerometerActive == YES) {
-        
-      
-    //     [motionManager stopAccelerometerUpdates];
-        
-    // }
-
 
 }
 

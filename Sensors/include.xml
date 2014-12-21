@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<ndll name="sensors" if="iphone" />
+	<ndll name="sensors" if="ios" />
 	
 	<!-- Use the following for an Android Java extension, not needed otherwise -->
 	
