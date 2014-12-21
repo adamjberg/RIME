@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 import filters.Filter;
 import msignal.Signal;
 

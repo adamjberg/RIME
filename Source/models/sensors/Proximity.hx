@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Proximity extends Sensor {
 
     public static inline var NAME:String = "Proximity";
@@ -11,12 +13,12 @@ class Proximity extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isProximitySupported();
+        return Sensors.isProximitySupported();
     }
 
     override public function update()
     {
-        values[0] = SensorExtension.getProximity();
+        values[0] = Sensors.getProximity();
         super.update();
     }
 }

@@ -18,7 +18,6 @@ class Main extends Sprite {
 
     public function new () {
         super();
-        SensorExtension.init();
         Toolkit.theme = new GradientMobileTheme();
         Toolkit.setTransitionForClass(Stack, "none");
         Toolkit.setTransitionForClass(Accordion, "none");

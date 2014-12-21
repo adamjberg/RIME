@@ -18,10 +18,8 @@ before_install:
   - haxelib install format
   - haxelib install haxeui
   - haxelib install msignal
+  - haxelib install inthebox-macros
   - haxelib dev RIME $(pwd)
-  - haxelib dev hxudp $(pwd)/hxudp
-  - haxelib dev SensorExtension $(pwd)/SensorExtension
 
 script:
   - haxelib run openfl build $(pwd) neko
-  - haxelib run openfl build $(pwd) linux

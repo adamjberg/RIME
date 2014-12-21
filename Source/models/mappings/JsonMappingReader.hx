@@ -69,12 +69,10 @@ class JsonMappingReader {
                         );
 
                          if(staticParameters != null){
-                            trace("static parameters don't equal null. I've got viper comands");
                             for(staticParameter in staticParameters){
                                 mappingData.addViperCommand(staticParameter);
                             }
                         } else {
-                            trace("static prameters equals null DUUDE!");
                         }
                     } else
                     {
@@ -90,7 +88,6 @@ class JsonMappingReader {
                         mappingDataObj.pressType
                     );
                 if(staticParameters != null){
-                    trace("static parameters don't equal null. I've got viper comands");
                     for(staticParameter in staticParameters){
                         mappingData.addViperCommand(staticParameter);
                     }
@@ -107,7 +104,6 @@ class JsonMappingReader {
                         mappingDataObj.gestureId
                     );   
                 if(staticParameters != null){
-                    trace("static parameters don't equal null. I've got viper comands");
                     for(staticParameter in staticParameters){
                         mappingData.addViperCommand(staticParameter);
                     }
@@ -127,10 +123,8 @@ class JsonMappingReader {
         var viperCommands:Array<ViperCommand> = new Array<ViperCommand>();
         var viperCommand:ViperCommand;
 
-        trace("getting Array of Static parameters"); 
         if(jsonStaticParameters == null)
         {
-            trace("jsonstatic parmemters equals null dawg!");
             return viperCommands;
         }
 
@@ -140,7 +134,6 @@ class JsonMappingReader {
             var staticParameterValues:Array<Dynamic> = jsonStaticParameter.targetOutputs;
             var method:String = jsonStaticParameter.method;
 
-            trace("json static param method :" + method); 
 
             if(method == null)
             {
@@ -154,9 +147,6 @@ class JsonMappingReader {
                 for(i in 0...staticParameters.length)
                 {
                     viperCommand.addParam(staticParameters[i], staticParameterValues[i]);
-                    trace("Static Parameter Target Field: " + staticParameters[i]);
-                    trace(method); 
-                    trace("Static Paremeber Target Outputs: " + staticParameterValues[i]);
                 }
             }
 
