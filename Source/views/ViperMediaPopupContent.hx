@@ -33,7 +33,6 @@ class ViperMediaPopupContent extends VBox {
         fileName = new ListSelector();
         fileName.text = "Files";
         fileName.percentWidth = 100;
-        fileName.applyStyle();
         addChild(fileName);
 
         for (i in 0...viperMediaController.fileList.length)

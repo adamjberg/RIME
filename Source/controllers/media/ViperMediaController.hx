@@ -12,6 +12,7 @@ import models.media.ViperMedia;
 import msignal.Signal.Signal0;
 import haxe.io.Bytes;
 import haxe.io.BytesInput;
+import haxe.Timer;
 
 class ViperMediaController {
 
@@ -157,53 +158,61 @@ class ViperMediaController {
         command.method = "dataList";
         client.send(command.fillOscMessage());
 
-        // Preps RIME to receive the message from Viper
-        var str = client.receive(message);
 
-
-        trace ("String is " + str);
-        trace("String is " + str.length + " long.");
-
-        if (str.length != 0)
+        var timer = new haxe.Timer(1000); // 250ms delay
+        timer.run = function()
         {
-            // Cleans current fileList
-            for (i in 0...fileList.length)
-            {
-                fileList.shift();
-            }
+            // Preps RIME to receive the message from Viper
+            var str = client.receive(message);
 
-            // Parses continuous string into an array of strings to separate names
-            var clipName = "";
-            var x = 0;
-            for(x in 0...str.length)
+
+            trace ("String is " + str);
+            trace("String is " + str.length + " long.");
+
+            if (str.length != 0)
             {
-                // Viper's string Uses "," as separator to indicate different objects, use as indicator to move on to next item
-                if (str.charAt(x) != ",")
-                    clipName += str.charAt(x);
-                else
+                // Cleans current fileList
+                for (i in 0...fileList.length)
                 {
-                trace(clipName);
-
-                fileList.push(clipName);
-                clipName = "";
+                    fileList.shift();
                 }
+
+                // Parses continuous string into an array of strings to separate names
+                var clipName = "";
+                var x = 0;
+                for(x in 0...str.length)
+                {
+                    // Viper's string Uses "," as separator to indicate different objects, use as indicator to move on to next item
+                    if (str.charAt(x) != ",")
+                        clipName += str.charAt(x);
+                    else
+                    {
+                    trace(clipName);
+
+                    fileList.push(clipName);
+                    clipName = "";
+                    }
+                }
+
+                trace("FileList: ");
+                trace(fileList);
+                trace("");
+
+                // Removes the first two objects in the list, as they are just the ID and identifier, not needed in our array.
+                fileList.shift();
+                fileList.shift();
+                trace("Removed first two elements: ");
+                trace(fileList);
             }
-
-            trace("FileList: ");
-            trace(fileList);
-            trace("");
-
-            // Removes the first two objects in the list, as they are just the ID and identifier, not needed in our array.
-            fileList.shift();
-            fileList.shift();
-            trace("Removed first two elements: ");
-            trace(fileList);
+            else
+            {
+                trace("No response");
+            }
+            
+            timer.stop();
         }
-        else
-        {
-            trace("No response");
-        }
-        client.disconnect();
-        client.connect();
+            client.disconnect();
+            client.connect();
+
     }
 }
