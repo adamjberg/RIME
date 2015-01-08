@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Accelerometer extends Sensor {
 
     public static inline var NAME:String = "Accelerometer";
@@ -26,12 +28,12 @@ class Accelerometer extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isAccelerometerSupported();
+        return Sensors.isAccelerometerSupported();
     }
 
     override public function update()
     {
-        values = SensorExtension.getAccel();
+        values = Sensors.getAccel();
         super.update();
     }
 }

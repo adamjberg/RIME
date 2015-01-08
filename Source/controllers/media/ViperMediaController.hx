@@ -211,8 +211,7 @@ class ViperMediaController {
             
             timer.stop();
         }
-            client.disconnect();
-            client.connect();
-
+        client.disconnect();
+        client.connect();
     }
 }

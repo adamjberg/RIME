@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class AmbientTemperature extends Sensor {
 
     public static inline var NAME:String = "Ambient Temperature";
@@ -11,12 +13,12 @@ class AmbientTemperature extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isAmbientTemperatureSupported();
+        return Sensors.isAmbientTemperatureSupported();
     }
 
     override public function update()
     {
-        values[0] = SensorExtension.getAmtemp();
+        values[0] = Sensors.getAmtemp();
         super.update();
     }
 }

@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Gyroscope extends Sensor {
 
     public static inline var NAME:String = "Gyroscope";
@@ -26,12 +28,12 @@ class Gyroscope extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isGyroSupported();
+        return Sensors.isGyroSupported();
     }
 
     override public function update()
     {
-        values = SensorExtension.getGyro();
+        values = Sensors.getGyro();
         super.update();
     }
 }

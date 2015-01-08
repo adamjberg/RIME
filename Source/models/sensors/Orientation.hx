@@ -1,5 +1,7 @@
 package models.sensors;
 
+import org.haxe.extension.Sensors;
+
 class Orientation extends Sensor {
 
     public static inline var NAME:String = "Orientation";
@@ -26,12 +28,12 @@ class Orientation extends Sensor {
 
     override public function isSupported():Bool
     {
-        return SensorExtension.isOrientationSupported();
+        return Sensors.isOrientationSupported();
     }
 
     override public function update()
     {
-        values = SensorExtension.getOrient();
+        values = Sensors.getOrient();
         super.update();
     }
 }
