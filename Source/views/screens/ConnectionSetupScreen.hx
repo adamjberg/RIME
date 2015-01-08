@@ -31,7 +31,7 @@ class ConnectionSetupScreen extends Screen {
         deviceID.input.addEventListener(UIEvent.CHANGE, ondeviceIDChanged);
 
         serverInfoRenderer = new ServerInfoRenderer(serverInfo);
-        serverInfoRenderer.onSendButtonPressed.add(sendButtonPressed);
+        serverInfoRenderer.onConnectButtonPressed.add(connectButtonPressed);
     }
 
     override private function initialize()
@@ -46,8 +46,16 @@ class ConnectionSetupScreen extends Screen {
         Database.instance.saveDeviceID(System.deviceID);
     }
 
-    private function sendButtonPressed()
+    private function connectButtonPressed()
     {
-        client.connect();
+        if(client.connected)
+        {
+            client.disconnect();
+        }
+        else
+        {
+            client.connect();
+        }
+        serverInfoRenderer.setConnected(client.connected);
     }
 }

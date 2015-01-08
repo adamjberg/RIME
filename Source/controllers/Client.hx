@@ -14,6 +14,8 @@ import osc.OscMessage;
 
 class Client {
 
+    public var connected:Bool = false;
+
     private var serverInfo:ServerInfo;
     private var socket:UdpSocket;
 
@@ -31,8 +33,8 @@ class Client {
     {
         #if !neko
             socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
-            send(new OscMessage());
         #end
+        connected = true;
     }
 
     public function disconnect()
@@ -40,6 +42,7 @@ class Client {
         #if !neko
             socket.close();
         #end
+        connected = false;
     }
 
     public function send(message:OscMessage)
