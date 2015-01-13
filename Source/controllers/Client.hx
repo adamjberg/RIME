@@ -4,6 +4,8 @@ import hxudp.UdpSocket;
 import haxe.io.Bytes;
 import haxe.io.BytesInput;
 
+import haxe.ui.toolkit.core.PopupManager;
+
 import models.sensors.Sensor;
 import models.ServerInfo;
 import openfl.events.AccelerometerEvent;
@@ -22,16 +24,21 @@ class Client {
     public function new(serverInfo:ServerInfo)
     {
         this.serverInfo = serverInfo;
-
-        #if !neko
-            socket = new UdpSocket();
-            socket.create();
-        #end
     }
 
     public function connect()
     {
+        if(socket != null)
+        {
+            trace("connecting when socket already exists");
+            socket.close();
+        }
         #if !neko
+            socket = new UdpSocket();
+            if(socket.create() == false)
+            {
+                alertConnectionProblem();
+            }
             socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
         #end
         connected = true;
@@ -41,6 +48,7 @@ class Client {
     {
         #if !neko
             socket.close();
+            socket = null;
         #end
         connected = false;
     }
@@ -50,7 +58,15 @@ class Client {
         if(message != null)
         {
             #if !neko
-                socket.send(message.getBytes());
+                var bytesSent:Int = socket.send(message.getBytes());
+                if(bytesSent == 0)
+                {
+                    trace("No bytes were sent, this may be an issue");
+                }
+                else if(bytesSent == -1)
+                {
+                    alertConnectionProblem();
+                }
             #end 
         }
         else
@@ -94,5 +110,10 @@ class Client {
     public function setTimeoutReceive(seconds:Int):Void
     {
         socket.setTimeoutReceive(seconds);
+    }
+
+    private function alertConnectionProblem():Void
+    {
+        PopupManager.instance.showSimple("A connection could not be made", "Connectivity Problem!");
     }
 }
