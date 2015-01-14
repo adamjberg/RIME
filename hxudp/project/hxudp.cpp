@@ -461,17 +461,17 @@ public:
 
         }
 
-        /*if (m_dwTimeoutSend   != NO_TIMEOUT)
+        if (m_dwTimeoutReceive   != NO_TIMEOUT)
         {
             fd_set fd;
             FD_ZERO(&fd);
             FD_SET(m_hSocket, &fd);
-            timeval tv= {m_dwTimeoutSend, 0};
+            timeval tv= {m_dwTimeoutReceive, 0};
             if(select(m_hSocket+1,&fd,NULL,NULL,&tv)== 0)
             {
                 return(SOCKET_TIMEOUT);
             }
-        }*/
+        }
 
         #ifndef TARGET_WIN32
             socklen_t nLen= sizeof(sockaddr);

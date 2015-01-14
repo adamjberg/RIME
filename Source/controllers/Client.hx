@@ -80,14 +80,12 @@ class Client {
     // Referenced hxudp/test/UdpTest.hx
     public function receive(message:OscMessage):String
     {
-        trace("requested receive");
+        socket.setTimeoutReceive(1);
 
         // Allocate bytes to be populated by Viper's OSC message to RIME
-        trace("server setNonBlocking true: " + socket.setNonBlocking(true));
         var b = Bytes.alloc(1000);
         // Opens the socket to receive a message
         trace("server receive: " + socket.receive(b));
-        trace("server receive dump:");
 
         // Saves bytes from receiving into a string and returns it to the code calling the receive function()
         var input = new BytesInput(b);
@@ -102,14 +100,7 @@ class Client {
                 var char = String.fromCharCode(byte);
                 str += (byte >= 30 && byte < 127 ? char : "");
             }
-        trace(str);
-        trace("server setNonBlocking false: " + socket.setNonBlocking(false));
         return str;
-    }
-    
-    public function setTimeoutReceive(seconds:Int):Void
-    {
-        socket.setTimeoutReceive(seconds);
     }
 
     private function alertConnectionProblem():Void
