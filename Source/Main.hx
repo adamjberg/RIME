@@ -11,6 +11,8 @@ import haxe.ui.toolkit.style.StyleManager;
 import haxe.ui.toolkit.themes.GradientMobileTheme;
 import styles.RimeStyles;
 import openfl.display.Sprite ;
+import org.haxe.extension.Sensors;
+
 
 class Main extends Sprite {
 
@@ -18,6 +20,7 @@ class Main extends Sprite {
 
     public function new () {
         super();
+        Sensors.init();
         Toolkit.theme = new GradientMobileTheme();
         Toolkit.setTransitionForClass(Stack, "none");
         Toolkit.setTransitionForClass(Accordion, "none");

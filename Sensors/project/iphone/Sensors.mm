@@ -2,6 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreMotion/CoreMotion.h>
 #import "Sensors.h"
+#import <AudioToolbox/AudioServices.h>
 
 namespace sensors {
 
@@ -156,6 +157,14 @@ float getirotZ(){
    double z=motionManager.deviceMotion.rotationRate.z;
     return z;
 }
+
+//Vibrate for iphone
+void vibrate()
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
+
+
 
 }
 

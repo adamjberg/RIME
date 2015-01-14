@@ -6,24 +6,43 @@
 #define NEKO_COMPATIBLE
 #endif
 
+#if defined(IPHONE)
+
 #include <hx/CFFI.h>
 #include "Sensors.h"
 
 using namespace sensors;
 
+//sensor initialization
+static void sensors_init(){
+	 init();
+}
+DEFINE_PRIM(sensors_init, 0);
+//end
+
+
+//vibrate 
+static void sensors_vibrate(){
+	vibrate();
+}
+DEFINE_PRIM(sensors_vibrate, 0);
+//end
+
+
+
 //accelerometer get method
 static value sensors_getiaccelX(){
-	return alloc_float(getiaccelX());
+	return alloc_float(sensors::getiaccelX());
 }
 DEFINE_PRIM(sensors_getiaccelX, 0);
 
 static value sensors_getiaccelY(){
-	return alloc_float(getiaccelY());
+	return alloc_float(sensors::getiaccelY());
 }
 DEFINE_PRIM(sensors_getiaccelY, 0);
 
 static value sensors_getiaccelZ(){
-	return alloc_float(getiaccelZ());
+	return alloc_float(sensors::getiaccelZ());
 }
 DEFINE_PRIM(sensors_getiaccelZ, 0);
 //end
@@ -147,9 +166,11 @@ DEFINE_PRIM(sensors_isDMAvailable, 0);
 extern "C" void sensors_main () {
 	
 	val_int(0); // Fix Neko init
-	init();
+	
 	
 }
 DEFINE_ENTRY_POINT (sensors_main);
 
 extern "C" int sensors_register_prims () { return 0; }
+
+#endif

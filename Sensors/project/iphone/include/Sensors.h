@@ -4,6 +4,7 @@
 namespace sensors {
 
 	void init();
+	void vibrate();
 	float getiaccelX();
 	float getiaccelY();
 	float getiaccelZ();

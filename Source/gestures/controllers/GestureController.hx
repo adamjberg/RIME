@@ -24,6 +24,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.FileInput;
 import sys.io.FileOutput;
+import org.haxe.extension.Sensors;
 
  class GestureController {
 
@@ -129,7 +130,8 @@ import sys.io.FileOutput;
                 var gesture:Gesture = new Gesture(currentGesture);
                 trainSequence.push(gesture);
                 currentGesture = new Gesture();
-                Haptic.vibrate(0, 250);
+                Sensors.vibrate();
+
             }
             else
             {
@@ -205,7 +207,7 @@ import sys.io.FileOutput;
     {
         var gestureModel:GestureModel = getGestureModels()[id];
 
-        Haptic.vibrate(0, 250);
+        Sensors.vibrate();
         PopupManager.instance.showBusy(gestureModel.name, 500, "Gesture Detected!");
 
         trace("Firing Gesture: " + gestureModel.name + " prob: " + prob);

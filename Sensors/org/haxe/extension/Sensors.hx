@@ -45,6 +45,31 @@ class Sensors {
 
     // --------------- IOS/OTHER CONNECTORS ---------------- //
 
+    //initialize Sensors for iphone//
+    public static function init (){
+       
+        #if (ios && openfl)
+        sensorsextension_init();
+        #end
+
+       
+    }
+
+    public static function vibrate (){
+       
+        #if (ios && openfl)
+        sensorsextension_vibrate();
+        #end
+        #if (android && openfl)
+        Haptic.vibrate(0, 250);
+        #end
+        
+       
+    }
+
+   
+
+
     public static function getAccel ():Array<Float> {
         #if (ios)
         var array:Array<Float> = new Array<Float>();
@@ -235,6 +260,9 @@ class Sensors {
     #end
     
     #if (ios)
+    private static var sensorsextension_vibrate = Lib.load("Sensors", "sensors_vibrate", 0);
+
+    private static var sensorsextension_init = Lib.load("Sensors", "sensors_init", 0);
     private static var sensors_get_iaccelX = Lib.load("sensors", "sensors_getiaccelX", 0);
     private static var sensors_get_iaccelY = Lib.load("sensors", "sensors_getiaccelY", 0);
     private static var sensors_get_iaccelZ = Lib.load("sensors", "sensors_getiaccelZ", 0);
