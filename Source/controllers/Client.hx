@@ -55,6 +55,10 @@ class Client {
 
     public function send(message:OscMessage)
     {
+        if(socket == null)
+        {
+            return;
+        }
         if(message != null)
         {
             #if !neko
@@ -80,6 +84,11 @@ class Client {
     // Referenced hxudp/test/UdpTest.hx
     public function receive(message:OscMessage):String
     {
+        if(socket == null)
+        {
+            return "Not Connected";
+        }
+
         socket.setTimeoutReceive(1);
 
         // Allocate bytes to be populated by Viper's OSC message to RIME
