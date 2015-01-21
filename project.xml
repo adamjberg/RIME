@@ -5,6 +5,7 @@
 	<app main="Main" path="Export" file="Rime" />
 
 	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<android permission="android.permission.RECORD_AUDIO"/>
 	<window fps="60"/>
 	<window orientation="portrait" />
 	<source path="Source" />

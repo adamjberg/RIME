@@ -5,6 +5,7 @@ namespace sensors {
 
 	void init();
 	void vibrate();
+	void enableMeter();
 	float getiaccelX();
 	float getiaccelY();
 	float getiaccelZ();
@@ -37,6 +38,11 @@ namespace sensors {
 	float getiorientRoll();
 	float getiorientPitch();
 	float getiorientYaw();
+
+	float getsoundMeter();
+	float getpeaksoundMeter();
+
+
 }
 
 #endif

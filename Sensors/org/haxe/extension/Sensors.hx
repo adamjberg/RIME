@@ -1,4 +1,6 @@
 package org.haxe.extension;
+import openfl.feedback.Haptic;
+
 
 #if cpp
 import cpp.Lib;
@@ -12,6 +14,26 @@ import openfl.utils.JNI;
 
 @:build(ShortCuts.mirrors()) 
 class Sensors {
+    
+    public static function init (){
+       
+        #if (ios && openfl)
+        sensorsextension_init();
+        #end
+
+       
+    }
+    public static function vibrate (){
+       
+        #if (ios && openfl)
+        sensorsextension_vibrate();
+        #end
+        #if (android && openfl)
+        Haptic.vibrate(0, 250);
+        #end
+        
+       
+    }
 	
     // --------------- ANDROID CONNECTORS ---------------- //
 
@@ -41,31 +63,27 @@ class Sensors {
         @JNI public static function isLightSupported():Bool;
         @JNI public static function isMagneticFieldSupported():Bool;
         @JNI public static function isHumiditySupported():Bool;
+        @JNI public static function peaksoundMeter():Float;
+
+
     #else
 
     // --------------- IOS/OTHER CONNECTORS ---------------- //
 
     //initialize Sensors for iphone//
-    public static function init (){
-       
-        #if (ios && openfl)
-        sensorsextension_init();
-        #end
+    
 
-       
+    
+    public static function soundMeter ():Float {
+        return sensors_get_soundMeter();
     }
 
-    public static function vibrate (){
-       
-        #if (ios && openfl)
-        sensorsextension_vibrate();
-        #end
-        #if (android && openfl)
-        Haptic.vibrate(0, 250);
-        #end
-        
-       
+    public static function peaksoundMeter ():Float {
+        return sensors_peak_soundMeter();
     }
+    
+
+    
 
    
 
@@ -260,6 +278,11 @@ class Sensors {
     #end
     
     #if (ios)
+    
+    private static var sensors_get_soundMeter = Lib.load("sensors", "sensors_getsoundMeter", 0);
+    private static var sensors_peak_soundMeter = Lib.load("sensors", "sensors_getpeaksoundMeter", 0);
+
+
     private static var sensorsextension_vibrate = Lib.load("Sensors", "sensors_vibrate", 0);
 
     private static var sensorsextension_init = Lib.load("Sensors", "sensors_init", 0);

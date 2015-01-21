@@ -148,6 +148,14 @@ public class Sensors extends Extension implements SensorEventListener {
     {
         return mSensorDetails.get(Sensor.TYPE_RELATIVE_HUMIDITY).values[0];
     }
+    //Get Audio Sample
+    public static float peaksoundMeter(){
+        return AudioMeter.getInstance().getAmplitude();
+    }
+
+
+
+    //
 
     public Sensors() {
     	mSensorManager = (SensorManager) Extension.mainActivity.getSystemService(Context.SENSOR_SERVICE);
@@ -189,6 +197,7 @@ public class Sensors extends Extension implements SensorEventListener {
 	 */
 	public void onPause () {
 		mSensorManager.unregisterListener(this);
+        AudioMeter.getInstance().stopRecording();
 	}
 	
 	/**
@@ -210,6 +219,7 @@ public class Sensors extends Extension implements SensorEventListener {
 				mSensorManager.registerListener(this, mSensors[i], 0);
 			}
 		}
+        AudioMeter.getInstance().startRecording();
 	}
 	
 	/**

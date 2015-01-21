@@ -12,6 +12,8 @@ import haxe.ui.toolkit.themes.GradientMobileTheme;
 import styles.RimeStyles;
 import openfl.display.Sprite ;
 import org.haxe.extension.Sensors;
+import openfl.events.Event;
+
 
 
 class Main extends Sprite {
@@ -32,6 +34,18 @@ class Main extends Sprite {
             var app:App = new App();
             root.addChild(app);
         });
+        stage.addEventListener (Event.ENTER_FRAME, this_onEnterFrame);
     }
+
+    private function this_onEnterFrame (event:Event):Void {
+        //trace("Testing Average Sound Meter:"+Sensors.soundMeter());
+        var sound:Float=0;
+        if(Sensors.peaksoundMeter()>40.000){
+            sound=Sensors.peaksoundMeter();
+        }
+        trace("Testing Peak Sound Meter:"+sound);
+
+    }
+
 
 }

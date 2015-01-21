@@ -29,6 +29,19 @@ DEFINE_PRIM(sensors_vibrate, 0);
 //end
 
 
+//get sound meter
+static value sensors_getsoundMeter(){
+	return alloc_float(sensors::getsoundMeter());
+}
+DEFINE_PRIM(sensors_getsoundMeter, 0);
+
+//end
+//get peaksoundmeter
+static value sensors_getpeaksoundMeter(){
+	return alloc_float(sensors::getpeaksoundMeter());
+}
+DEFINE_PRIM(sensors_getpeaksoundMeter, 0);
+//end
 
 //accelerometer get method
 static value sensors_getiaccelX(){

@@ -3,13 +3,68 @@
 #import <CoreMotion/CoreMotion.h>
 #import "Sensors.h"
 #import <AudioToolbox/AudioServices.h>
+#import <AVFoundation/AVFoundation.h>
+#import <AVFoundation/AVAudioSession.h>
 
 namespace sensors {
 
 CMMotionManager *motionManager;
+AVAudioRecorder *audioRecorder;
+AVAudioSession *audioSession;
+
+
+  
+
+
 
 void init()
 {
+NSArray *dirPaths;
+NSString *docsDir;
+
+dirPaths = NSSearchPathForDirectoriesInDomains(
+        NSDocumentDirectory, NSUserDomainMask, YES);
+docsDir = dirPaths[0];
+
+NSString *soundFilePath = [docsDir
+       stringByAppendingPathComponent:@"sound.caf"];
+
+NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
+
+
+
+NSDictionary *recordSettings = [NSDictionary
+            dictionaryWithObjectsAndKeys:
+            [NSNumber numberWithInt:AVAudioQualityMin],
+            AVEncoderAudioQualityKey,
+            [NSNumber numberWithInt:16],
+            AVEncoderBitRateKey,
+            [NSNumber numberWithInt: 2],
+            AVNumberOfChannelsKey,
+            [NSNumber numberWithFloat:44100.0],
+            AVSampleRateKey,
+            nil];
+
+NSError *error = nil;
+    
+    audioRecorder = [[AVAudioRecorder alloc]
+                  initWithURL:soundFileURL
+                  settings:recordSettings
+                  error:&error];
+    if (error)
+   {
+           NSLog(@"error: %@", [error localizedDescription]);
+   } else {
+           [audioRecorder prepareToRecord];
+   }
+    audioRecorder.meteringEnabled = YES;
+
+   audioSession = [[AVAudioSession sharedInstance] retain]; 
+   
+   [audioSession setCategory:AVAudioSessionCategoryRecord error: nil]; 
+   [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error: nil];
+   [audioSession setActive:YES error: nil];
+   [audioRecorder updateMeters];
     motionManager = [[CMMotionManager alloc] init];
     motionManager.accelerometerUpdateInterval = 0.01;
     [motionManager startAccelerometerUpdates];
@@ -18,6 +73,7 @@ void init()
     [motionManager startMagnetometerUpdates];
     motionManager.gyroUpdateInterval = 0.01;
     motionManager.magnetometerUpdateInterval =0.01;
+
 }
 
 //Linear Accelerometer Data Access
@@ -162,6 +218,26 @@ float getirotZ(){
 void vibrate()
 {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
+void enableMeter(){
+    audioRecorder.meteringEnabled = YES;
+
+}
+
+float getsoundMeter(){
+    [audioRecorder record];
+    [audioRecorder updateMeters];
+    double dBLevel = [audioRecorder averagePowerForChannel:0];
+
+    return dBLevel;
+    
+}
+float getpeaksoundMeter(){
+    [audioRecorder record];
+    [audioRecorder updateMeters];
+     double dBLevel = [audioRecorder peakPowerForChannel:0];
+
+    return dBLevel;
 }
 
 
