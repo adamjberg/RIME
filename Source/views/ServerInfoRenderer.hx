@@ -48,20 +48,26 @@ class ServerInfoRenderer extends VBox {
         addChild(portNumber);
 
         connectButton = new FullWidthButton();
-        setConnected(false);
+        connectionStatusChanged(ServerInfo.DISCONNECTED);
         connectButton.addEventListener(MouseEvent.CLICK, connectButtonPressed);
         addChild(connectButton);
+
+        serverInfo.onConnectionStatusChanged.add(connectionStatusChanged);
     }
 
-    public function setConnected(connected:Bool)
+    public function connectionStatusChanged(status:Int)
     {
-        if(connected)
+        if(status == ServerInfo.CONNECTED)
         {
             connectButton.text = "Disconnect";
         }
-        else
+        else if(status == ServerInfo.DISCONNECTED)
         {
             connectButton.text = "Connect";
+        }
+        else
+        {
+            connectButton.text = "Connecting";
         }
     }
 

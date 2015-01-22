@@ -9,6 +9,7 @@ import haxe.ui.toolkit.core.PopupManager;
 import models.commands.ViperCommand;
 import models.sensors.Sensor;
 import models.ServerInfo;
+import msignal.Signal.Signal0;
 import openfl.events.AccelerometerEvent;
 import openfl.events.TimerEvent;
 import openfl.sensors.Accelerometer;
@@ -20,7 +21,8 @@ class Client {
     private static inline var VIPER_ADDR_PATTERN:String = "/viper";
     private static inline var BUFF_SIZE:Int = 65535;
 
-    public var connected:Bool = false;
+    public var onConnected:Signal0 = new Signal0();
+    public var onDisconnected:Signal0 = new Signal0();
 
     private var serverInfo:ServerInfo;
     private var socket:UdpSocket;
@@ -28,6 +30,18 @@ class Client {
     public function new(serverInfo:ServerInfo)
     {
         this.serverInfo = serverInfo;
+    }
+
+    public function toggleConnectionStatus()
+    {
+        if(socket == null)
+        {
+            connect();
+        }
+        else
+        {
+            disconnect();
+        }
     }
 
     public function connect()
@@ -47,15 +61,19 @@ class Client {
 
             var command:ViperCommand = new ViperCommand(null,"connect");
             send(command.fillOscMessage());
+
+            serverInfo.connectionStatus = ServerInfo.CONNECTING;
             var response:OscMessage = receive();
 
             // Make sure it's from viper
             if(response.addressPattern == VIPER_ADDR_PATTERN)
             {
-                connected = true;
+                serverInfo.connectionStatus = ServerInfo.CONNECTED;
+                onConnected.dispatch();
             }
             else
             {
+                disconnect();
                 alertConnectionProblem();
             }
         #end
@@ -63,11 +81,12 @@ class Client {
 
     public function disconnect()
     {
+        serverInfo.connectionStatus = ServerInfo.DISCONNECTED;
         #if !neko
             socket.close();
             socket = null;
         #end
-        connected = false;
+        onDisconnected.dispatch();
     }
 
     public function send(message:OscMessage)

@@ -48,14 +48,6 @@ class ConnectionSetupScreen extends Screen {
 
     private function connectButtonPressed()
     {
-        if(client.connected)
-        {
-            client.disconnect();
-        }
-        else
-        {
-            client.connect();
-        }
-        serverInfoRenderer.setConnected(client.connected);
+        client.toggleConnectionStatus();
     }
 }
