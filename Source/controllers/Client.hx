@@ -20,6 +20,7 @@ class Client {
 
     private static inline var VIPER_ADDR_PATTERN:String = "/viper";
     private static inline var BUFF_SIZE:Int = 65535;
+    private static inline var HEARTBEAT_DELAY_MS:Int = 5000;
 
     public var onConnected:Signal0 = new Signal0();
     public var onDisconnected:Signal0 = new Signal0();
@@ -27,9 +28,13 @@ class Client {
     private var serverInfo:ServerInfo;
     private var socket:UdpSocket;
 
+    private var heartbeatTimer:Timer;
+
     public function new(serverInfo:ServerInfo)
     {
         this.serverInfo = serverInfo;
+        heartbeatTimer = new Timer(HEARTBEAT_DELAY_MS);
+        heartbeatTimer.addEventListener(TimerEvent.TIMER, checkConnectivity);
     }
 
     public function toggleConnectionStatus()
@@ -58,25 +63,10 @@ class Client {
                 alertConnectionProblem();
             }
             socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
-
-            var command:ViperCommand = new ViperCommand(null,"connect");
-            send(command.fillOscMessage());
-
-            serverInfo.connectionStatus = ServerInfo.CONNECTING;
-            var response:OscMessage = receive();
-
-            // Make sure it's from viper
-            if(response.addressPattern == VIPER_ADDR_PATTERN)
-            {
-                serverInfo.connectionStatus = ServerInfo.CONNECTED;
-                onConnected.dispatch();
-            }
-            else
-            {
-                disconnect();
-                alertConnectionProblem();
-            }
+            checkConnectivity();
         #end
+
+        heartbeatTimer.start();
     }
 
     public function disconnect()
@@ -87,6 +77,7 @@ class Client {
             socket = null;
         #end
         onDisconnected.dispatch();
+        heartbeatTimer.stop();
     }
 
     public function send(message:OscMessage)
@@ -134,8 +125,28 @@ class Client {
         return responseMessage;
     }
 
+    private function checkConnectivity(?event:TimerEvent)
+    {
+        var command:ViperCommand = new ViperCommand(null,"connect");
+        send(command.fillOscMessage());
+
+        serverInfo.connectionStatus = ServerInfo.CONNECTING;
+        var response:OscMessage = receive();
+
+        // Make sure it's from viper
+        if(response.addressPattern == VIPER_ADDR_PATTERN)
+        {
+            serverInfo.connectionStatus = ServerInfo.CONNECTED;
+            onConnected.dispatch();
+        }
+        else
+        {
+            alertConnectionProblem();
+        }
+    }
+
     private function alertConnectionProblem():Void
     {
-        PopupManager.instance.showSimple("A connection could not be made", "Connectivity Problem!");
+        PopupManager.instance.showBusy("A problem with your connection was detected RIME will attempt to reconnect", 1000, "Connectivity Problem!");
     }
 }
