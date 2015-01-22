@@ -147,63 +147,28 @@ class ViperMediaController {
         Database.instance.writeJSONObj("viperMedia", viperMediaListObj);
     }
 
-// Requesting media from Viper server
     public function requestMedia()
     {
-
-        // Sends Osc Message to prepare Viper to send RIME the file list
-        var message:OscMessage = new OscMessage();
-        var command:ViperCommand = new ViperCommand();
-        command.method = "dataList";
+        // Send a request for media on Viper
+        var command:ViperCommand = new ViperCommand(null,"datalist");
         client.send(command.fillOscMessage());
 
-        // Preps RIME to receive the message from Viper
-        var str = client.receive(message);
+        var responseMessage:OscMessage =  client.receive();
 
-
-        trace ("String is " + str);
-        trace("String is " + str.length + " long.");
-
-        if (str.length != 0)
+        fileList = new Array<String>();
+        if(responseMessage != null)
         {
-            // Cleans current fileList
-            for (i in 0...fileList.length)
+            for(arg in responseMessage.arguments)
             {
-                fileList.shift();
+                fileList.push(arg);
             }
-
-            // Parses continuous string into an array of strings to separate names
-            var clipName = "";
-            var x = 0;
-            for(x in 0...str.length)
-            {
-                // Viper's string Uses "," as separator to indicate different objects, use as indicator to move on to next item
-                if (str.charAt(x) != ",")
-                    clipName += str.charAt(x);
-                else
-                {
-                trace(clipName);
-
-                fileList.push(clipName);
-                clipName = "";
-                }
-            }
-
-            trace("FileList: ");
-            trace(fileList);
-            trace("");
-
-            // Removes the first two objects in the list, as they are just the ID and identifier, not needed in our array.
-            fileList.shift();
-            fileList.shift();
-            trace("Removed first two elements: ");
-            trace(fileList);
         }
+        // TODO: There should be a check before the user is shown
+        // a list with just this value
+        // (maybe give the option to type the filename?)
         else
         {
-            trace("No response");
+            fileList.push("None");
         }
-        client.disconnect();
-        client.connect();
     }
 }

@@ -6,6 +6,7 @@ import haxe.io.BytesInput;
 
 import haxe.ui.toolkit.core.PopupManager;
 
+import models.commands.ViperCommand;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import openfl.events.AccelerometerEvent;
@@ -15,6 +16,9 @@ import openfl.utils.Timer;
 import osc.OscMessage;
 
 class Client {
+
+    private static inline var VIPER_ADDR_PATTERN:String = "/viper";
+    private static inline var BUFF_SIZE:Int = 65535;
 
     public var connected:Bool = false;
 
@@ -40,8 +44,21 @@ class Client {
                 alertConnectionProblem();
             }
             socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
+
+            var command:ViperCommand = new ViperCommand(null,"connect");
+            send(command.fillOscMessage());
+            var response:OscMessage = receive();
+
+            // Make sure it's from viper
+            if(response.addressPattern == VIPER_ADDR_PATTERN)
+            {
+                connected = true;
+            }
+            else
+            {
+                alertConnectionProblem();
+            }
         #end
-        connected = true;
     }
 
     public function disconnect()
@@ -57,12 +74,14 @@ class Client {
     {
         if(socket == null)
         {
+            trace("Socket is null");
             return;
         }
         if(message != null)
         {
             #if !neko
                 var bytesSent:Int = socket.send(message.getBytes());
+                trace("bytes sent: " + bytesSent);
                 if(bytesSent == 0)
                 {
                     trace("No bytes were sent, this may be an issue");
@@ -80,36 +99,20 @@ class Client {
         
     }
 
-    // Command to receive the string of file names from Viper
-    // Referenced hxudp/test/UdpTest.hx
-    public function receive(message:OscMessage):String
+    public function receive():OscMessage
     {
         if(socket == null)
         {
-            return "Not Connected";
+            return null;
         }
 
         socket.setTimeoutReceive(1);
 
-        // Allocate bytes to be populated by Viper's OSC message to RIME
-        var b = Bytes.alloc(1000);
-        // Opens the socket to receive a message
-        trace("server receive: " + socket.receive(b));
+        var b = Bytes.alloc(BUFF_SIZE);
+        var ret:Int = socket.receive(b);
+        var responseMessage:OscMessage = OscMessage.fromBytes(b);
 
-        // Saves bytes from receiving into a string and returns it to the code calling the receive function()
-        var input = new BytesInput(b);
-        var str = "";
-        var byte = input.readByte();
-        var char = String.fromCharCode(byte);
-        var n = 0;
-            var str = "";
-            for (j in 0...999)
-            {
-                var byte = input.readByte();
-                var char = String.fromCharCode(byte);
-                str += (byte >= 30 && byte < 127 ? char : "");
-            }
-        return str;
+        return responseMessage;
     }
 
     private function alertConnectionProblem():Void
