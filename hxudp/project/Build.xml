@@ -1,45 +1,31 @@
 <xml>
+	
 	<include name="${HXCPP}/build-tool/BuildCommon.xml"/>
-
-	<files id="udp_Files">
-		<file name="api.cpp"/>
-
-		<compilerflag value = "-D__WIN32__" if="windows"/>
-		<compilerflag value = "-DWIN32" if="windows"/>
-		<compilerflag value = "-DNDEBUG" if="windows"/>
-		<compilerflag value = "-DTARGET_WIN32" if="windows"/>
-
-		<compilerflag value = "-D__MACOSX_CORE__" if="macos"/>
-		<compilerflag value = "-w" if="macos"/>
-		<compilerflag value = "-Wfatal-errors" if="macos"/>
-		<compilerflag value = "-W" if="macos"/>
-		<compilerflag value = "-fexceptions" if="macos"/>
-
-		<compilerflag value = "-march=native" if="linux"/>
-		<compilerflag value = "-mtune=native" if="linux"/>
-		<compilerflag value = "-finline-functions" if="linux"/>
-		<compilerflag value = "-funroll-all-loops" if="linux"/>
-		<compilerflag value = "-fexceptions" if="linux"/>
+	
+	<files id="common">
+		
+		<file name="hxudp.cpp"/>
+		
 	</files>
-
+	
 	<set name="SLIBEXT" value=".lib" if="windows"/>
 	<set name="SLIBEXT" value=".a" unless="windows"/>
 	<set name="SLIBEXT" value=".so" if="webos"/>
 	
 	<set name="DEBUGEXTRA" value="-debug" if="fulldebug" />
-
-	<!--<target id="NDLL" tool="linker" toolid="${ndll-tool}" output="${name_prefix}hxudp${debug_extra}${name_extra}">-->
+	
 	<target id="NDLL" output="${LIBPREFIX}hxudp${MSVC_LIB_VERSION}${DEBUGEXTRA}${LIBEXTRA}" tool="linker" toolid="${STD_MODULE_LINK}">
-		<files id="udp_Files"/>
-		<ext value=".ndll" if="windows | linux | mac"/>
+		
 		<outdir name="../ndll/${BINDIR}"/>
-
-		<lib name="${LIB_LINK}"/>
-
-		<lib name = 'ws2_32.lib' if="windows" />
+		<ext value=".ndll" if="windows || mac || linux"/>
+		<files id="common"/>
+		
 	</target>
-
+	
 	<target id="default">
+		
 		<target id="NDLL"/>
+		
 	</target>
+	
 </xml>

@@ -4,8 +4,12 @@ import hxudp.UdpSocket;
 import haxe.io.Bytes;
 import haxe.io.BytesInput;
 
+import haxe.ui.toolkit.core.PopupManager;
+
+import models.commands.ViperCommand;
 import models.sensors.Sensor;
 import models.ServerInfo;
+import msignal.Signal.Signal0;
 import openfl.events.AccelerometerEvent;
 import openfl.events.TimerEvent;
 import openfl.sensors.Accelerometer;
@@ -14,40 +18,88 @@ import osc.OscMessage;
 
 class Client {
 
+    private static inline var VIPER_ADDR_PATTERN:String = "/viper";
+    private static inline var BUFF_SIZE:Int = 65535;
+    private static inline var HEARTBEAT_DELAY_MS:Int = 5000;
+
+    public var onConnected:Signal0 = new Signal0();
+    public var onDisconnected:Signal0 = new Signal0();
+
     private var serverInfo:ServerInfo;
     private var socket:UdpSocket;
+
+    private var heartbeatTimer:Timer;
 
     public function new(serverInfo:ServerInfo)
     {
         this.serverInfo = serverInfo;
+        heartbeatTimer = new Timer(HEARTBEAT_DELAY_MS);
+        heartbeatTimer.addEventListener(TimerEvent.TIMER, checkConnectivity);
+    }
 
-        #if !neko
-            socket = new UdpSocket();
-            socket.create();
-        #end
+    public function toggleConnectionStatus()
+    {
+        if(socket == null)
+        {
+            connect();
+        }
+        else
+        {
+            disconnect();
+        }
     }
 
     public function connect()
     {
+        if(socket != null)
+        {
+            trace("connecting when socket already exists");
+            socket.close();
+        }
         #if !neko
+            socket = new UdpSocket();
+            if(socket.create() == false)
+            {
+                alertConnectionProblem();
+            }
             socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
-            send(new OscMessage());
+            checkConnectivity();
         #end
+
+        heartbeatTimer.start();
     }
 
     public function disconnect()
     {
+        serverInfo.connectionStatus = ServerInfo.DISCONNECTED;
         #if !neko
             socket.close();
+            socket = null;
         #end
+        onDisconnected.dispatch();
+        heartbeatTimer.stop();
     }
 
     public function send(message:OscMessage)
     {
+        if(socket == null)
+        {
+            trace("Socket is null");
+            return;
+        }
         if(message != null)
         {
             #if !neko
-                socket.send(message.getBytes());
+                var bytesSent:Int = socket.send(message.getBytes());
+                trace("bytes sent: " + bytesSent);
+                if(bytesSent == 0)
+                {
+                    trace("No bytes were sent, this may be an issue");
+                }
+                else if(bytesSent == -1)
+                {
+                    alertConnectionProblem();
+                }
             #end 
         }
         else
@@ -57,40 +109,44 @@ class Client {
         
     }
 
-    // Command to receive the string of file names from Viper
-    // Referenced hxudp/test/UdpTest.hx
-    public function receive(message:OscMessage):String
+    public function receive():OscMessage
     {
+        if(socket == null)
+        {
+            return null;
+        }
 
-        trace("requested receive");
+        socket.setTimeoutReceive(1);
 
-        // Allocate bytes to be populated by Viper's OSC message to RIME
-        trace("server setNonBlocking true: " + socket.setNonBlocking(true));
-        var b = Bytes.alloc(1000);
-        // Opens the socket to receive a message
-        trace("server receive: " + socket.receive(b));
-        trace("server receive dump:");
+        var b = Bytes.alloc(BUFF_SIZE);
+        var ret:Int = socket.receive(b);
+        var responseMessage:OscMessage = OscMessage.fromBytes(b);
 
-        // Saves bytes from receiving into a string and returns it to the code calling the receive function()
-        var input = new BytesInput(b);
-        var str = "";
-        var byte = input.readByte();
-        var char = String.fromCharCode(byte);
-        var n = 0;
-            var str = "";
-            for (j in 0...999)
-            {
-                var byte = input.readByte();
-                var char = String.fromCharCode(byte);
-                str += (byte >= 30 && byte < 127 ? char : "");
-            }
-        trace(str);
-        trace("server setNonBlocking false: " + socket.setNonBlocking(false));
-        return str;
+        return responseMessage;
     }
-    
-    public function setTimeoutReceive(seconds:Int):Void
+
+    private function checkConnectivity(?event:TimerEvent)
     {
-        socket.setTimeoutReceive(seconds);
+        var command:ViperCommand = new ViperCommand(null,"connect");
+        send(command.fillOscMessage());
+
+        serverInfo.connectionStatus = ServerInfo.CONNECTING;
+        var response:OscMessage = receive();
+
+        // Make sure it's from viper
+        if(response.addressPattern == VIPER_ADDR_PATTERN)
+        {
+            serverInfo.connectionStatus = ServerInfo.CONNECTED;
+            onConnected.dispatch();
+        }
+        else
+        {
+            alertConnectionProblem();
+        }
+    }
+
+    private function alertConnectionProblem():Void
+    {
+        PopupManager.instance.showBusy("A problem with your connection was detected RIME will attempt to reconnect", 1000, "Connectivity Problem!");
     }
 }

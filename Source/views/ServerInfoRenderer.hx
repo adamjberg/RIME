@@ -15,11 +15,11 @@ import views.controls.LabelledTextInput;
 
 class ServerInfoRenderer extends VBox {
 
-    public var onSendButtonPressed:Signal0 = new Signal0();
+    public var onConnectButtonPressed:Signal0 = new Signal0();
 
     private var ipAddress:LabelledTextInput;
     private var portNumber:LabelledTextInput;
-    private var sendButton:Button;
+    private var connectButton:Button;
 
     private var serverInfo:ServerInfo;
 
@@ -47,9 +47,28 @@ class ServerInfoRenderer extends VBox {
         portNumber.addEventListener(Event.CHANGE, portNumberChanged);
         addChild(portNumber);
 
-        sendButton = new FullWidthButton("Send");
-        sendButton.addEventListener(MouseEvent.CLICK, sendButtonPressed);
-        addChild(sendButton);
+        connectButton = new FullWidthButton();
+        connectionStatusChanged(ServerInfo.DISCONNECTED);
+        connectButton.addEventListener(MouseEvent.CLICK, connectButtonPressed);
+        addChild(connectButton);
+
+        serverInfo.onConnectionStatusChanged.add(connectionStatusChanged);
+    }
+
+    public function connectionStatusChanged(status:Int)
+    {
+        if(status == ServerInfo.CONNECTED)
+        {
+            connectButton.text = "Disconnect";
+        }
+        else if(status == ServerInfo.DISCONNECTED)
+        {
+            connectButton.text = "Connect";
+        }
+        else
+        {
+            connectButton.text = "Connecting";
+        }
     }
 
     private function portNumberChanged(e:Event)
@@ -64,8 +83,8 @@ class ServerInfoRenderer extends VBox {
         Database.instance.saveServerInfo(serverInfo);
     }
 
-    private function sendButtonPressed(e:Event)
+    private function connectButtonPressed(e:Event)
     {
-        onSendButtonPressed.dispatch();
+        onConnectButtonPressed.dispatch();
     }
 }
