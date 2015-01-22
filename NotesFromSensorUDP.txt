@@ -1,0 +1,10 @@
+Notes on SensorValues
+float[] sensorValues = new float[24];
+0 to 2 = accelerometer
+3 to 5 = gravity
+6 to 8 = gyroscope / rotation
+9 to 11 = attitude
+12 & 13 = Null (zeros)
+14 = lux (light)
+15 = proximity
+16 to 23 = touch buttons (keys)

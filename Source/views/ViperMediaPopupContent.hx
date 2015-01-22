@@ -87,12 +87,12 @@ class ViperMediaPopupContent extends VBox {
     private function fileNameSelected(e:UIEvent)
     {
 
-        /*for(mapping in mappingController.mappings)
+        /*for(fileName in )
         {
-            mapping.removeTarget(viperMedia.id);
+            mapping.removeTarget(ViperMediaPopupContent);
         }
 
-        var selectedMapping:Mapping = mappingController.getMappingWithName(mappingList.text);
+        /*var selectedMapping:Mapping = mappingController.getMappingWithName(mappingList.text);
         if(selectedMapping != null)
         {
             selectedMapping.addTarget(viperMedia.id);
