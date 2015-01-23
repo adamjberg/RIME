@@ -1,6 +1,5 @@
 package;
 
-import controllers.MappingController;
 import controllers.media.ViperMediaController;
 import controllers.ScreenManager;
 import controllers.SensorController;
@@ -82,7 +81,6 @@ class App extends VBox {
         performSelectScreen = new PerformSelectScreen();
         gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
 
-        var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
         viperMediaController = new ViperMediaController(client);
 
         viperMediaScreen = new ViperMediaScreen(viperMediaController);

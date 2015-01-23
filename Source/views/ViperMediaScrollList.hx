@@ -1,6 +1,5 @@
 package views;
 
-import controllers.MappingController;
 import controllers.media.ViperMediaController;
 import controllers.ScreenManager;
 import haxe.ui.toolkit.containers.ScrollView;
@@ -13,16 +12,14 @@ import views.ViperMediaListItem;
 class ViperMediaScrollList extends ScrollView {
 
     private var viperMediaController:ViperMediaController;
-    private var mappingController:MappingController;
     private var viperMediaList:Array<ViperMedia>;
 
     private var vBox:VBox;
 
-    public function new(?viperMediaController:ViperMediaController, ?mappingController:MappingController)
+    public function new(?viperMediaController:ViperMediaController)
     {
         super();
         this.viperMediaController = viperMediaController;
-        this.mappingController = mappingController;
         this.viperMediaList = viperMediaController.mediaList;
 
         this._scrollSensitivity = 1;
