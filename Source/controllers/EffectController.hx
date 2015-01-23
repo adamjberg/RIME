@@ -92,4 +92,43 @@ class EffectController {
             }
         }
     }
+
+    public function getEffectByName(effectName:String):Effect
+    {
+        for(effect in effects)
+        {
+            if(effect.name == effectName)
+            {
+                return effect;
+            }
+        }
+        return null;
+    }
+
+    public function enableEffectByName(effectName:String)
+    {
+        var effect:Effect = getEffectByName(effectName);
+        enableEffect(effect);
+    }
+
+    // 
+    public function enableEffect(effect:Effect)
+    {
+        if(effect != null && effects.indexOf(effect) != -1)
+        {
+            activeEffects.push(effect);
+        }
+    }
+
+    public function disableEffectByName(effectName:String)
+    {
+        var effect:Effect = getEffectByName(effectName);
+        disableEffect(effect);
+    }
+
+    // 
+    public function disableEffect(effect:Effect)
+    {
+        activeEffects.remove(effect);
+    }
 }
