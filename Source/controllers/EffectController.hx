@@ -34,7 +34,7 @@ class EffectController {
 
         for(effectDBObj in effectsDBObj)
         {
-            var effect:Effect;
+            var effect:Effect = null;
             var name:String = effectDBObj.name;
             var mediaProperties:Array<String> = effectDBObj.mediaProperties;
             var method:String = effectDBObj.method;
@@ -84,6 +84,11 @@ class EffectController {
                     gestureName,
                     desiredValues
                 );
+            }
+
+            if(effect != null)
+            {
+                this.effects.push(effect);
             }
         }
     }
