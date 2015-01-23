@@ -52,5 +52,13 @@
             "effect":"example SensorVariableEffect",
             "media":"media1"
         }
+    ],
+    "presets":[
+        {
+            "name":"example Preset",
+            "effectToMediaList": [
+                "example effectToMedia"
+            ]
+        }
     ]
 }
