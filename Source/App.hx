@@ -2,6 +2,7 @@ package;
 
 import controllers.*;
 import controllers.media.*;
+import controllers.PerformanceController;
 import controllers.PresetController;
 import database.Database;
 import gestures.controllers.GestureController;
@@ -41,6 +42,7 @@ class App extends VBox {
     private var viperMediaController:ViperMediaController;
     private var effectToMediaController:EffectToMediaController;
     private var presetController:PresetController;
+    private var performanceController:PerformanceController;
 
     public function new () {
         super();
@@ -87,6 +89,7 @@ class App extends VBox {
         viperMediaController = new ViperMediaController(client);
         effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
         presetController = new PresetController(effectToMediaController);
+        performanceController = new PerformanceController(presetController);
 
         viperMediaScreen = new ViperMediaScreen(viperMediaController);
 

@@ -60,5 +60,13 @@
                 "example effectToMedia"
             ]
         }
+    ],
+    "performances":[
+        {
+            "name":"example Performance",
+            "presets": [
+                "example Preset"
+            ]
+        }
     ]
 }
