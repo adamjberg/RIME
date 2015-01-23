@@ -1,10 +1,7 @@
 package;
 
-import controllers.EffectController;
-import controllers.media.ViperMediaController;
-import controllers.ScreenManager;
-import controllers.SensorController;
-import controllers.SensorDataController;
+import controllers.*;
+import controllers.media.*;
 import database.Database;
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
@@ -41,6 +38,7 @@ class App extends VBox {
     private var sensorDataController:SensorDataController;
     private var effectController:EffectController;
     private var viperMediaController:ViperMediaController;
+    private var effectToMediaController:EffectToMediaController;
 
     public function new () {
         super();
@@ -85,6 +83,7 @@ class App extends VBox {
         gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
 
         viperMediaController = new ViperMediaController(client);
+        effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
 
         viperMediaScreen = new ViperMediaScreen(viperMediaController);
 

@@ -38,5 +38,19 @@
             ],
             "gestureName":"cirle"
         }
+    ],
+    "viperMedia":[
+        {
+            "name":"media1",
+            "filename":"media1.png",
+            "id":0
+        }
+    ],
+    "effectsToMediaList":[
+        {
+            "name":"example effectToMedia",
+            "effect":"example SensorVariableEffect",
+            "media":"media1"
+        }
     ]
 }

@@ -55,7 +55,21 @@ class ViperMediaController {
             {
                 currentId = media.id + 1;
             }
+
+            mediaList.push(media);
         }
+    }
+
+    public function getViperMediaByName(mediaName:String):ViperMedia
+    {
+        for(viperMedia in mediaList)
+        {
+            if(viperMedia.name == mediaName)
+            {
+                return viperMedia;
+            }
+        }
+        return null;
     }
 
     public function getMediaFromFilename(fileName:String):ViperMedia
