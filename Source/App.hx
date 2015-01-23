@@ -1,5 +1,6 @@
 package;
 
+import controllers.EffectController;
 import controllers.media.ViperMediaController;
 import controllers.ScreenManager;
 import controllers.SensorController;
@@ -38,6 +39,7 @@ class App extends VBox {
     private var sensors:Array<Sensor>;
     private var gestureController:GestureController;
     private var sensorDataController:SensorDataController;
+    private var effectController:EffectController;
     private var viperMediaController:ViperMediaController;
 
     public function new () {
@@ -67,6 +69,7 @@ class App extends VBox {
         sensors = sensorController.sensors;
 
         sensorDataController = new SensorDataController(sensors);
+        effectController = new EffectController(sensorDataController);
 
         gestureController = new GestureController(sensorDataController);
 

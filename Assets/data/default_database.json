@@ -1,64 +1,27 @@
 {  
-    "version":1,
+    "version":2,
     "deviceID":"",
     "serverInfo":{  
         "ipAddress":"",
         "portNumber":"11000"
     },
-    "mappings":[  
-        {  
-            "name":"Orientation - alpha",
-            "mappingData":[  
-                {  
-                    "eventTriggerType":"sensor",
-                    "sensor":"Orientation",
-                    "valueIndex":0,
-                    "dynamicParameters":{  
-                        "targetFields":[  
-                            "setTransparency"
-                        ],
-                        "minOutputs":[  
-                            0
-                        ],
-                        "maxOutputs":[  
-                            255
-                        ]
-                    },
-                    "staticParameters":[  
-                        {  
-                            "method":"update"
-                        }
-                    ],
-                    "intervalInMs":50
-                }
-            ]
-        },
-        {  
-            "name":"Orientation - green",
-            "mappingData":[  
-                {  
-                    "eventTriggerType":"sensor",
-                    "sensor":"Orientation",
-                    "valueIndex":0,
-                    "dynamicParameters":{  
-                        "targetFields":[  
-                            "setGreen"
-                        ],
-                        "minOutputs":[  
-                            0
-                        ],
-                        "maxOutputs":[  
-                            255
-                        ]
-                    },
-                    "staticParameters":[  
-                        {  
-                            "method":"update"
-                        }
-                    ],
-                    "intervalInMs":50
-                }
-            ]
+    "effects":[
+        {
+            "name": "example SensorVariableEffect",
+            "method": "update",
+            "mediaProperties": [
+                "setBrightness"
+            ],
+            "minDesiredValues":[
+                0.01
+            ],
+            "maxDesiredValues":[
+                1.0
+            ],
+            "sensorName":"Accelerometer",
+            "updateIntervalInMs":1000,
+            "vectorComponents":[0,1,2],
+            "absoluteValue":false
         }
     ]
 }
