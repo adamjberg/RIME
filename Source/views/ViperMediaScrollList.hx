@@ -56,7 +56,7 @@ class ViperMediaScrollList extends ScrollView {
     private function itemClicked(e:UIEvent)
     {
         var viperMediaListItem:ViperMediaListItem = cast(e.component, ViperMediaListItem);
-        ScreenManager.push(new EditMediaScreen(viperMediaController, mappingController, viperMediaListItem.media));
+        ScreenManager.push(new EditMediaScreen(viperMediaController, viperMediaListItem.media));
     }
 
     private function deleteViperMedia(viperMedia:ViperMedia)

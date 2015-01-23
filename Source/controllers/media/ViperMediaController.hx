@@ -1,12 +1,10 @@
 package controllers.media;
 
 import controllers.Client;
-import controllers.MappingController;
 import database.Database;
 import models.commands.ViperCreateCommand;
 import models.commands.ViperDeleteCommand;
 import models.commands.ViperCommand;
-import models.mappings.Mapping;
 import osc.OscMessage;
 import models.media.ViperMedia;
 import msignal.Signal.Signal0;
@@ -25,12 +23,10 @@ class ViperMediaController {
     public var fileList:Array<String> = new Array<String>();
 
     private var client:Client;
-    private var mappingController:MappingController;
 
-    public function new(?client:Client, ?mappingController:MappingController)
+    public function new(?client:Client)
     {
         this.client = client;
-        this.mappingController = mappingController;
         loadMediaListFromDB();
         fileList.push("None");
     }
@@ -52,10 +48,6 @@ class ViperMediaController {
             media.name = viperMediaObj.name;
             media.xPos = viperMediaObj.xPos;
             media.yPos = viperMediaObj.yPos;
-
-            var mapping:Mapping = mappingController.getMappingWithName(viperMediaObj.mapping);
-            media.mapping = mapping;
-            addMedia(media);
 
             // If the medias ID is larger than our current id we need to
             // Set the current ID to a bigger number to prevent ID clashes
@@ -80,25 +72,14 @@ class ViperMediaController {
         command.addParam("posX", media.xPos);
         command.addParam("posY", media.yPos);
         client.send(command.fillOscMessage());
-
-        if(media.mapping != null)
-        {
-            media.mapping.addTarget(media.id);
-        }
     }
 
     public function removeMediaFromViper(media:ViperMedia)
     {
         if(media != null)
         {
-            mappingController.removeIdFromAllMappings(media.id);
             var command:ViperDeleteCommand = new ViperDeleteCommand(media.id);
             client.send(command.fillOscMessage());
-
-            if(media.mapping != null)
-            {
-                media.mapping.removeTarget(media.id);
-            }
         }
     }
 
@@ -138,10 +119,6 @@ class ViperMediaController {
             viperMediaObj.xPos = media.xPos;
             viperMediaObj.yPos = media.yPos;
 
-            if(media.mapping != null)
-            {
-                viperMediaObj.mapping = media.mapping.name;
-            }
             viperMediaListObj.push(viperMediaObj);
         }
 

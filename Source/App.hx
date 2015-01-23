@@ -83,9 +83,9 @@ class App extends VBox {
         gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
-        viperMediaController = new ViperMediaController(client, mappingController);
+        viperMediaController = new ViperMediaController(client);
 
-        viperMediaScreen = new ViperMediaScreen(viperMediaController, mappingController);
+        viperMediaScreen = new ViperMediaScreen(viperMediaController);
 
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
