@@ -22,6 +22,21 @@
             "updateIntervalInMs":1000,
             "vectorComponents":[0,1,2],
             "absoluteValue":false
+        },
+        {
+            "name:": "example GestureEffect",
+            "method":"update",
+            "mediaProperties": [
+                "easing",
+                "xPos",
+                "yPos"
+            ],
+            "desiredValues": [
+                0.01,
+                1,
+                1
+            ],
+            "gestureName":"cirle"
         }
     ]
 }

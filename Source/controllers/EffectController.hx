@@ -3,6 +3,7 @@ package controllers;
 import controllers.SensorDataController;
 import database.Database;
 import models.effects.Effect;
+import models.effects.GestureEffect;
 import models.effects.SensorVariableEffect;
 import models.sensors.data.SensorData;
 import models.sensors.data.FilteredSensorData;
@@ -33,7 +34,6 @@ class EffectController {
 
         for(effectDBObj in effectsDBObj)
         {
-            trace("OBJ: " + effectDBObj);
             var effect:Effect;
             var name:String = effectDBObj.name;
             var mediaProperties:Array<String> = effectDBObj.mediaProperties;
@@ -71,7 +71,19 @@ class EffectController {
                     vectorComponents,
                     absoluteValue
                     );
-                trace("Success");
+            }
+            // If a gesture name is specified, this is a GestureEffect
+            else if(effectDBObj.gestureName != null)
+            {
+                var gestureName:String = effectDBObj.gestureName;
+                var desiredValues:Array<Float> = effectDBObj.desiredValues;
+                effect = new GestureEffect(
+                    name,
+                    method,
+                    mediaProperties,
+                    gestureName,
+                    desiredValues
+                );
             }
         }
     }
