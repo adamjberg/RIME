@@ -54,9 +54,7 @@ class ViperMediaPopupContent extends VBox {
 
          fileName.addEventListener(UIEvent.CHANGE, fileNameSelected);
     }
-
-
-
+    
     public function getX():Int
     {
         return Std.parseInt(xPos.getText());
@@ -80,26 +78,5 @@ class ViperMediaPopupContent extends VBox {
     public function getFileName():String
     {
         return fileName.text;
-    }
-
-    // Code for UIEVENT when fileNameList is selected goes here... working off EditmediaScreen mappingSelected code
-    // which I'm assuming is what creates the isolation of the popup list
-    private function fileNameSelected(e:UIEvent)
-    {
-
-        /*for(fileName in )
-        {
-            mapping.removeTarget(ViperMediaPopupContent);
-        }
-
-        /*var selectedMapping:Mapping = mappingController.getMappingWithName(mappingList.text);
-        if(selectedMapping != null)
-        {
-            selectedMapping.addTarget(viperMedia.id);
-        }
-        else
-        {
-            trace("no mapping found with name: " + mappingList.text);
-        }*/
     }
 }
