@@ -8,6 +8,7 @@ import database.Database;
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
+import models.Performance;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
@@ -15,7 +16,8 @@ import openfl.events.Event;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
 import views.screens.GestureRecognizeScreen;
-import views.screens.PerformSelectScreen;
+import views.screens.PerformanceScreen;
+import views.screens.PerformanceSelectScreen;
 import views.screens.SensorsScreen;
 import views.screens.ViperMediaScreen;
 import views.screens.*;
@@ -29,7 +31,7 @@ class App extends VBox {
     private var sensorsScreen:SensorsScreen;
     private var connectionSetupScreen:ConnectionSetupScreen;
     private var viperMediaScreen:ViperMediaScreen;
-    private var performSelectScreen:PerformSelectScreen;
+    private var performanceSelectScreen:PerformanceSelectScreen;
     private var gestureRecognizeScreen:GestureRecognizeScreen;
 
     private var stack:Stack;
@@ -69,15 +71,19 @@ class App extends VBox {
 
         serverInfo = Database.instance.getServerInfo();
 
+        // Controller initialization
+        client = new Client(serverInfo);
         sensorController = new SensorController();
         sensors = sensorController.sensors;
-
         sensorDataController = new SensorDataController(sensors);
         effectController = new EffectController(sensorDataController);
-
         gestureController = new GestureController(sensorDataController);
+        viperMediaController = new ViperMediaController(client);
+        effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
+        presetController = new PresetController(effectToMediaController);
+        performanceController = new PerformanceController(presetController);
+        viperCommandController = new ViperCommandController(presetController, effectToMediaController, effectController.activeEffects, client);
 
-        client = new Client(serverInfo);
 
         // Screen initialization
         homeScreen = new HomeScreen();
@@ -85,27 +91,19 @@ class App extends VBox {
         gestureScreen = new GestureListScreen(gestureController);
         sensorsScreen = new SensorsScreen(sensors);
         connectionSetupScreen = new ConnectionSetupScreen(client, serverInfo);
-        performSelectScreen = new PerformSelectScreen();
+        performanceSelectScreen = new PerformanceSelectScreen(performanceController.performances);
         gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
-
-        viperMediaController = new ViperMediaController(client);
-        effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
-        presetController = new PresetController(effectToMediaController);
-        performanceController = new PerformanceController(presetController);
-        viperCommandController = new ViperCommandController(presetController, effectToMediaController, effectController.activeEffects, client);
-
         viperMediaScreen = new ViperMediaScreen(viperMediaController);
 
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
         homeScreen.onMediaPressed.add(openMediaScreen);
         homeScreen.onSensorsPressed.add(openSensorsScreen);
-        homeScreen.onPerformPressed.add(openPerformSelectScreen);
+        homeScreen.onPerformPressed.add(openPerformanceSelectScreen);
 
-        performSelectScreen.onOpenGesturePressed.add(openGestureRecognitionScreen);
+        performanceSelectScreen.onPerformanceSelected.add(openPerformanceScreen);
 
         ScreenManager.push(homeScreen);
-
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
     }
 
@@ -139,9 +137,15 @@ class App extends VBox {
         ScreenManager.push(viperMediaScreen);
     }
 
-    private function openPerformSelectScreen()
+    private function openPerformanceSelectScreen()
     {
-        ScreenManager.push(performSelectScreen);
+        ScreenManager.push(performanceSelectScreen);
+    }
+
+    private function openPerformanceScreen(performance:Performance)
+    {
+        performanceController.enablePerformance(performance);
+        ScreenManager.push(new PerformanceScreen(performance));
     }
 
     private function openGestureRecognitionScreen()

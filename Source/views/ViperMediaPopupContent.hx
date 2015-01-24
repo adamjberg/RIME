@@ -51,10 +51,8 @@ class ViperMediaPopupContent extends VBox {
 
         addChild(xPos);
         addChild(yPos);
-
-         fileName.addEventListener(UIEvent.CHANGE, fileNameSelected);
     }
-    
+
     public function getX():Int
     {
         return Std.parseInt(xPos.getText());
