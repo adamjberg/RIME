@@ -57,6 +57,21 @@ class EffectToMediaController {
         }
     }
 
+    /*
+     * Returns an array of EffectToMedia links that
+     * are active.  This allows the ViperCommandController to batch
+     * send commands
+     */
+    public function getActiveEffectToMediaForEffect(effect:Effect):Array<EffectToMedia>
+    {
+        return activeEffectToMediaList.filter(
+            function(effectToMedia:EffectToMedia)
+            {
+                return effectToMedia.effect == effect;
+            }
+        );
+    }
+
     public function getEffectToMediaByName(name:String):EffectToMedia
     {
         for(effectToMedia in effectToMediaList)

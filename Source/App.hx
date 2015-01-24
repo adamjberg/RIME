@@ -11,6 +11,7 @@ import haxe.ui.toolkit.containers.VBox;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
+import openfl.events.Event;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
 import views.screens.GestureRecognizeScreen;
@@ -43,6 +44,7 @@ class App extends VBox {
     private var effectToMediaController:EffectToMediaController;
     private var presetController:PresetController;
     private var performanceController:PerformanceController;
+    private var viperCommandController:ViperCommandController;
 
     public function new () {
         super();
@@ -90,6 +92,7 @@ class App extends VBox {
         effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
         presetController = new PresetController(effectToMediaController);
         performanceController = new PerformanceController(presetController);
+        viperCommandController = new ViperCommandController(presetController, effectToMediaController, effectController.activeEffects, client);
 
         viperMediaScreen = new ViperMediaScreen(viperMediaController);
 
@@ -102,6 +105,13 @@ class App extends VBox {
         performSelectScreen.onOpenGesturePressed.add(openGestureRecognitionScreen);
 
         ScreenManager.push(homeScreen);
+
+        addEventListener(Event.ENTER_FRAME, onEnterFrame);
+    }
+
+    private function onEnterFrame(e:Event)
+    {
+        viperCommandController.update();
     }
 
     private function openGestureScreen()

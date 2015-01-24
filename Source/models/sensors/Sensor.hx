@@ -55,6 +55,17 @@ class Sensor {
         return false;
     }
 
+    public function getMaxMagnitude(components:Array<Int>):Float
+    {
+        var mag:Float = 0;
+        for(component in components)
+        {
+            mag += Math.pow(values[component], 2);
+        }
+        mag = Math.sqrt(mag);
+        return mag;
+    }
+
     public function update()
     {
         for(i in 0...values.length)

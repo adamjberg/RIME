@@ -44,7 +44,7 @@ class EffectController {
             // If an interval is defined, this is a SensorVariableEffect
             if(effectDBObj.updateIntervalInMs != null)
             {
-                var sensorName:String = effectDBObj.sensor;
+                var sensorName:String = effectDBObj.sensorName;
                 var sensorData:SensorData;
                 var filterSensorData:Bool = effectDBObj.filtered;
                 if(filterSensorData)
@@ -55,8 +55,8 @@ class EffectController {
                 {
                     sensorData = sensorDataController.getRawWithName(sensorName);
                 }
-                var minDesiredValues:Array<Float> = effectDBObj.minValues;
-                var maxDesiredValues:Array<Float> = effectDBObj.maxValues;
+                var minDesiredValues:Array<Float> = effectDBObj.minDesiredValues;
+                var maxDesiredValues:Array<Float> = effectDBObj.maxDesiredValues;
                 var updateIntervalInMs:Int = effectDBObj.updateIntervalInMs;
                 var vectorComponents:Array<Int> = effectDBObj.vectorComponents;
                 var absoluteValue:Bool = effectDBObj.absoluteValue;
@@ -86,7 +86,7 @@ class EffectController {
                 );
             }
 
-            if(effect != null)
+            if(effect != null && effect.isValid())
             {
                 this.effects.push(effect);
             }

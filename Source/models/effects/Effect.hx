@@ -12,10 +12,6 @@ package models.effects;
  */
 class Effect {
 
-    public static inline var TYPE_SENSOR_VARIABLE:String = "sensor";
-    public static inline var TYPE_SENSOR_THRESHOLD:String = "sensor threshold";
-    public static inline var TYPE_GESTURE:String = "gesture";
-
     public var name:String;
     public var method:String;
     public var mediaProperties:Array<String>;
@@ -25,5 +21,15 @@ class Effect {
         this.name = name;
         this.method = method;
         this.mediaProperties = mediaProperties;
+    }
+
+    public function isValid():Bool
+    {
+        return name != null && name.length > 0 && method != null && method.length > 0 && mediaProperties != null && mediaProperties.length > 0;
+    }
+
+    public function getData(mediaPropertyIndex:Int):Float
+    {
+        return -1;
     }
 }
