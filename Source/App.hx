@@ -26,7 +26,6 @@ class App extends VBox {
 
     private var headerBar:HeaderBar;
     private var gestureScreen:GestureListScreen;
-    private var pianoButtonScreen:PianoButtonScreen;
     private var homeScreen:HomeScreen;
     private var sensorsScreen:SensorsScreen;
     private var connectionSetupScreen:ConnectionSetupScreen;
@@ -87,7 +86,6 @@ class App extends VBox {
 
         // Screen initialization
         homeScreen = new HomeScreen();
-        pianoButtonScreen = new PianoButtonScreen(client);
         gestureScreen = new GestureListScreen(gestureController);
         sensorsScreen = new SensorsScreen(sensors);
         connectionSetupScreen = new ConnectionSetupScreen(client, serverInfo);
@@ -125,11 +123,6 @@ class App extends VBox {
     private function openSensorsScreen()
     {
         ScreenManager.push(sensorsScreen);
-    }
-
-    private function openPianoButtonScreen()
-    {
-        ScreenManager.push(pianoButtonScreen);
     }
 
     private function openMediaScreen()
