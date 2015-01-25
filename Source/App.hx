@@ -32,6 +32,7 @@ class App extends VBox {
     private var viperMediaScreen:ViperMediaScreen;
     private var performanceSelectScreen:PerformanceSelectScreen;
     private var gestureRecognizeScreen:GestureRecognizeScreen;
+    private var performanceScreen:PerformanceScreen;
 
     private var stack:Stack;
     private var client:Client;
@@ -92,6 +93,7 @@ class App extends VBox {
         performanceSelectScreen = new PerformanceSelectScreen(performanceController.performances);
         gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
         viperMediaScreen = new ViperMediaScreen(viperMediaController);
+        performanceScreen = new PerformanceScreen();
 
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
@@ -138,7 +140,8 @@ class App extends VBox {
     private function openPerformanceScreen(performance:Performance)
     {
         performanceController.enablePerformance(performance);
-        ScreenManager.push(new PerformanceScreen(performance));
+        performanceScreen.setPerformance(performance);
+        ScreenManager.push(performanceScreen);
     }
 
     private function openGestureRecognitionScreen()

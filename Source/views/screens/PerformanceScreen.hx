@@ -10,9 +10,12 @@ import haxe.ui.toolkit.data.ArrayDataSource;
 import haxe.ui.toolkit.events.UIEvent;
 import models.Performance;
 import models.Preset;
+import msignal.Signal.Signal2;
 import views.controls.FullWidthButton;
 
 class PerformanceScreen extends Screen {
+
+    public var onPresetStateChanged:Signal2<Preset,Bool> = new Signal2<Preset,Bool>();
 
     private var grid:Grid;
     private var performance:Performance;
@@ -21,11 +24,9 @@ class PerformanceScreen extends Screen {
     private var hBox:HBox;
     private var columnVBoxes:Array<VBox>;
 
-    public function new(?performance:Performance)
+    public function new()
     {
         super();
-
-        this.performance = performance;
 
         hBox = new HBox();
         hBox.percentWidth = 100;
@@ -40,6 +41,21 @@ class PerformanceScreen extends Screen {
             vBox.percentHeight = 100;
             columnVBoxes.push(vBox);
             hBox.addChild(vBox);
+        }
+    }
+
+    public function setPerformance(performance:Performance)
+    {
+        // If this performance has already been loaded there's no work to do
+        if(performance == this.performance)
+        {
+            return;
+        }
+        this.performance = performance;
+
+        for(vBox in columnVBoxes)
+        {
+            vBox.removeAllChildren();
         }
 
         var numButtons:Int = rows * columns;
@@ -56,6 +72,9 @@ class PerformanceScreen extends Screen {
             button.percentWidth = 100;
             button.percentHeight = 100 / rows;
             button.toggle = true;
+            button.onClick = function(e:UIEvent){
+                onPresetStateChanged.dispatch(preset, button.selected);
+            }
             columnVBoxes[buttonIndex % columns].addChild(button);
         }
     }
