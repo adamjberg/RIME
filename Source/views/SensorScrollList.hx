@@ -1,6 +1,6 @@
 package views;
 
-import haxe.ui.toolkit.containers.ListView;
+import views.controls.ListView;
 import models.sensors.Sensor;
 import openfl.events.TimerEvent;
 import openfl.utils.Timer;
@@ -16,10 +16,7 @@ class SensorScrollList extends ListView {
 
         this.sensors = sensors;
 
-        this.percentHeight = 100;
-        this.percentWidth = 100;
         this.allowSelection = false;
-        this.horizontalAlign = "center";
 
         for(sensor in sensors)
         {

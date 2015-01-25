@@ -1,6 +1,6 @@
 package views;
 
-import haxe.ui.toolkit.containers.ListView;
+import views.controls.ListView;
 import models.Performance;
 
 class PerformanceListView extends ListView {
@@ -12,9 +12,6 @@ class PerformanceListView extends ListView {
         super();
 
         this.performances = performances;
-
-        this.percentHeight = 100;
-        this.percentWidth = 100;
         
         for(performance in performances)
         {
