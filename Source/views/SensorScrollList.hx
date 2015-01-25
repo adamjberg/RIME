@@ -2,13 +2,13 @@ package views;
 
 import haxe.ui.toolkit.containers.VBox;
 import haxe.ui.toolkit.containers.Accordion;
-import haxe.ui.toolkit.containers.ScrollView;
+import haxe.ui.toolkit.containers.ListView;
 import models.sensors.Sensor;
 import openfl.events.TimerEvent;
 import openfl.utils.Timer;
 import views.SensorListItem;
 
-class SensorScrollList extends ScrollView {
+class SensorScrollList extends ListView {
 
     private var updateTimer:Timer;
 
@@ -21,37 +21,46 @@ class SensorScrollList extends ScrollView {
     {
         super();
 
-        this._scrollSensitivity = 1;
-
         this.sensors = sensors;
 
-        this.style.borderSize = 0;
-
         this.percentHeight = 100;
-        this.percentWidth = 95;
+        this.percentWidth = 100;
+        this.allowSelection = false;
         this.horizontalAlign = "center";
-
-        vBox = new VBox();
-        vBox.percentWidth = 100;
-        addChild(vBox);
 
         for(sensor in sensors)
         {
-            var sensorListItem:SensorListItem = new SensorListItem(sensor);
-            sensorListItems.push(sensorListItem);
-            vBox.addChild(sensorListItem);
+            dataSource.add(
+            {
+                text: sensor.name,
+                subtext: sensor.getValuesAsString()
+            });
         }
 
-        updateTimer = new Timer(1000, 0);
+        updateTimer = new Timer(250, 0);
         updateTimer.addEventListener(TimerEvent.TIMER, updateSensorValues);
+    }
+
+    public function startUpdate()
+    {
         updateTimer.start();
+    }
+
+    public function stopUpdate()
+    {
+        updateTimer.reset();
     }
 
     private function updateSensorValues(e)
     {
-        for(sensorListItem in sensorListItems)
-        {
-            sensorListItem.update();
+        var pos:Int = 0;
+        if (dataSource.moveFirst()) {
+            do {
+                var sensor:Sensor = sensors[pos++];
+                var data:Dynamic = dataSource.get();
+                data.subtext = sensor.getValuesAsString();
+            } while (dataSource.moveNext()); 
         }
+        syncUI();
     }
 }
