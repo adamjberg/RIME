@@ -15,12 +15,11 @@ class EditMediaScreen extends Screen {
     private var viperCreateButton:FullWidthButton;
     private var viperDeleteButton:FullWidthButton;
 
-    public function new(?viperMediaController:ViperMediaController, ?viperMedia:ViperMedia)
+    public function new(?viperMediaController:ViperMediaController)
     {
         super();
 
         this.viperMediaController = viperMediaController;
-        this.viperMedia = viperMedia;
         
         viperCreateButton = new FullWidthButton("Create On Viper");
         viperCreateButton.onClick = viperCreatePressed;
@@ -29,6 +28,11 @@ class EditMediaScreen extends Screen {
         viperDeleteButton = new FullWidthButton("Delete On Viper");
         viperDeleteButton.onClick = viperDeletePressed;
         addChild(viperDeleteButton);
+    }
+
+    public function setViperMedia(viperMedia:ViperMedia)
+    {
+        this.viperMedia = viperMedia;
     }
 
     private function viperCreatePressed(e:UIEvent)

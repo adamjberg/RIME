@@ -4,10 +4,12 @@ import controllers.*;
 import controllers.media.*;
 import controllers.PerformanceController;
 import controllers.PresetController;
+import controllers.ScreenManager;
 import database.Database;
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
+import models.media.ViperMedia;
 import models.Performance;
 import models.Preset;
 import models.sensors.Sensor;
@@ -16,6 +18,7 @@ import controllers.Client;
 import openfl.events.Event;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
+import views.screens.EditMediaScreen;
 import views.screens.GestureRecognizeScreen;
 import views.screens.PerformanceScreen;
 import views.screens.PerformanceSelectScreen;
@@ -34,6 +37,7 @@ class App extends VBox {
     private var performanceSelectScreen:PerformanceSelectScreen;
     private var gestureRecognizeScreen:GestureRecognizeScreen;
     private var performanceScreen:PerformanceScreen;
+    private var editMediaScreen:EditMediaScreen;
 
     private var stack:Stack;
     private var client:Client;
@@ -95,6 +99,7 @@ class App extends VBox {
         gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
         viperMediaScreen = new ViperMediaScreen(viperMediaController);
         performanceScreen = new PerformanceScreen();
+        editMediaScreen = new EditMediaScreen(viperMediaController);
 
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
@@ -105,6 +110,8 @@ class App extends VBox {
         performanceSelectScreen.onPerformanceSelected.add(openPerformanceScreen);
         performanceScreen.onPresetStateChanged.add(presetStatusChanged);
         performanceScreen.onClosed.add(disableAllPresets);
+
+        viperMediaScreen.onMediaSelected.add(openEditMediaScreen);
 
         ScreenManager.push(homeScreen);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -147,11 +154,12 @@ class App extends VBox {
         ScreenManager.push(performanceScreen);
     }
 
-    private function openGestureRecognitionScreen()
+    private function openEditMediaScreen(media:ViperMedia)
     {
-        ScreenManager.push(gestureRecognizeScreen);
+        editMediaScreen.setViperMedia(media);
+        ScreenManager.push(editMediaScreen);
     }
-
+    
     private function presetStatusChanged(preset:Preset, enabled:Bool)
     {
         if(enabled)
