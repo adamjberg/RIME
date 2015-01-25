@@ -24,7 +24,7 @@ class Database {
 
     private static inline var SAVE_INTERVAL_MS:Int = 5000;
 
-    private static inline var CURRENT_DATABASE_VERSION:Int = 1;
+    private static inline var CURRENT_DATABASE_VERSION:Int = 3;
 
     private static var userDatabaseFileName:String = 
     #if (ios)

@@ -1,6 +1,5 @@
 package views.screens;
 
-import controllers.MappingController;
 import controllers.media.ViperMediaController;
 import haxe.ui.toolkit.core.PopupManager;
 import haxe.ui.toolkit.events.UIEvent;
@@ -13,20 +12,18 @@ import views.ViperMediaScrollList;
 class ViperMediaScreen extends Screen {
 
     private var viperMediaController:ViperMediaController;
-    private var mappingController:MappingController;
 
     private var viperMediaScrollList:ViperMediaScrollList;
     private var newMediaButton:FullWidthButton;
     private var requestViperBtn:FullWidthButton;
 
-    public function new(?viperMediaController:ViperMediaController, ?mappingController:MappingController)
+    public function new(?viperMediaController:ViperMediaController)
     {
         super();
 
         this.viperMediaController = viperMediaController;
-        this.mappingController = mappingController;
 
-        viperMediaScrollList = new ViperMediaScrollList(viperMediaController, mappingController);
+        viperMediaScrollList = new ViperMediaScrollList(viperMediaController);
         addChild(viperMediaScrollList);
 
         newMediaButton = new FullWidthButton("NEW");

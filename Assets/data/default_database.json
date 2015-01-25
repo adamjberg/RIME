@@ -1,63 +1,71 @@
 {  
-    "version":1,
+    "version":3,
     "deviceID":"",
     "serverInfo":{  
         "ipAddress":"",
         "portNumber":"11000"
     },
-    "mappings":[  
-        {  
-            "name":"Orientation - alpha",
-            "mappingData":[  
-                {  
-                    "eventTriggerType":"sensor",
-                    "sensor":"Orientation",
-                    "valueIndex":0,
-                    "dynamicParameters":{  
-                        "targetFields":[  
-                            "setTransparency"
-                        ],
-                        "minOutputs":[  
-                            0
-                        ],
-                        "maxOutputs":[  
-                            255
-                        ]
-                    },
-                    "staticParameters":[  
-                        {  
-                            "method":"update"
-                        }
-                    ],
-                    "intervalInMs":50
-                }
-            ]
+    "effects":[
+        {
+            "name": "example SensorVariableEffect",
+            "method": "update",
+            "mediaProperties": [
+                "setBrightness"
+            ],
+            "minDesiredValues":[
+                0.01
+            ],
+            "maxDesiredValues":[
+                1.0
+            ],
+            "sensorName":"Accelerometer",
+            "updateIntervalInMs":1000,
+            "vectorComponents":[0,1,2],
+            "absoluteValue":false
         },
-        {  
-            "name":"Orientation - green",
-            "mappingData":[  
-                {  
-                    "eventTriggerType":"sensor",
-                    "sensor":"Orientation",
-                    "valueIndex":0,
-                    "dynamicParameters":{  
-                        "targetFields":[  
-                            "setGreen"
-                        ],
-                        "minOutputs":[  
-                            0
-                        ],
-                        "maxOutputs":[  
-                            255
-                        ]
-                    },
-                    "staticParameters":[  
-                        {  
-                            "method":"update"
-                        }
-                    ],
-                    "intervalInMs":50
-                }
+        {
+            "name:": "example GestureEffect",
+            "method":"update",
+            "mediaProperties": [
+                "easing",
+                "xPos",
+                "yPos"
+            ],
+            "desiredValues": [
+                0.01,
+                1,
+                1
+            ],
+            "gestureName":"cirle"
+        }
+    ],
+    "viperMedia":[
+        {
+            "name":"media1",
+            "filename":"media1.png",
+            "id":0
+        }
+    ],
+    "effectsToMediaList":[
+        {
+            "name":"example effectToMedia",
+            "effect":"example SensorVariableEffect",
+            "media":"media1"
+        }
+    ],
+    "presets":[
+        {
+            "name":"example Preset",
+            "effectToMediaList": [
+                "example effectToMedia"
+            ]
+        }
+    ],
+    "performances":[
+        {
+            "name":"example Performance",
+            "presets": [
+                "example Preset"
             ]
         }
     ]
