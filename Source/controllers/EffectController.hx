@@ -131,7 +131,6 @@ class EffectController {
 
     public function setStatus(effect:Effect, status:Bool)
     {
-        trace("set status " +status );
         if(effect != null && effects.indexOf(effect) != -1)
         {
             if(status)

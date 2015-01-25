@@ -104,6 +104,7 @@ class App extends VBox {
 
         performanceSelectScreen.onPerformanceSelected.add(openPerformanceScreen);
         performanceScreen.onPresetStateChanged.add(presetStatusChanged);
+        performanceScreen.onClosed.add(disableAllPresets);
 
         ScreenManager.push(homeScreen);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -158,6 +159,14 @@ class App extends VBox {
             presetController.enablePreset(preset);
         }
         else
+        {
+            presetController.disablePreset(preset);
+        }
+    }
+
+    private function disableAllPresets()
+    {
+        for(preset in presetController.presets)
         {
             presetController.disablePreset(preset);
         }
