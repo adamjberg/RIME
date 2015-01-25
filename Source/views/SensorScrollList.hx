@@ -1,21 +1,14 @@
 package views;
 
-import haxe.ui.toolkit.containers.VBox;
-import haxe.ui.toolkit.containers.Accordion;
 import haxe.ui.toolkit.containers.ListView;
 import models.sensors.Sensor;
 import openfl.events.TimerEvent;
 import openfl.utils.Timer;
-import views.SensorListItem;
 
 class SensorScrollList extends ListView {
 
     private var updateTimer:Timer;
-
     private var sensors:Array<Sensor>;
-    private var sensorListItems:Array<SensorListItem> = new Array<SensorListItem>();
-    private var accordion:Accordion;
-    private var vBox:VBox;
 
     public function new(?sensors:Array<Sensor>)
     {
