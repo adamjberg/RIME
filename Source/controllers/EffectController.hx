@@ -114,10 +114,7 @@ class EffectController {
     // 
     public function enableEffect(effect:Effect)
     {
-        if(effect != null && effects.indexOf(effect) != -1)
-        {
-            activeEffects.push(effect);
-        }
+        setStatus(effect, true);
     }
 
     public function disableEffectByName(effectName:String)
@@ -129,6 +126,22 @@ class EffectController {
     // 
     public function disableEffect(effect:Effect)
     {
-        activeEffects.remove(effect);
+        setStatus(effect, false);
+    }
+
+    public function setStatus(effect:Effect, status:Bool)
+    {
+        trace("set status " +status );
+        if(effect != null && effects.indexOf(effect) != -1)
+        {
+            if(status)
+            {
+                activeEffects.push(effect);
+            }
+            else
+            {
+                activeEffects.remove(effect);
+            }
+        }
     }
 }

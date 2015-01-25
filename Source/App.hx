@@ -9,6 +9,7 @@ import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
 import models.Performance;
+import models.Preset;
 import models.sensors.Sensor;
 import models.ServerInfo;
 import controllers.Client;
@@ -102,6 +103,7 @@ class App extends VBox {
         homeScreen.onPerformPressed.add(openPerformanceSelectScreen);
 
         performanceSelectScreen.onPerformanceSelected.add(openPerformanceScreen);
+        performanceScreen.onPresetStateChanged.add(presetStatusChanged);
 
         ScreenManager.push(homeScreen);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -147,5 +149,17 @@ class App extends VBox {
     private function openGestureRecognitionScreen()
     {
         ScreenManager.push(gestureRecognizeScreen);
+    }
+
+    private function presetStatusChanged(preset:Preset, enabled:Bool)
+    {
+        if(enabled)
+        {
+            presetController.enablePreset(preset);
+        }
+        else
+        {
+            presetController.disablePreset(preset);
+        }
     }
 }

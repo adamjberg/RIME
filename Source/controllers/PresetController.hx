@@ -74,10 +74,7 @@ class PresetController {
     // 
     public function enablePreset(preset:Preset)
     {
-        if(preset != null && presets.indexOf(preset) != -1)
-        {
-            activePresets.push(preset);
-        }
+        setStatus(preset, true);
     }
 
     public function disablePresetByName(name:String)
@@ -89,6 +86,25 @@ class PresetController {
     // 
     public function disablePreset(preset:Preset)
     {
-        activePresets.remove(preset);
+        setStatus(preset, false);
+    }
+
+    public function setStatus(preset:Preset, status:Bool)
+    {
+        if(preset != null && presets.indexOf(preset) != -1)
+        {
+            for(effectToMedia in preset.effectToMediaList)
+            {
+                effectToMediaController.setStatus(effectToMedia, status);
+            }
+            if(status)
+            {
+                activePresets.push(preset);
+            }
+            else
+            {
+                activePresets.remove(preset);
+            }
+        }
     }
 }

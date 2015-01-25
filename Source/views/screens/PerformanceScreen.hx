@@ -72,9 +72,9 @@ class PerformanceScreen extends Screen {
             button.percentWidth = 100;
             button.percentHeight = 100 / rows;
             button.toggle = true;
-            button.onClick = function(e:UIEvent){
+            button.addEventListener(UIEvent.CHANGE, function(e:UIEvent){
                 onPresetStateChanged.dispatch(preset, button.selected);
-            }
+            });
             columnVBoxes[buttonIndex % columns].addChild(button);
         }
     }

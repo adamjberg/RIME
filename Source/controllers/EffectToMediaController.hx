@@ -93,10 +93,7 @@ class EffectToMediaController {
     // 
     public function enableEffectToMedia(effectToMedia:EffectToMedia)
     {
-        if(effectToMedia != null && effectToMediaList.indexOf(effectToMedia) != -1)
-        {
-            activeEffectToMediaList.push(effectToMedia);
-        }
+        setStatus(effectToMedia, true);
     }
 
     public function disableEffectToMediaByName(name:String)
@@ -108,6 +105,22 @@ class EffectToMediaController {
     // 
     public function disableEffectToMedia(effectToMedia:EffectToMedia)
     {
-        activeEffectToMediaList.remove(effectToMedia);
+        setStatus(effectToMedia, false);
+    }
+
+    public function setStatus(effectToMedia:EffectToMedia, status:Bool)
+    {
+        if(effectToMedia != null && effectToMediaList.indexOf(effectToMedia) != -1)
+        {
+            if(status)
+            {
+                activeEffectToMediaList.push(effectToMedia);
+            }
+            else
+            {
+                activeEffectToMediaList.remove(effectToMedia);
+            }
+            effectController.setStatus(effectToMedia.effect, status);
+        }
     }
 }
