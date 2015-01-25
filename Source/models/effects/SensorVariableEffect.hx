@@ -83,7 +83,17 @@ class SensorVariableEffect extends Effect {
             valToUse = Math.abs(valToUse);
             minValue = 0;
         }
-        return ((valToUse - minValue) / (maxValue - minValue)) * (maxDesiredValues[mediaPropertyIndex] - minDesiredValues[mediaPropertyIndex]) + minDesiredValues[mediaPropertyIndex];
+
+        // If no readings have been made this is possible and
+        // results in a division by zero
+        if(minValue != maxValue)
+        {
+            return ((valToUse - minValue) / (maxValue - minValue)) * (maxDesiredValues[mediaPropertyIndex] - minDesiredValues[mediaPropertyIndex]) + minDesiredValues[mediaPropertyIndex];
+        }
+        else
+        {
+            return minDesiredValues[mediaPropertyIndex];
+        }
     }
 
 }

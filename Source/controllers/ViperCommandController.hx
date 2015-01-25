@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.Client;
 import controllers.EffectToMediaController;
+import controllers.media.ViperMediaController;
 import controllers.PresetController;
 import models.commands.ViperCommand;
 import models.commands.ViperCreateCommand;
@@ -20,16 +21,19 @@ class ViperCommandController {
 
     private var presetController:PresetController;
     private var effectToMediaController:EffectToMediaController;
+    private var viperMediaController:ViperMediaController;
     private var activeEffects:Array<Effect>;
     private var client:Client;
     private var effectsAwaitingSend:Array<Effect>;
 
     private var lastSystemTime:Float;
 
-    public function new(presetController:PresetController, effectToMediaController:EffectToMediaController, activeEffects:Array<Effect>, client:Client)
+    public function new(presetController:PresetController, effectToMediaController:EffectToMediaController,
+                        viperMediaController:ViperMediaController, activeEffects:Array<Effect>, client:Client)
     {
         this.presetController = presetController;
         this.effectToMediaController = effectToMediaController;
+        this.viperMediaController = viperMediaController;
         this.activeEffects = activeEffects;
         this.client = client;
 
@@ -107,7 +111,6 @@ class ViperCommandController {
         {
             if(media == effectToMedia.media)
             {
-                trace("media is active " + media);
                 return true;
             }
         }
@@ -122,8 +125,7 @@ class ViperCommandController {
     {
         if(isMediaActive(effectToMedia.media) == false)
         {
-            var createCommand = new ViperCreateCommand(effectToMedia.media.id);
-            client.send(createCommand.fillOscMessage(null));
+            viperMediaController.createMediaOnViper(effectToMedia.media);
         }
     }
 
@@ -131,8 +133,7 @@ class ViperCommandController {
     {
         if(isMediaActive(effectToMedia.media) == false)
         {
-            var deleteCommand = new ViperDeleteCommand(effectToMedia.media.id);
-            client.send(deleteCommand.fillOscMessage(null));
+            viperMediaController.removeMediaFromViper(effectToMedia.media);
         }
     }
 }

@@ -83,7 +83,7 @@ class App extends VBox {
         effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
         presetController = new PresetController(effectToMediaController);
         performanceController = new PerformanceController(presetController);
-        viperCommandController = new ViperCommandController(presetController, effectToMediaController, effectController.activeEffects, client);
+        viperCommandController = new ViperCommandController(presetController, effectToMediaController, viperMediaController, effectController.activeEffects, client);
 
 
         // Screen initialization
