@@ -1,36 +1,20 @@
 package views;
 
 import controllers.media.ViperMediaController;
-import controllers.ScreenManager;
-import haxe.ui.toolkit.containers.ScrollView;
-import haxe.ui.toolkit.containers.VBox;
-import haxe.ui.toolkit.events.UIEvent;
 import models.media.ViperMedia;
-import views.screens.EditMediaScreen;
-import views.ViperMediaListItem;
+import views.controls.ListView;
+import views.renderers.CustomComponentRenderer;
 
-class ViperMediaScrollList extends ScrollView {
+class ViperMediaScrollList extends ListView {
 
     private var viperMediaController:ViperMediaController;
     private var viperMediaList:Array<ViperMedia>;
-
-    private var vBox:VBox;
 
     public function new(?viperMediaController:ViperMediaController)
     {
         super();
         this.viperMediaController = viperMediaController;
         this.viperMediaList = viperMediaController.mediaList;
-
-        this._scrollSensitivity = 1;
-        this.style.borderSize = 0;
-        this.percentHeight = 100;
-        this.percentWidth = 95;
-        this.horizontalAlign = "center";
-
-        vBox = new VBox();
-        vBox.percentWidth = 100;
-        addChild(vBox);
 
         viperMediaController.onUpdated.add(populate);
 
@@ -39,21 +23,24 @@ class ViperMediaScrollList extends ScrollView {
 
     private function populate()
     {
-        vBox.removeAllChildren();
+        dataSource.removeAll();
 
+        var pos:Int = 0;
         for(media in viperMediaList)
         {
-            var viperMediaListItem:ViperMediaListItem = new ViperMediaListItem(media);
-            viperMediaListItem.onClick = itemClicked;
-            viperMediaListItem.onDeleteButtonPressed.add(deleteViperMedia);
-            vBox.addChild(viperMediaListItem);
+            dataSource.add(
+                {
+                    text: media.name,
+                    subtext: media.filename,
+                    componentType: "button",
+                    componentValue: "delete"
+                }
+            );
+            var item:CustomComponentRenderer = cast(getItem(pos++), CustomComponentRenderer);
+            item.component.onClick = function(e) {
+                deleteViperMedia(media);
+            };
         }
-    }
-
-    private function itemClicked(e:UIEvent)
-    {
-        var viperMediaListItem:ViperMediaListItem = cast(e.component, ViperMediaListItem);
-        ScreenManager.push(new EditMediaScreen(viperMediaController, viperMediaListItem.media));
     }
 
     private function deleteViperMedia(viperMedia:ViperMedia)
