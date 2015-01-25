@@ -27,6 +27,7 @@ class ScreenManager {
         ScreenManager.stack.addChild(screen);
         ScreenManager.stack.selectedIndex = screens.length - 1;
         updateBackButton();
+        screen.onOpened.dispatch();
     }
 
     public static function pop()

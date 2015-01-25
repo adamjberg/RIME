@@ -23,5 +23,8 @@ class SensorsScreen extends Screen {
 
         var sensorList:SensorScrollList = new SensorScrollList(sensors);
         addChild(sensorList);
+
+        this.onClosed.add(sensorList.stopUpdate);
+        this.onOpened.add(sensorList.startUpdate);
     }
 }
