@@ -4,8 +4,12 @@ import controllers.Client;
 import controllers.EffectToMediaController;
 import controllers.PresetController;
 import models.commands.ViperCommand;
+import models.commands.ViperCreateCommand;
+import models.commands.ViperDeleteCommand;
 import models.effects.Effect;
 import models.effects.SensorVariableEffect;
+import models.EffectToMedia;
+import models.media.ViperMedia;
 import osc.OscMessage;
 
 /**
@@ -31,6 +35,9 @@ class ViperCommandController {
 
         lastSystemTime = Sys.time();
         effectsAwaitingSend = new Array<Effect>();
+
+        effectToMediaController.onEffectToMediaEnabled.add(createMediaOnViperIfNotActive);
+        effectToMediaController.onEffectToMediaDisabled.add(removeMediaFromViperIfNotActive);
     }
 
     /*
@@ -92,5 +99,40 @@ class ViperCommandController {
         effectsAwaitingSend = new Array<Effect>();
 
         client.send(messageToSend);
+    }
+
+    private function isMediaActive(media:ViperMedia):Bool
+    {
+        for(effectToMedia in effectToMediaController.activeEffectToMediaList)
+        {
+            if(media == effectToMedia.media)
+            {
+                trace("media is active " + media);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Below is logic to only create or delete media if no other active
+     * presets refer to this media.
+     */
+    private function createMediaOnViperIfNotActive(effectToMedia:EffectToMedia)
+    {
+        if(isMediaActive(effectToMedia.media) == false)
+        {
+            var createCommand = new ViperCreateCommand(effectToMedia.media.id);
+            client.send(createCommand.fillOscMessage(null));
+        }
+    }
+
+    private function removeMediaFromViperIfNotActive(effectToMedia:EffectToMedia)
+    {
+        if(isMediaActive(effectToMedia.media) == false)
+        {
+            var deleteCommand = new ViperDeleteCommand(effectToMedia.media.id);
+            client.send(deleteCommand.fillOscMessage(null));
+        }
     }
 }

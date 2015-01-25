@@ -6,6 +6,7 @@ import database.Database;
 import models.effects.Effect;
 import models.EffectToMedia;
 import models.media.ViperMedia;
+import msignal.Signal.Signal1;
 
 /**
  * Controller for EffectToMedia objects
@@ -15,6 +16,9 @@ import models.media.ViperMedia;
  * those that are active.
  */
 class EffectToMediaController {
+
+    public var onEffectToMediaEnabled:Signal1<EffectToMedia> = new Signal1<EffectToMedia>();
+    public var onEffectToMediaDisabled:Signal1<EffectToMedia> = new Signal1<EffectToMedia>();
 
     public var effectToMediaList:Array<EffectToMedia>;
     public var activeEffectToMediaList:Array<EffectToMedia>;
@@ -114,11 +118,15 @@ class EffectToMediaController {
         {
             if(status)
             {
+                // Send this signal before, so we can search the active list without the new entry
+                onEffectToMediaEnabled.dispatch(effectToMedia);
                 activeEffectToMediaList.push(effectToMedia);
             }
             else
             {
+                // Send the signal after so we can search the resulting activeEffectToMediaList
                 activeEffectToMediaList.remove(effectToMedia);
+                onEffectToMediaDisabled.dispatch(effectToMedia);
             }
             effectController.setStatus(effectToMedia.effect, status);
         }
