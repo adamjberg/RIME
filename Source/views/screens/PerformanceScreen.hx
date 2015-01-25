@@ -72,6 +72,7 @@ class PerformanceScreen extends Screen {
             button.percentWidth = 100;
             button.percentHeight = 100 / rows;
             button.toggle = true;
+            button.style.textAlign = "center";
             button.addEventListener(UIEvent.CHANGE, function(e:UIEvent){
                 onPresetStateChanged.dispatch(preset, button.selected);
             });
