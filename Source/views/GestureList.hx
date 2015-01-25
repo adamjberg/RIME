@@ -7,6 +7,7 @@ import gestures.models.GestureModel;
 import haxe.ui.toolkit.controls.Button;
 import haxe.ui.toolkit.controls.Text;
 import haxe.ui.toolkit.core.renderers.ComponentItemRenderer;
+import views.renderers.CustomComponentRenderer;
 import views.screens.GestureEditScreen;
 
 class GestureList extends ListView {
@@ -29,6 +30,8 @@ class GestureList extends ListView {
         dataSource.removeAll();
 
         this.gestures = gestureController.getGestureModels();
+
+        var pos:Int = 0;
         for(gesture in gestures)
         {
             dataSource.add(
@@ -38,6 +41,10 @@ class GestureList extends ListView {
                     componentValue: "delete"
                 }
             );
+            var item:CustomComponentRenderer = cast(getItem(pos++), CustomComponentRenderer);
+            item.component.onClick = function(e) {
+                deleteGesture(gesture);
+            };
         }
     }
 
