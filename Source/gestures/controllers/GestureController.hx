@@ -219,8 +219,11 @@ import sys.io.FileOutput;
      */
     public function enableGesture(gestureModel:GestureModel)
     {
-        enableNoButtonDetection();
-        classifier.addGestureModel(gestureModel);
+        if(gestureModel != null)
+        {
+            enableNoButtonDetection();
+            classifier.addGestureModel(gestureModel);
+        }
     }
 
     /*

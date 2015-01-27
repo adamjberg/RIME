@@ -16,4 +16,23 @@ class GestureEffect extends Effect {
         this.gestureModel = gestureModel;
         this.desiredValues = desiredValues;
     }
+
+    override public function isValid():Bool
+    {
+        return super.isValid() && gestureModel != null && desiredValues != null && desiredValues.length > 0;
+    }
+
+    override public function getErrorString():String
+    {
+        var errorString:String = super.getErrorString();
+        if(gestureModel == null)
+        {
+            errorString += "No gestureName defined\n";
+        }
+        if(desiredValues == null || desiredValues.length == 0)
+        {
+            errorString += "No desiredValues defined\n";
+        }
+        return errorString;
+    }
 }
