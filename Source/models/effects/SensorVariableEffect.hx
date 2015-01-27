@@ -107,7 +107,7 @@ class SensorVariableEffect extends Effect {
         {
             errorString += "No maxDesiredValues defined\n";
         }
-        if(updateIntervalInMs == null)
+        if(Math.isNaN(updateIntervalInMs))
         {
             errorString += "No updateIntervalInMs defined\n";
         }
