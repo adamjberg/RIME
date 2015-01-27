@@ -2,6 +2,8 @@ package controllers;
 
 import controllers.SensorDataController;
 import database.Database;
+import gestures.controllers.GestureController;
+import gestures.models.GestureModel;
 import models.effects.Effect;
 import models.effects.GestureEffect;
 import models.effects.SensorVariableEffect;
@@ -14,10 +16,13 @@ class EffectController {
     public var activeEffects:Array<Effect>;
 
     private var sensorDataController:SensorDataController;
+    private var gestureController:GestureController;
 
-    public function new(sensorDataController:SensorDataController)
+    public function new(sensorDataController:SensorDataController, gestureController:GestureController)
     {
         this.sensorDataController = sensorDataController;
+        this.gestureController = gestureController;
+
         this.effects = new Array<Effect>();
         this.activeEffects = new Array<Effect>();
         loadEffectsFromDB();
@@ -76,12 +81,13 @@ class EffectController {
             else if(effectDBObj.gestureName != null)
             {
                 var gestureName:String = effectDBObj.gestureName;
+                var gestureModel:GestureModel = gestureController.getGestureModelByName(gestureName);
                 var desiredValues:Array<Float> = effectDBObj.desiredValues;
                 effect = new GestureEffect(
                     name,
                     method,
                     mediaProperties,
-                    gestureName,
+                    gestureModel,
                     desiredValues
                 );
             }

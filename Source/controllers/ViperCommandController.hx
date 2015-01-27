@@ -4,10 +4,13 @@ import controllers.Client;
 import controllers.EffectToMediaController;
 import controllers.media.ViperMediaController;
 import controllers.PresetController;
+import gestures.controllers.GestureController;
+import gestures.models.GestureModel;
 import models.commands.ViperCommand;
 import models.commands.ViperCreateCommand;
 import models.commands.ViperDeleteCommand;
 import models.effects.Effect;
+import models.effects.GestureEffect;
 import models.effects.SensorVariableEffect;
 import models.EffectToMedia;
 import models.media.ViperMedia;
@@ -22,6 +25,7 @@ class ViperCommandController {
     private var presetController:PresetController;
     private var effectToMediaController:EffectToMediaController;
     private var viperMediaController:ViperMediaController;
+    private var gestureController:GestureController;
     private var activeEffects:Array<Effect>;
     private var client:Client;
     private var effectsAwaitingSend:Array<Effect>;
@@ -29,11 +33,12 @@ class ViperCommandController {
     private var lastSystemTime:Float;
 
     public function new(presetController:PresetController, effectToMediaController:EffectToMediaController,
-                        viperMediaController:ViperMediaController, activeEffects:Array<Effect>, client:Client)
+                        viperMediaController:ViperMediaController, gestureController:GestureController, activeEffects:Array<Effect>, client:Client)
     {
         this.presetController = presetController;
         this.effectToMediaController = effectToMediaController;
         this.viperMediaController = viperMediaController;
+        this.gestureController = gestureController;
         this.activeEffects = activeEffects;
         this.client = client;
 
@@ -42,6 +47,7 @@ class ViperCommandController {
 
         effectToMediaController.onEffectToMediaEnabled.add(createMediaOnViperIfNotActive);
         effectToMediaController.onEffectToMediaDisabled.add(removeMediaFromViperIfNotActive);
+        gestureController.onGestureDetected.add(gestureDetected);
     }
 
     /*
@@ -103,6 +109,25 @@ class ViperCommandController {
         effectsAwaitingSend = new Array<Effect>();
 
         client.send(messageToSend);
+    }
+
+    /*
+     * Queues up the GestureEffect to be sent out on the next update
+     */
+    private function gestureDetected(gestureModel:GestureModel)
+    {
+        for(activeEffect in activeEffects)
+        {
+            if(Std.is(activeEffect, GestureEffect))
+            {
+                var gestureEffect:GestureEffect = cast(activeEffect, GestureEffect);
+
+                if(gestureEffect.gestureModel == gestureModel)
+                {
+                    effectsAwaitingSend.push(activeEffect);
+                }
+            }
+        }
     }
 
     private function isMediaActive(media:ViperMedia):Bool

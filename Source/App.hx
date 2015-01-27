@@ -9,6 +9,7 @@ import database.Database;
 import gestures.controllers.GestureController;
 import haxe.ui.toolkit.containers.Stack;
 import haxe.ui.toolkit.containers.VBox;
+import models.effects.GestureEffect;
 import models.media.ViperMedia;
 import models.Performance;
 import models.Preset;
@@ -81,14 +82,13 @@ class App extends VBox {
         sensorController = new SensorController();
         sensors = sensorController.sensors;
         sensorDataController = new SensorDataController(sensors);
-        effectController = new EffectController(sensorDataController);
         gestureController = new GestureController(sensorDataController);
+        effectController = new EffectController(sensorDataController, gestureController);
         viperMediaController = new ViperMediaController(client);
         effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
         presetController = new PresetController(effectToMediaController);
         performanceController = new PerformanceController(presetController);
-        viperCommandController = new ViperCommandController(presetController, effectToMediaController, viperMediaController, effectController.activeEffects, client);
-
+        viperCommandController = new ViperCommandController(presetController, effectToMediaController, viperMediaController, gestureController, effectController.activeEffects, client);
 
         // Screen initialization
         homeScreen = new HomeScreen();
@@ -170,6 +170,7 @@ class App extends VBox {
         {
             presetController.disablePreset(preset);
         }
+        updateActiveGestures();
     }
 
     private function disableAllPresets()
@@ -177,6 +178,20 @@ class App extends VBox {
         for(preset in presetController.presets)
         {
             presetController.disablePreset(preset);
+        }
+        updateActiveGestures();
+    }
+
+    private function updateActiveGestures()
+    {
+        gestureController.disableAllGestures();
+        for(effect in effectController.activeEffects)
+        {
+            if(Std.is(effect, GestureEffect))
+            {
+                var gestureEffect:GestureEffect = cast(effect, GestureEffect);
+                gestureController.enableGesture(gestureEffect.gestureModel);
+            }
         }
     }
 }
