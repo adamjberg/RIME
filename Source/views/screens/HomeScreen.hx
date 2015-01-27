@@ -11,6 +11,7 @@ class HomeScreen extends Screen {
 
     public var onConnectionSetupPressed:Signal0 = new Signal0();
     public var onMediaPressed:Signal0 = new Signal0();
+    public var onDatabasePressed:Signal0 = new Signal0();
     public var onSensorsPressed:Signal0 = new Signal0();
     public var onGesturesPressed:Signal0 = new Signal0();
     public var onPerformPressed:Signal0 = new Signal0();
@@ -19,6 +20,7 @@ class HomeScreen extends Screen {
     [
         "Connection Setup",
         "Media",
+        "Database",
         "Sensors",
         "Gestures",
         "Perform"
@@ -31,6 +33,7 @@ class HomeScreen extends Screen {
 
         buttonPressedSignals.push(onConnectionSetupPressed);
         buttonPressedSignals.push(onMediaPressed);
+        buttonPressedSignals.push(onDatabasePressed);
         buttonPressedSignals.push(onSensorsPressed);
         buttonPressedSignals.push(onGesturesPressed);
         buttonPressedSignals.push(onPerformPressed);

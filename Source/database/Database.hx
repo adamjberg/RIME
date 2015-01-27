@@ -116,6 +116,16 @@ class Database {
         return serverInfo;
     }
 
+    public function getErrors():Array<Dynamic>
+    {
+        return db.errors != null ? db.errors : new Array<Dynamic>();
+    }
+
+    public function writeErrors(errors:Array<Dynamic>)
+    {
+        writeJSONObj("errors", errors);
+    }
+
     public function saveServerInfo(serverInfo:ServerInfo)
     {
         dirty = true;

@@ -51,7 +51,7 @@ class SensorVariableEffect extends Effect {
 
     override public function isValid():Bool
     {
-        return sensorData != null &&
+        return super.isValid() && sensorData != null &&
             minDesiredValues != null && minDesiredValues.length > 0 &&
             maxDesiredValues != null && maxDesiredValues.length > 0 &&
             updateIntervalInMs > 0 && vectorComponents != null &&
@@ -94,6 +94,36 @@ class SensorVariableEffect extends Effect {
         {
             return minDesiredValues[mediaPropertyIndex];
         }
+    }
+
+    override public function getErrorString():String
+    {
+        var errorString:String = super.getErrorString();
+        if(minDesiredValues == null || minDesiredValues.length == 0)
+        {
+            errorString += "No minDesiredValues defined\n";
+        }
+        if(maxDesiredValues == null || maxDesiredValues.length == 0)
+        {
+            errorString += "No maxDesiredValues defined\n";
+        }
+        if(updateIntervalInMs == null)
+        {
+            errorString += "No updateIntervalInMs defined\n";
+        }
+        if(vectorComponents == null || vectorComponents.length == 0)
+        {
+            errorString += "No vectorComponents defined\n";
+        }
+        for(comp in vectorComponents)
+        {
+            if(comp != 0 && comp != 1 && comp != 2)
+            {
+                errorString += "Valid vectorComponents are 0,1, and 2\n";
+                break;
+            }
+        }
+        return errorString;
     }
 
 }

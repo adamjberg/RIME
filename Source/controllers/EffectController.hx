@@ -31,18 +31,21 @@ class EffectController {
     public function loadEffectsFromDB()
     {
         var effectsDBObj:Array<Dynamic> = Database.instance.db.effects;
+        var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
         if(effectsDBObj == null)
         {
             trace("No effects found in DB");
             return;
         }
 
+        var effectCount:Int = 0;
         for(effectDBObj in effectsDBObj)
         {
             var effect:Effect = null;
             var name:String = effectDBObj.name;
             var mediaProperties:Array<String> = effectDBObj.mediaProperties;
             var method:String = effectDBObj.method;
+            var currentErrorString:String = "Effect[" + effectCount + "]:\n";
 
             // Below we determine the Effect type by exclusive required properties
 
@@ -92,11 +95,23 @@ class EffectController {
                 );
             }
 
-            if(effect != null && effect.isValid())
+            if(effect != null)
             {
-                this.effects.push(effect);
+                if(effect.isValid())
+                {
+                    this.effects.push(effect);
+                }
+                else
+                {
+                    currentErrorString += effect.getErrorString();
+                    errorsDBObj.push(currentErrorString);
+                }
             }
+
+            effectCount++;
         }
+
+        Database.instance.writeErrors(errorsDBObj);
     }
 
     public function getEffectByName(effectName:String):Effect

@@ -19,6 +19,7 @@ import controllers.Client;
 import openfl.events.Event;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
+import views.screens.DatabaseScreen;
 import views.screens.EditMediaScreen;
 import views.screens.GestureRecognizeScreen;
 import views.screens.PerformanceScreen;
@@ -35,6 +36,7 @@ class App extends VBox {
     private var sensorsScreen:SensorsScreen;
     private var connectionSetupScreen:ConnectionSetupScreen;
     private var viperMediaScreen:ViperMediaScreen;
+    private var databaseScreen:DatabaseScreen;
     private var performanceSelectScreen:PerformanceSelectScreen;
     private var gestureRecognizeScreen:GestureRecognizeScreen;
     private var performanceScreen:PerformanceScreen;
@@ -85,6 +87,7 @@ class App extends VBox {
         gestureController = new GestureController(sensorDataController);
         effectController = new EffectController(sensorDataController, gestureController);
         viperMediaController = new ViperMediaController(client);
+        databaseScreen = new DatabaseScreen();
         effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
         presetController = new PresetController(effectToMediaController);
         performanceController = new PerformanceController(presetController);
@@ -104,6 +107,7 @@ class App extends VBox {
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
         homeScreen.onMediaPressed.add(openMediaScreen);
+        homeScreen.onDatabasePressed.add(openDatabaseScreen);
         homeScreen.onSensorsPressed.add(openSensorsScreen);
         homeScreen.onPerformPressed.add(openPerformanceSelectScreen);
 
@@ -140,6 +144,11 @@ class App extends VBox {
     private function openMediaScreen()
     {
         ScreenManager.push(viperMediaScreen);
+    }
+
+    private function openDatabaseScreen()
+    {
+        ScreenManager.push(databaseScreen);
     }
 
     private function openPerformanceSelectScreen()
