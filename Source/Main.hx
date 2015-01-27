@@ -38,12 +38,12 @@ class Main extends Sprite {
     }
 
     private function this_onEnterFrame (event:Event):Void {
-        //trace("Testing Average Sound Meter:"+Sensors.soundMeter());
-        var sound:Float=0;
-        if(Sensors.peaksoundMeter()>40.000){
-            sound=Sensors.peaksoundMeter();
-        }
-        trace("Testing Peak Sound Meter:"+sound);
+        trace("Testing Average Sound Meter:"+Sensors.soundMeter());
+        //var sound:Float=0;
+        // if(Sensors.peaksoundMeter()>40.000){
+        //     sound=Sensors.peaksoundMeter();
+        // }
+        // trace("Testing Peak Sound Meter:"+sound);
 
     }
 

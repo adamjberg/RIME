@@ -35,7 +35,7 @@ public class AudioMeter extends Thread {
 	private short mChannelConfig;
  
 	private short[] mBuffer;
-	private int mBufferSize = AudioRecord.ERROR_BAD_VALUE;
+	private int mBufferSize = 2;//AudioRecord.ERROR_BAD_VALUE;
  
 	private int mLocks = 0;
  

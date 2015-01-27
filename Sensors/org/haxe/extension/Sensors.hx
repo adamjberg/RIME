@@ -63,7 +63,7 @@ class Sensors {
         @JNI public static function isLightSupported():Bool;
         @JNI public static function isMagneticFieldSupported():Bool;
         @JNI public static function isHumiditySupported():Bool;
-        @JNI public static function peaksoundMeter():Float;
+        @JNI public static function soundMeter():Float;
 
 
     #else
@@ -73,11 +73,11 @@ class Sensors {
     //initialize Sensors for iphone//
     
 
-    
+    //this value is more accurate
     public static function soundMeter ():Float {
         return sensors_get_soundMeter();
     }
-
+    //peak value too easily reached..
     public static function peaksoundMeter ():Float {
         return sensors_peak_soundMeter();
     }

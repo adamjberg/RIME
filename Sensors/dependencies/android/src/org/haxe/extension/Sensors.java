@@ -149,7 +149,7 @@ public class Sensors extends Extension implements SensorEventListener {
         return mSensorDetails.get(Sensor.TYPE_RELATIVE_HUMIDITY).values[0];
     }
     //Get Audio Sample
-    public static float peaksoundMeter(){
+    public static float soundMeter(){
         return AudioMeter.getInstance().getAmplitude();
     }
 
