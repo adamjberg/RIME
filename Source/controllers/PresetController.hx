@@ -47,10 +47,13 @@ class PresetController {
             var effectToMediaList:Array<EffectToMedia> = new Array<EffectToMedia>();
             var currentErrorString:String = "Preset[" + presetCount + "]:\n";
 
-            for(effectToMediaName in effectToMediaNameList)
+            if(effectToMediaNameList != null)
             {
-                var effectToMedia:EffectToMedia = effectToMediaController.getEffectToMediaByName(effectToMediaName);
-                effectToMediaList.push(effectToMedia);
+                for(effectToMediaName in effectToMediaNameList)
+                {
+                    var effectToMedia:EffectToMedia = effectToMediaController.getEffectToMediaByName(effectToMediaName);
+                    effectToMediaList.push(effectToMedia);
+                }
             }
             preset = new Preset(name, effectToMediaList);
 
