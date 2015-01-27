@@ -32,7 +32,6 @@ class EffectToMediaController {
         this.viperMediaController = viperMediaController;
         effectToMediaList = new Array<EffectToMedia>();
         activeEffectToMediaList = new Array<EffectToMedia>();
-        loadEffectsToMediaListFromDB();
     }
 
     public function loadEffectsToMediaListFromDB()

@@ -24,7 +24,6 @@ class PresetController {
         this.effectToMediaController = effectToMediaController;
         presets = new Array<Preset>();
         activePresets = new Array<Preset>();
-        loadPresetsFromDB();
     }
 
     public function loadPresetsFromDB()
@@ -52,7 +51,10 @@ class PresetController {
                 for(effectToMediaName in effectToMediaNameList)
                 {
                     var effectToMedia:EffectToMedia = effectToMediaController.getEffectToMediaByName(effectToMediaName);
-                    effectToMediaList.push(effectToMedia);
+                    if(effectToMedia != null)
+                    {
+                        effectToMediaList.push(effectToMedia);
+                    }
                 }
             }
             preset = new Preset(name, effectToMediaList);

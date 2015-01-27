@@ -27,11 +27,10 @@ class ViperMediaController {
     public function new(?client:Client)
     {
         this.client = client;
-        loadMediaListFromDB();
         fileList.push("None");
     }
 
-    private function loadMediaListFromDB()
+    public function loadMediaListFromDB()
     {
         var viperMediaListObj:Array<Dynamic> = Database.instance.db.viperMedia;
         if(viperMediaListObj == null)

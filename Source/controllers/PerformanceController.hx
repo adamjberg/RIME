@@ -24,7 +24,6 @@ class PerformanceController {
         this.presetController = presetController;
         performances = new Array<Performance>();
         activePerformances = new Array<Performance>();
-        loadPerformancesFromDB();
     }
 
     public function loadPerformancesFromDB()
@@ -52,7 +51,10 @@ class PerformanceController {
                 for(presetName in presetNameList)
                 {
                     var preset:Preset = presetController.getPresetByName(presetName);
-                    presetList.push(preset);
+                    if(preset != null)
+                    {
+                        presetList.push(preset);
+                    }
                 }
             }
             performance = new Performance(name, presetList);

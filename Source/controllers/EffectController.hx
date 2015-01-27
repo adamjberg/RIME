@@ -25,7 +25,6 @@ class EffectController {
 
         this.effects = new Array<Effect>();
         this.activeEffects = new Array<Effect>();
-        loadEffectsFromDB();
     }
 
     public function loadEffectsFromDB()
