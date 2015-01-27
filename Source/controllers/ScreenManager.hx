@@ -3,6 +3,7 @@ package controllers;
 import haxe.ui.toolkit.containers.Stack;
 import msignal.Signal.Signal0;
 import views.HeaderBar;
+import views.screens.Screen;
 
 class ScreenManager {
     public static var onBackPressed:Signal0 = new Signal0();
@@ -10,7 +11,7 @@ class ScreenManager {
     public static var stack:Stack;
     public static var headerBar:HeaderBar;
 
-    public static var screens:Array<Dynamic> = new Array<Dynamic>();
+    public static var screens:Array<Screen> = new Array<Screen>();
 
     public static function init(stack:Stack, headerBar:HeaderBar)
     {
@@ -26,13 +27,16 @@ class ScreenManager {
         ScreenManager.stack.addChild(screen);
         ScreenManager.stack.selectedIndex = screens.length - 1;
         updateBackButton();
+        screen.onOpened.dispatch();
     }
 
     public static function pop()
     {
         ScreenManager.stack.back();
-        ScreenManager.stack.removeChild(screens.pop(), false);
+        var screen:Screen = screens.pop();
+        ScreenManager.stack.removeChild(screen, false);
         updateBackButton();
+        screen.onClosed.dispatch();
     }
 
     private static function updateBackButton()

@@ -6,6 +6,8 @@
 
 	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<android permission="android.permission.RECORD_AUDIO"/>
+	<android permission="android.permission.INTERNET"/>
+	<android permission="android.permission.VIBRATE"/>
 	<window fps="60"/>
 	<window orientation="portrait" />
 	<source path="Source" />

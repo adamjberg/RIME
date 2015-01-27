@@ -1,17 +1,16 @@
 package controllers.media;
 
 import controllers.Client;
-import controllers.MappingController;
 import database.Database;
 import models.commands.ViperCreateCommand;
 import models.commands.ViperDeleteCommand;
 import models.commands.ViperCommand;
-import models.mappings.Mapping;
 import osc.OscMessage;
 import models.media.ViperMedia;
 import msignal.Signal.Signal0;
 import haxe.io.Bytes;
 import haxe.io.BytesInput;
+import haxe.Timer;
 
 class ViperMediaController {
 
@@ -24,27 +23,31 @@ class ViperMediaController {
     public var fileList:Array<String> = new Array<String>();
 
     private var client:Client;
-    private var mappingController:MappingController;
 
-    public function new(?client:Client, ?mappingController:MappingController)
+    public function new(?client:Client)
     {
         this.client = client;
-        this.mappingController = mappingController;
-        loadMediaListFromDB();
         fileList.push("None");
     }
 
-    private function loadMediaListFromDB()
+    public function loadMediaListFromDB()
     {
+        mediaList.splice(0, mediaList.length);
+
         var viperMediaListObj:Array<Dynamic> = Database.instance.db.viperMedia;
+        var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
+
         if(viperMediaListObj == null)
         {
             return;
         }
 
+        var mediaCount:Int = 0;
         for(viperMediaObj in viperMediaListObj)
         {
             var media:ViperMedia = new ViperMedia();
+            var currentErrorString:String = "ViperMedia[" + mediaCount + "]:\n";
+
             media.id = viperMediaObj.id;
             media.filename = viperMediaObj.filename;
             media.type = viperMediaObj.type;
@@ -52,17 +55,36 @@ class ViperMediaController {
             media.xPos = viperMediaObj.xPos;
             media.yPos = viperMediaObj.yPos;
 
-            var mapping:Mapping = mappingController.getMappingWithName(viperMediaObj.mapping);
-            media.mapping = mapping;
-            addMedia(media);
-
             // If the medias ID is larger than our current id we need to
             // Set the current ID to a bigger number to prevent ID clashes
             if(media.id >= currentId)
             {
                 currentId = media.id + 1;
             }
+
+            if(media.isValid())
+            {
+                mediaList.push(media);
+            }
+            else
+            {
+                currentErrorString += media.getErrorString();
+                errorsDBObj.push(currentErrorString);
+            }
+            mediaCount++;
         }
+    }
+
+    public function getViperMediaByName(mediaName:String):ViperMedia
+    {
+        for(viperMedia in mediaList)
+        {
+            if(viperMedia.name == mediaName)
+            {
+                return viperMedia;
+            }
+        }
+        return null;
     }
 
     public function getMediaFromFilename(fileName:String):ViperMedia
@@ -79,25 +101,14 @@ class ViperMediaController {
         command.addParam("posX", media.xPos);
         command.addParam("posY", media.yPos);
         client.send(command.fillOscMessage());
-
-        if(media.mapping != null)
-        {
-            media.mapping.addTarget(media.id);
-        }
     }
 
     public function removeMediaFromViper(media:ViperMedia)
     {
         if(media != null)
         {
-            mappingController.removeIdFromAllMappings(media.id);
             var command:ViperDeleteCommand = new ViperDeleteCommand(media.id);
             client.send(command.fillOscMessage());
-
-            if(media.mapping != null)
-            {
-                media.mapping.removeTarget(media.id);
-            }
         }
     }
 
@@ -137,73 +148,34 @@ class ViperMediaController {
             viperMediaObj.xPos = media.xPos;
             viperMediaObj.yPos = media.yPos;
 
-            if(media.mapping != null)
-            {
-                viperMediaObj.mapping = media.mapping.name;
-            }
             viperMediaListObj.push(viperMediaObj);
         }
 
         Database.instance.writeJSONObj("viperMedia", viperMediaListObj);
     }
 
-// Requesting media from Viper server
     public function requestMedia()
     {
-
-        // Sends Osc Message to prepare Viper to send RIME the file list
-        var message:OscMessage = new OscMessage();
-        var command:ViperCommand = new ViperCommand();
-        command.method = "dataList";
+        // Send a request for media on Viper
+        var command:ViperCommand = new ViperCommand(null,"datalist");
         client.send(command.fillOscMessage());
 
-        // Preps RIME to receive the message from Viper
-        var str = client.receive(message);
+        var responseMessage:OscMessage =  client.receive();
 
-
-        trace ("String is " + str);
-        trace("String is " + str.length + " long.");
-
-        if (str.length != 0)
+        fileList = new Array<String>();
+        if(responseMessage != null)
         {
-            // Cleans current fileList
-            for (i in 0...fileList.length)
+            for(arg in responseMessage.arguments)
             {
-                fileList.shift();
+                fileList.push(arg);
             }
-
-            // Parses continuous string into an array of strings to separate names
-            var clipName = "";
-            var x = 0;
-            for(x in 0...str.length)
-            {
-                // Viper's string Uses "," as separator to indicate different objects, use as indicator to move on to next item
-                if (str.charAt(x) != ",")
-                    clipName += str.charAt(x);
-                else
-                {
-                trace(clipName);
-
-                fileList.push(clipName);
-                clipName = "";
-                }
-            }
-
-            trace("FileList: ");
-            trace(fileList);
-            trace("");
-
-            // Removes the first two objects in the list, as they are just the ID and identifier, not needed in our array.
-            fileList.shift();
-            fileList.shift();
-            trace("Removed first two elements: ");
-            trace(fileList);
         }
+        // TODO: There should be a check before the user is shown
+        // a list with just this value
+        // (maybe give the option to type the filename?)
         else
         {
-            trace("No response");
+            fileList.push("None");
         }
-        client.disconnect();
-        client.connect();
     }
 }

@@ -89,72 +89,79 @@ class Sensors {
 
 
     public static function getAccel ():Array<Float> {
-        #if (ios)
         var array:Array<Float> = new Array<Float>();
-        array.push(sensors_get_iaccelX());
-        array.push(sensors_get_iaccelY());
-        array.push(sensors_get_iaccelZ());
-        return array;
-        
-        #end
-
-        return null;
+		#if (ios)
+	
+        	array.push(sensors_get_iaccelX());
+        	array.push(sensors_get_iaccelY());
+        	array.push(sensors_get_iaccelZ());
+        #else
+	        array.push(0);
+        	array.push(0);
+        	array.push(0);
+		#end
+		return array;
     }
 
 
     public static function getGyro ():Array<Float>{
-        #if (ios)
         var array:Array<Float> = new Array<Float>();
-        array.push(sensors_get_igyroX());
-        array.push(sensors_get_igyroY());
-        array.push(sensors_get_igyroZ());
-        return array;
-
-        #end
-        return null;
+		#if (ios)
+	
+        	array.push(sensors_get_igyroX());
+        	array.push(sensors_get_igyroY());
+        	array.push(sensors_get_igyroZ());
+        #else
+	        array.push(0);
+        	array.push(0);
+        	array.push(0);
+		#end
+		return array;
     }
 
     public static function getGravity ():Array<Float>{
-        #if (ios)
         var array:Array<Float> = new Array<Float>();
-        array.push(sensors_get_igravX());
-        array.push(sensors_get_igravY());
-        array.push(sensors_get_igravZ());
-
-        return array;
-        
-        #end
-        return null;
+		#if (ios)
+	
+        	array.push(sensors_get_igravX());
+        	array.push(sensors_get_igravY());
+        	array.push(sensors_get_igravZ());
+        #else
+	        array.push(0);
+        	array.push(0);
+        	array.push(0);
+		#end
+		return array;
     }
 
     public static function getLnaccel ():Array<Float>{
-        #if (ios)
-        
         var array:Array<Float> = new Array<Float>();
-
-        array.push(sensors_get_iuseraccelX());
-        array.push(sensors_get_iuseraccelY());
-        array.push(sensors_get_iuseraccelZ());
-        
-        return array;
-        
-        #end
-
-        return null;
+		#if (ios)
+	
+        	array.push(sensors_get_iuseraccelX());
+        	array.push(sensors_get_iuseraccelY());
+        	array.push(sensors_get_iuseraccelZ());
+        #else
+	        array.push(0);
+        	array.push(0);
+        	array.push(0);
+		#end
+		return array;
     }
 
     public static function getOrient ():Array<Float>{
-        #if (ios)
         var array:Array<Float> = new Array<Float>();
-        array.push(sensors_get_iorientX());
-        array.push(sensors_get_iorientY());
-        array.push(sensors_get_iorientZ());
-
-        return array;
-        
-        #end
-
-        return null;
+		#if (ios)
+	
+        	array.push(sensors_get_iorientX());
+        	array.push(sensors_get_iorientY());
+        	array.push(sensors_get_iorientZ());
+        #else
+	        array.push(0);
+        	array.push(0);
+        	array.push(0);
+		#end
+		return array;
     }
     public static function getPressure ():Float {
         return 0;
@@ -165,16 +172,18 @@ class Sensors {
     }
     
     public static function getRotvect ():Array<Float>{
-        #if (ios)
         var array:Array<Float> = new Array<Float>();
-        array.push(sensors_get_igyroX());
-        array.push(sensors_get_igyroY());
-        array.push(sensors_get_igyroZ());
-    
-        return array;
-        
-        #end
-        return null;
+		#if (ios)
+	
+        	array.push(sensors_get_igyroX());
+        	array.push(sensors_get_igyroY());
+        	array.push(sensors_get_igyroZ());
+        #else
+	        array.push(0);
+        	array.push(0);
+        	array.push(0);
+		#end
+		return array;
     }
 
     public static function getProximity ():Float {
@@ -184,18 +193,18 @@ class Sensors {
         return 0;        
     }
     public static function getMagneticField ():Array<Float>{
-        #if (ios)
-
         var array:Array<Float> = new Array<Float>();
-        array.push(sensors_get_iMagX());
-        array.push(sensors_get_iMagY());
-        array.push(sensors_get_iMagZ());
-    
-        return array;
-        
-        #end
-
-        return null;
+		#if (ios)
+	
+        	array.push(sensors_get_iMagX());
+        	array.push(sensors_get_iMagY());
+        	array.push(sensors_get_iMagZ());
+        #else
+	        array.push(0);
+        	array.push(0);
+        	array.push(0);
+		#end
+		return array;
     }
 
 
@@ -208,44 +217,50 @@ class Sensors {
         #if (ios)
             return is_iDMSupported();
         #end
-        return false;
+        return true;
     }
 
     public static function isGyroscopeSupported ():Bool {
         #if (ios)
             return is_igyroSupported();
         #end
-        return false;
+        return true;
     }
 
     public static function isGravitySupported ():Bool {
         #if (ios)
             return is_iDMSupported();
         #end
-        return false;
+        return true;
     }
 
     public static function isLinearAccelerometerSupported ():Bool {
         #if (ios)
             return is_ilnaccelSupported();
         #end
-        return false;
+        return true;
     }
 
     public static function isOrientationSupported ():Bool {
         #if (ios)
             return is_iDMSupported();
         #end
-        return false;
+        return true;
         
     }
 
     public static function isPressureSupported ():Bool {
-        return false;
+        #if (ios)
+            return false;
+        #end
+        return true;
     }
 
     public static function isAmbientTemperatureSupported ():Bool {
-        return false;
+        #if (ios)
+            return false;
+        #end
+        return true;
     }
 
     public static function isRotationSupported ():Bool {
@@ -253,26 +268,35 @@ class Sensors {
             return is_iDMSupported();
         #end
         
-        return false;
+        return true;
     }
 
     public static function isProximitySupported ():Bool {
-        return false;
+        #if (ios)
+            return false;
+        #end
+        return true;
     }
 
     public static function isLightSupported ():Bool {
-        return false;
+        #if (ios)
+            return false;
+        #end
+        return true;
     }
 
     public static function isMagneticFieldSupported ():Bool {
         #if (ios)
             return is_iDMSupported(); 
         #end
-        return false;
+        return true;
     }
 
     public static function isHumiditySupported ():Bool {
-        return false;
+        #if (ios)
+            return false;
+        #end
+        return true;
     }
 
     #end

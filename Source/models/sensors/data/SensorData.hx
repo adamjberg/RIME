@@ -22,12 +22,17 @@ class SensorData {
         return sensor.name;
     }
 
-    public function getMagnitude():Float
+    public function getMaxMagnitude(components:Array<Int>):Float
+    {
+        return sensor.getMaxMagnitude(components);
+    }
+
+    public function getMagnitude(components:Array<Int>):Float
     {
         var mag:Float = 0;
-        for(val in values)
+        for(component in components)
         {
-            mag += Math.pow(val, 2);
+            mag += Math.pow(values[component], 2);
         }
         mag = Math.sqrt(mag);
         return mag;

@@ -17,14 +17,13 @@ class Database {
     private static function get_instance():Database {
         if (_instance == null) {
             _instance = new Database();
-            System.deviceID = _instance.getDeviceID();
         }
         return _instance;
     }
 
     private static inline var SAVE_INTERVAL_MS:Int = 5000;
 
-    private static inline var CURRENT_DATABASE_VERSION:Int = 1;
+    private static inline var CURRENT_DATABASE_VERSION:Int = 3;
 
     private static var userDatabaseFileName:String = 
     #if (ios)
@@ -45,7 +44,10 @@ class Database {
         saveTimer = new Timer(SAVE_INTERVAL_MS, 0);
         saveTimer.addEventListener(TimerEvent.TIMER, writeToFile);
         saveTimer.start();
+    }
 
+    public function load()
+    {
         // Attempt to load user database first
         trace("Attempting to load database: " + userDatabaseFileName);
         if(FileSystem.exists(userDatabaseFileName))
@@ -54,7 +56,6 @@ class Database {
             {
                 db = JsonParser.parse(File.getContent(userDatabaseFileName));
                 
-
                 if(db.version == CURRENT_DATABASE_VERSION)
                 {
                     trace("User Database successfully loaded");
@@ -114,6 +115,16 @@ class Database {
         serverInfo.ipAddress = db.serverInfo.ipAddress;
         serverInfo.portNumber = db.serverInfo.portNumber;
         return serverInfo;
+    }
+
+    public function getErrors():Array<Dynamic>
+    {
+        return db.errors != null ? db.errors : new Array<Dynamic>();
+    }
+
+    public function writeErrors(errors:Array<Dynamic>)
+    {
+        writeJSONObj("errors", errors);
     }
 
     public function saveServerInfo(serverInfo:ServerInfo)
