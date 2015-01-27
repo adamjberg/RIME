@@ -162,7 +162,7 @@ import sys.io.FileOutput;
 
     public function deleteGesture(gestureModel:GestureModel)
     {
-        classifier.deleteGesture(gestureModel);
+        gestureModels.remove(gestureModel);
         writeGesturesToFile();
     }
 
