@@ -18,6 +18,7 @@ import views.screens.GestureRecognizeScreen;
 import views.screens.PerformSelectScreen;
 import views.screens.SensorsScreen;
 import views.screens.ViperMediaScreen;
+import views.screens.EffectsScreen; 
 import views.screens.*;
 
 class App extends VBox {
@@ -40,6 +41,7 @@ class App extends VBox {
     private var gestureController:GestureController;
     private var sensorDataController:SensorDataController;
     private var viperMediaController:ViperMediaController;
+    private var effectsScreen:EffectsScreen; 
 
     public function new () {
         super();
@@ -81,6 +83,7 @@ class App extends VBox {
         connectionSetupScreen = new ConnectionSetupScreen(client, serverInfo);
         performSelectScreen = new PerformSelectScreen();
         gestureRecognizeScreen = new GestureRecognizeScreen(gestureController);
+        effectsScreen = new EffectsScreen(); 
 
         var mappingController:MappingController = new MappingController(client, pianoButtonScreen.pianoButtons, gestureController, sensorDataController);
         viperMediaController = new ViperMediaController(client, mappingController);
@@ -92,7 +95,7 @@ class App extends VBox {
         homeScreen.onMediaPressed.add(openMediaScreen);
         homeScreen.onSensorsPressed.add(openSensorsScreen);
         homeScreen.onPerformPressed.add(openPerformSelectScreen);
-
+        homeScreen.onEffectsPressed.add(openEffectsScreen); 
         performSelectScreen.onOpenGesturePressed.add(openGestureRecognitionScreen);
 
         ScreenManager.push(homeScreen);
@@ -131,5 +134,10 @@ class App extends VBox {
     private function openGestureRecognitionScreen()
     {
         ScreenManager.push(gestureRecognizeScreen);
+    }
+
+    private function openEffectsScreen()
+    {
+        ScreenManager.push(effectsScreen); 
     }
 }
