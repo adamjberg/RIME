@@ -78,7 +78,7 @@ class App extends VBox {
         addChild(stack);
 
         // Controller initialization
-        client = new Client(serverInfo);
+        client = new Client();
         sensorController = new SensorController();
         sensors = sensorController.sensors;
         sensorDataController = new SensorDataController(sensors);
@@ -210,8 +210,9 @@ class App extends VBox {
     {
         Database.instance.load();
         Database.instance.db.errors = new Array<Dynamic>();
-        System.deviceID = Database.instance.getDeviceID();
         serverInfo = Database.instance.getServerInfo();
+        client.serverInfo = serverInfo;
+        System.deviceID = Database.instance.getDeviceID();
         effectController.loadEffectsFromDB();
         viperMediaController.loadMediaListFromDB();
         effectToMediaController.loadEffectsToMediaListFromDB();

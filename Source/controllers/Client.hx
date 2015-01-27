@@ -25,14 +25,13 @@ class Client {
     public var onConnected:Signal0 = new Signal0();
     public var onDisconnected:Signal0 = new Signal0();
 
-    private var serverInfo:ServerInfo;
+    public var serverInfo:ServerInfo;
     private var socket:UdpSocket;
 
     private var heartbeatTimer:Timer;
 
-    public function new(serverInfo:ServerInfo)
+    public function new()
     {
-        this.serverInfo = serverInfo;
         heartbeatTimer = new Timer(HEARTBEAT_DELAY_MS);
         heartbeatTimer.addEventListener(TimerEvent.TIMER, checkConnectivity);
     }
@@ -58,10 +57,12 @@ class Client {
         }
         #if !neko
             socket = new UdpSocket();
+
             if(socket.create() == false)
             {
                 alertConnectionProblem();
             }
+
             socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
             checkConnectivity();
         #end
@@ -91,7 +92,6 @@ class Client {
         {
             #if !neko
                 var bytesSent:Int = socket.send(message.getBytes());
-                trace("bytes sent: " + bytesSent);
                 if(bytesSent == 0)
                 {
                     trace("No bytes were sent, this may be an issue");
