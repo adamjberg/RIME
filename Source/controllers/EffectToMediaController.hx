@@ -38,6 +38,7 @@ class EffectToMediaController {
     public function loadEffectsToMediaListFromDB()
     {
         var effectstoMediaListDBObj:Array<Dynamic> = Database.instance.db.effectsToMediaList;
+        var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
 
         if(effectstoMediaListDBObj == null)
         {
@@ -46,18 +47,29 @@ class EffectToMediaController {
         }
 
         var effectToMedia:EffectToMedia = null;
+        var effectToMediaCount:Int = 0;
         for(effectToMediaObj in effectstoMediaListDBObj)
         {
             var name:String = effectToMediaObj.name;
             var effectName:String = effectToMediaObj.effect;
             var mediaName:String = effectToMediaObj.media;
+            var currentErrorString:String = "EffectToMedia[" + effectToMediaCount + "]:\n";
 
             var effect:Effect = effectController.getEffectByName(effectName);
             var viperMedia:ViperMedia = viperMediaController.getViperMediaByName(mediaName);
 
             effectToMedia = new EffectToMedia(name, effect, viperMedia);
 
-            effectToMediaList.push(effectToMedia);
+            if(effectToMedia.isValid())
+            {
+                effectToMediaList.push(effectToMedia);
+            }
+            else
+            {
+                currentErrorString += effectToMedia.getErrorString();
+                errorsDBObj.push(currentErrorString);
+            }
+            effectToMediaCount++;
         }
     }
 
