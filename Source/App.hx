@@ -19,6 +19,7 @@ import controllers.Client;
 import openfl.events.Event;
 import views.HeaderBar;
 import views.screens.ConnectionSetupScreen;
+import views.screens.DatabaseScreen;
 import views.screens.EditMediaScreen;
 import views.screens.GestureRecognizeScreen;
 import views.screens.PerformanceScreen;
@@ -35,6 +36,7 @@ class App extends VBox {
     private var sensorsScreen:SensorsScreen;
     private var connectionSetupScreen:ConnectionSetupScreen;
     private var viperMediaScreen:ViperMediaScreen;
+    private var databaseScreen:DatabaseScreen;
     private var performanceSelectScreen:PerformanceSelectScreen;
     private var gestureRecognizeScreen:GestureRecognizeScreen;
     private var performanceScreen:PerformanceScreen;
@@ -75,8 +77,6 @@ class App extends VBox {
         ScreenManager.init(stack, headerBar);
         addChild(stack);
 
-        serverInfo = Database.instance.getServerInfo();
-
         // Controller initialization
         client = new Client(serverInfo);
         sensorController = new SensorController();
@@ -85,10 +85,13 @@ class App extends VBox {
         gestureController = new GestureController(sensorDataController);
         effectController = new EffectController(sensorDataController, gestureController);
         viperMediaController = new ViperMediaController(client);
+        databaseScreen = new DatabaseScreen();
         effectToMediaController = new EffectToMediaController(effectController, viperMediaController);
         presetController = new PresetController(effectToMediaController);
         performanceController = new PerformanceController(presetController);
         viperCommandController = new ViperCommandController(presetController, effectToMediaController, viperMediaController, gestureController, effectController.activeEffects, client);
+
+        loadDatabase();
 
         // Screen initialization
         homeScreen = new HomeScreen();
@@ -104,6 +107,7 @@ class App extends VBox {
         homeScreen.onGesturesPressed.add(openGestureScreen);
         homeScreen.onConnectionSetupPressed.add(openConnectionSetup);
         homeScreen.onMediaPressed.add(openMediaScreen);
+        homeScreen.onDatabasePressed.add(openDatabaseScreen);
         homeScreen.onSensorsPressed.add(openSensorsScreen);
         homeScreen.onPerformPressed.add(openPerformanceSelectScreen);
 
@@ -112,6 +116,8 @@ class App extends VBox {
         performanceScreen.onClosed.add(disableAllPresets);
 
         viperMediaScreen.onMediaSelected.add(openEditMediaScreen);
+
+        databaseScreen.onReloadPressed.add(loadDatabase);
 
         ScreenManager.push(homeScreen);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -140,6 +146,11 @@ class App extends VBox {
     private function openMediaScreen()
     {
         ScreenManager.push(viperMediaScreen);
+    }
+
+    private function openDatabaseScreen()
+    {
+        ScreenManager.push(databaseScreen);
     }
 
     private function openPerformanceSelectScreen()
@@ -193,5 +204,18 @@ class App extends VBox {
                 gestureController.enableGesture(gestureEffect.gestureModel);
             }
         }
+    }
+
+    private function loadDatabase()
+    {
+        Database.instance.load();
+        Database.instance.db.errors = new Array<Dynamic>();
+        System.deviceID = Database.instance.getDeviceID();
+        serverInfo = Database.instance.getServerInfo();
+        effectController.loadEffectsFromDB();
+        viperMediaController.loadMediaListFromDB();
+        effectToMediaController.loadEffectsToMediaListFromDB();
+        presetController.loadPresetsFromDB();
+        performanceController.loadPerformancesFromDB();
     }
 }

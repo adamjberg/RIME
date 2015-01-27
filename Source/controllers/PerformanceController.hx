@@ -24,12 +24,12 @@ class PerformanceController {
         this.presetController = presetController;
         performances = new Array<Performance>();
         activePerformances = new Array<Performance>();
-        loadPerformancesFromDB();
     }
 
     public function loadPerformancesFromDB()
     {
         var performancesDBObj:Array<Dynamic> = Database.instance.db.performances;
+        var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
 
         if(performancesDBObj == null)
         {
@@ -38,18 +38,37 @@ class PerformanceController {
         }
 
         var performance:Performance = null;
+        var performanceCount:Int = 0;
         for(performanceObj in performancesDBObj)
         {
             var name:String = performanceObj.name;
             var presetNameList:Array<String> = performanceObj.presets;
             var presetList:Array<Preset> = new Array<Preset>();
-            for(presetName in presetNameList)
+            var currentErrorString:String = "Performance[" + performanceCount + "]:\n";
+
+            if(presetNameList != null)
             {
-                var preset:Preset = presetController.getPresetByName(presetName);
-                presetList.push(preset);
+                for(presetName in presetNameList)
+                {
+                    var preset:Preset = presetController.getPresetByName(presetName);
+                    if(preset != null)
+                    {
+                        presetList.push(preset);
+                    }
+                }
             }
             performance = new Performance(name, presetList);
-            performances.push(performance);
+
+            if(performance.isValid())
+            {
+                performances.push(performance);
+            }
+            else
+            {
+                currentErrorString += performance.getErrorString();
+                errorsDBObj.push(currentErrorString);
+            }
+            performanceCount++;
         }
     }
 

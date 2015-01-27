@@ -16,4 +16,27 @@ class EffectToMedia {
         this.effect = effect;
         this.media = media;
     }
+
+    public function isValid():Bool
+    {
+        return name != null && effect != null && media != null;
+    }
+
+    public function getErrorString():String
+    {
+        var errorString:String = "";
+        if(name == null)
+        {
+            errorString += "No name defined\n";
+        }
+        if(effect == null)
+        {
+            errorString += "No effect defined\n";
+        }
+        if(media == null)
+        {
+            errorString += "No media defined\n";
+        }
+        return errorString;
+    }
 }

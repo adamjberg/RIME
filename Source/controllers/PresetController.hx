@@ -24,12 +24,12 @@ class PresetController {
         this.effectToMediaController = effectToMediaController;
         presets = new Array<Preset>();
         activePresets = new Array<Preset>();
-        loadPresetsFromDB();
     }
 
     public function loadPresetsFromDB()
     {
         var presetsDBObj:Array<Dynamic> = Database.instance.db.presets;
+        var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
 
         if(presetsDBObj == null)
         {
@@ -38,18 +38,37 @@ class PresetController {
         }
 
         var preset:Preset = null;
+        var presetCount:Int = 0;
         for(presetObj in presetsDBObj)
         {
             var name:String = presetObj.name;
             var effectToMediaNameList:Array<String> = presetObj.effectToMediaList;
             var effectToMediaList:Array<EffectToMedia> = new Array<EffectToMedia>();
-            for(effectToMediaName in effectToMediaNameList)
+            var currentErrorString:String = "Preset[" + presetCount + "]:\n";
+
+            if(effectToMediaNameList != null)
             {
-                var effectToMedia:EffectToMedia = effectToMediaController.getEffectToMediaByName(effectToMediaName);
-                effectToMediaList.push(effectToMedia);
+                for(effectToMediaName in effectToMediaNameList)
+                {
+                    var effectToMedia:EffectToMedia = effectToMediaController.getEffectToMediaByName(effectToMediaName);
+                    if(effectToMedia != null)
+                    {
+                        effectToMediaList.push(effectToMedia);
+                    }
+                }
             }
             preset = new Preset(name, effectToMediaList);
-            presets.push(preset);
+
+            if(preset.isValid())
+            {
+                presets.push(preset);
+            }
+            else
+            {
+                currentErrorString += preset.getErrorString();
+                errorsDBObj.push(currentErrorString);
+            }
+            presetCount++;
         }
     }
 

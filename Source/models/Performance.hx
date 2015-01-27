@@ -19,4 +19,23 @@ class Performance {
         this.name = name;
         this.presets = presets;
     }
+
+    public function isValid():Bool
+    {
+        return name != null && presets != null && presets.length != 0;
+    }
+
+    public function getErrorString():String
+    {
+        var errorString:String = "";
+        if(name == null)
+        {
+            errorString += "No name defined\n";
+        }
+        if(presets == null || presets.length == 0)
+        {
+            errorString += "No presets defined\n";
+        }
+        return errorString;
+    }
 }

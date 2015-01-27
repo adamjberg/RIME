@@ -32,4 +32,22 @@ class Effect {
     {
         return -1;
     }
+
+    public function getErrorString():String
+    {
+        var errorString:String = "";
+        if(name == null)
+        {
+            errorString += "No name is defined\n";
+        }
+        if(method == null)
+        {
+            errorString += "No method is defined\n";
+        }
+        if(mediaProperties == null || mediaProperties.length == 0)
+        {
+            errorString += "No mediaProperties defined\n";
+        }
+        return errorString;
+    }
 }
