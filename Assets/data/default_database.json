@@ -1,24 +1,24 @@
 {  
     "version":3,
-    "deviceID":"",
+    "deviceID":"adam",
     "serverInfo":{  
-        "ipAddress":"",
+        "ipAddress":"206.87.113.80",
         "portNumber":"11000"
     },
     "effects":[
         {
-            "name": "example SensorVariableEffect",
+            "name": "LA - Brightness",
             "method": "update",
             "mediaProperties": [
                 "setBrightness"
             ],
             "minDesiredValues":[
-                0.01
+                1
             ],
             "maxDesiredValues":[
-                1.0
+                255
             ],
-            "sensorName":"Accelerometer",
+            "sensorName":"Linear Accelerometer",
             "updateIntervalInMs":1000,
             "vectorComponents":[0,1,2],
             "absoluteValue":false
@@ -33,8 +33,8 @@
             ],
             "desiredValues": [
                 0.01,
-                1,
-                1
+                400,
+                400
             ],
             "gestureName":"circle"
         }
@@ -42,14 +42,15 @@
     "viperMedia":[
         {
             "name":"media1",
-            "filename":"media1.png",
+            "filename":"fish3.png",
+            "type":"image",
             "id":0
         }
     ],
     "effectsToMediaList":[
         {
             "name":"example effectToMedia",
-            "effect":"example SensorVariableEffect",
+            "effect":"LA - Brightness",
             "media":"media1"
         },
         {
@@ -60,10 +61,22 @@
     ],
     "presets":[
         {
-            "name":"example Preset",
+            "name":"Preset",
             "effectToMediaList": [
                 "example effectToMedia",
                 "example gesture to media1"
+            ]
+        },
+        {
+            "name":"Preset 2",
+            "effectToMediaList": [
+                "example gesture to media1"
+            ]
+        },
+        {
+            "name":"Preset 3",
+            "effectToMediaList": [
+                "example effectToMedia"
             ]
         }
     ],
@@ -71,7 +84,9 @@
         {
             "name":"example Performance",
             "presets": [
-                "example Preset"
+                "Preset",
+                "Preset 2",
+                "Preset 3"
             ]
         }
     ]

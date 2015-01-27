@@ -33,14 +33,19 @@ class ViperMediaController {
     public function loadMediaListFromDB()
     {
         var viperMediaListObj:Array<Dynamic> = Database.instance.db.viperMedia;
+        var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
+
         if(viperMediaListObj == null)
         {
             return;
         }
 
+        var mediaCount:Int = 0;
         for(viperMediaObj in viperMediaListObj)
         {
             var media:ViperMedia = new ViperMedia();
+            var currentErrorString:String = "ViperMedia[" + mediaCount + "]:\n";
+
             media.id = viperMediaObj.id;
             media.filename = viperMediaObj.filename;
             media.type = viperMediaObj.type;
@@ -55,7 +60,16 @@ class ViperMediaController {
                 currentId = media.id + 1;
             }
 
-            mediaList.push(media);
+            if(media.isValid())
+            {
+                mediaList.push(media);
+            }
+            else
+            {
+                currentErrorString += media.getErrorString();
+                errorsDBObj.push(currentErrorString);
+            }
+            mediaCount++;
         }
     }
 
