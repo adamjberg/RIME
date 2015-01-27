@@ -14,6 +14,7 @@ class HomeScreen extends Screen {
     public var onSensorsPressed:Signal0 = new Signal0();
     public var onGesturesPressed:Signal0 = new Signal0();
     public var onPerformPressed:Signal0 = new Signal0();
+    public var onEffectsPressed:Signal0 = new Signal0(); 
 
     private var buttonStrings:Array<String> =
     [
@@ -21,7 +22,8 @@ class HomeScreen extends Screen {
         "Media",
         "Sensors",
         "Gestures",
-        "Perform"
+        "Perform", 
+        "Effects"
     ];
     private var buttonPressedSignals:Array<Signal0> = new Array<Signal0>();
     private var openScreenButtons:Array<Button> = new Array<Button>();
@@ -34,6 +36,8 @@ class HomeScreen extends Screen {
         buttonPressedSignals.push(onSensorsPressed);
         buttonPressedSignals.push(onGesturesPressed);
         buttonPressedSignals.push(onPerformPressed);
+        buttonPressedSignals.push(onEffectsPressed); 
+        
     }
 
     override private function initialize()
