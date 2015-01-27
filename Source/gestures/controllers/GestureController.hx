@@ -263,6 +263,7 @@ import sys.io.FileOutput;
     {
         if(FileSystem.exists(FULL_FILENAME))
         {
+            gestureModels.splice(0, gestureModels.length);
             var file:FileInput = File.read(FULL_FILENAME, true);
             var numGestures:Int = file.readInt8();
             for(i in 0...numGestures)

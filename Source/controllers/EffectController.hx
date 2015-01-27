@@ -29,6 +29,9 @@ class EffectController {
 
     public function loadEffectsFromDB()
     {
+        effects.splice(0, effects.length);
+        activeEffects.splice(0, activeEffects.length);
+
         var effectsDBObj:Array<Dynamic> = Database.instance.db.effects;
         var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
         if(effectsDBObj == null)

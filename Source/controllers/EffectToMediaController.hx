@@ -36,6 +36,9 @@ class EffectToMediaController {
 
     public function loadEffectsToMediaListFromDB()
     {
+        effectToMediaList.splice(0, effectToMediaList.length);
+        activeEffectToMediaList.splice(0, activeEffectToMediaList.length);
+
         var effectstoMediaListDBObj:Array<Dynamic> = Database.instance.db.effectsToMediaList;
         var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
 

@@ -28,6 +28,9 @@ class PresetController {
 
     public function loadPresetsFromDB()
     {
+        presets.splice(0, presets.length);
+        activePresets.splice(0, activePresets.length);
+
         var presetsDBObj:Array<Dynamic> = Database.instance.db.presets;
         var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
 

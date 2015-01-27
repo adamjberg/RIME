@@ -28,6 +28,9 @@ class PerformanceController {
 
     public function loadPerformancesFromDB()
     {
+        performances.splice(0, performances.length);
+        activePerformances.splice(0, activePerformances.length);
+
         var performancesDBObj:Array<Dynamic> = Database.instance.db.performances;
         var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
 

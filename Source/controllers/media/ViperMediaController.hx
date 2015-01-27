@@ -32,6 +32,8 @@ class ViperMediaController {
 
     public function loadMediaListFromDB()
     {
+        mediaList.splice(0, mediaList.length);
+
         var viperMediaListObj:Array<Dynamic> = Database.instance.db.viperMedia;
         var errorsDBObj:Array<Dynamic> = Database.instance.getErrors();
 
