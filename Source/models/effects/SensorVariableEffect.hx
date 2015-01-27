@@ -123,6 +123,10 @@ class SensorVariableEffect extends Effect {
                 break;
             }
         }
+        if(sensorData == null)
+        {
+            errorString += "No sensorName defined";
+        }
         return errorString;
     }
 
