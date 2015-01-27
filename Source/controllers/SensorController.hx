@@ -14,7 +14,7 @@ class SensorController {
     public var onSensorsUpdated:Signal0 = new Signal0();
 
     // This should be equivalent to once every frame
-    private static var UPDATE_INTERVAL:Float = 100;
+    private static var UPDATE_INTERVAL:Float = 20;
 
     private static var sensorClasses:Array<Class<Sensor>> =
     [
