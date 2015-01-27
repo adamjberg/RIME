@@ -24,7 +24,7 @@
             "absoluteValue":false
         },
         {
-            "name:": "example GestureEffect",
+            "name": "example GestureEffect",
             "method":"update",
             "mediaProperties": [
                 "easing",
@@ -36,7 +36,7 @@
                 1,
                 1
             ],
-            "gestureName":"cirle"
+            "gestureName":"circle"
         }
     ],
     "viperMedia":[
@@ -51,13 +51,19 @@
             "name":"example effectToMedia",
             "effect":"example SensorVariableEffect",
             "media":"media1"
+        },
+        {
+            "name":"example gesture to media1",
+            "effect":"example GestureEffect",
+            "media":"media1"
         }
     ],
     "presets":[
         {
             "name":"example Preset",
             "effectToMediaList": [
-                "example effectToMedia"
+                "example effectToMedia",
+                "example gesture to media1"
             ]
         }
     ],

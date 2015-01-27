@@ -19,6 +19,8 @@ class GestureList extends ListView {
     {
         super();
 
+        this.allowSelection = false;
+
         this.gestureController = gestureController;
         this.gestureController.onGestureAdded.add(populate);
 
