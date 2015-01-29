@@ -54,6 +54,14 @@ class ViperMediaController {
             media.name = viperMediaObj.name;
             media.xPos = viperMediaObj.xPos;
             media.yPos = viperMediaObj.yPos;
+            if(viperMediaObj.width != null)
+            {
+                media.width = viperMediaObj.width;    
+            }
+            if(viperMediaObj.height != null)
+            {
+                media.height = viperMediaObj.height;
+            }
 
             // If the medias ID is larger than our current id we need to
             // Set the current ID to a bigger number to prevent ID clashes
@@ -100,6 +108,14 @@ class ViperMediaController {
         command.addParam(media.type, media.filename);
         command.addParam("posX", media.xPos);
         command.addParam("posY", media.yPos);
+        if(Math.isNaN(media.width) == false)
+        {
+            command.addParam("width", media.width);
+        }
+        if(Math.isNaN(media.height) == false)
+        {
+            command.addParam("height", media.height);
+        }
         client.send(command.fillOscMessage());
     }
 
