@@ -29,5 +29,12 @@ class RimeStyles extends Styles {
                 }
             )
         );
+        addStyle("Popup", new Style
+            (
+                {
+                    spacingY: 10
+                }
+            )
+        );
     }
 }

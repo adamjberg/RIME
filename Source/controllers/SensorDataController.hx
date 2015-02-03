@@ -50,9 +50,11 @@ class SensorDataController {
         {
             if(sensorData.getSensorName() == sensorName)
             {
+                trace("Am I returning sensor data?"); 
                 return sensorData;
             }
         }
+        trace("Or am I returning null from this raw sensor data object?"); 
         return null;
     }
 

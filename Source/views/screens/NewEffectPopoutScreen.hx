@@ -8,8 +8,13 @@ import views.controls.FullWidthButton;
 import haxe.ui.toolkit.controls.CheckBox; 
 import haxe.ui.toolkit.controls.HSlider; 
 import haxe.ui.toolkit.controls.Text; 
+import models.sensors.data.SensorData;
+import controllers.SensorDataController; 
 
 class NewEffectPopoutScreen extends VBox { 
+
+	//Names 
+	private var name:LabelledTextInput; 
 
 	//Effect's sensor parameters
 	private var sensorList:ListSelector; 
@@ -25,25 +30,21 @@ class NewEffectPopoutScreen extends VBox {
 	//List of Sensors and ViPerCommands
 	private var sensors:Array<String> = new Array<String>(); 
 	private var commands:Array<String> = new Array<String>(); 
+	private var mediaProperties:Array<String> = new Array<String>(); 
 
-	//Member variables to be used as api
-	private var _sensor:String = "";
-	private var _axisX:Bool = false; 
-	private var _axisY:Bool = false; 
-	private var _axisZ:Bool = false; 
-	private var _command:String = "";
-	private var _commandMin:Float = -1;
-	private var _commandMax:Float = -1; 
+	private var sensorDataController:SensorDataController; 
+	private var _sensorVectorComponents:Array<Int> = new Array<Int>();  	
 
-	//Save Button 
-	private var saveButton:FullWidthButton; 
-
-	public function new()
+	public function new(?sensorDataController:SensorDataController)
 	{
 		super(); 
 
+		this.sensorDataController = sensorDataController; 
+
 		percentWidth = 100;
-		percentHeight = 100;  
+
+		name = new LabelledTextInput("Name: "); 
+		addChild(name); 
 
 		initializeListElements(); 
 
@@ -78,22 +79,15 @@ class NewEffectPopoutScreen extends VBox {
 		}
 
 		initializeMinMaxSliders(); 
-
-		saveButton = new FullWidthButton("Save"); 
-		saveButton.addEventListener(UIEvent.CLICK, saveEffect); 
-		addChild(saveButton); 
 		
 	}
 
 	private function initializeListElements(){
 
-		sensors.push("Accelerometer"); 
-		sensors.push("Linear Accel"); 
-		sensors.push("Graivty"); 
-		sensors.push("Magnetic Field"); 
-		sensors.push("Orientation"); 
-		sensors.push("Rotation"); 
-		sensors.push("Microphone");
+		for( sensorData in sensorDataController.defaultFilteredSensorDatas )
+		{
+			sensors.push(sensorData.getSensorName()); 
+		}
 
 		commands.push("Moving"); 
 		commands.push("Scaling");
@@ -141,23 +135,58 @@ class NewEffectPopoutScreen extends VBox {
 		addChild(viperCommandMaxValueHS); 
 
 	}
+	public function getName():String
+	{
+		return name.getText(); 
+	}
 
-	private function saveEffect(e:UIEvent){
-		_sensor = sensorList.text;  
-		_axisX = sensorXAxisCB.selected; 
-		_axisY = sensorYAxisCB.selected; 
-		_axisZ = sensorZAxisCB.selected; 
-		_command = viperCommandList.text;  
-		_commandMin = viperCommandMinValueHS.pos; 
-		_commandMax = viperCommandMaxValueHS.pos; 
+	public function getSensor():String
+	{
+		return sensorList.text; 
+	}
 
-		trace("Sensor : "+_sensor); 
-		trace("Axis X: "+_axisX);
-		trace("Axis Y: "+_axisY); 
-		trace("Axis Z: "+_axisZ); 
-		trace("Command: "+_command); 
-		trace("Command Min: "+_commandMin); 
-		trace("Command Max: "+_commandMax); 
+	public function getSensorVectorComponents():Array<Int>
+	{
+
+		for(i in 0..._sensorVectorComponents.length){
+			_sensorVectorComponents.pop(); 	
+		}
+
+		if(sensorXAxisCB.selected){
+			_sensorVectorComponents.push(0); 
+		} 
+		if(sensorYAxisCB.selected){
+			_sensorVectorComponents.push(1); 
+		}
+		if(sensorZAxisCB.selected){
+			_sensorVectorComponents.push(2); 
+		} 
+
+		return _sensorVectorComponents; 
+	
+	}
+
+	public function getMediaProperties():Array<String>
+	{	
+		for(i in 0...mediaProperties.length){
+			mediaProperties.pop(); 
+		}
+		mediaProperties.push(viperCommandList.text); 
+		return mediaProperties;
+	}
+
+	public function getMinDesiredValues():Array<Float> 
+	{
+		var minDesiredValues:Array<Float> = new Array<Float>(); 
+		minDesiredValues.push(viperCommandMinValueHS.pos); 
+		return minDesiredValues; 
+	}
+
+	public function getMaxDesiredValues():Array<Float>
+	{
+		var maxDesiredValues:Array<Float> = new Array<Float>();
+		maxDesiredValues.push(viperCommandMaxValueHS.pos); 
+		return maxDesiredValues; 
 	}
 
 }

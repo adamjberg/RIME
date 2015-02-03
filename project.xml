@@ -5,6 +5,8 @@
 	<app main="Main" path="Export" file="Rime" />
 
 	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<android permission="android.permission.INTERNET"/>
+	<android permission="android.permission.VIBRATE"/>
 	<window fps="60"/>
 	<window orientation="portrait" />
 	<source path="Source" />

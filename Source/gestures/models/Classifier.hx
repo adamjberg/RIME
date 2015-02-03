@@ -75,6 +75,11 @@ class Classifier {
         gestureModels.push(gm);
     }
 
+    public function removeGestureModel(gm:GestureModel)
+    {
+        gestureModels.remove(gm);
+    }
+
     public function getGestureModel(id:Int):GestureModel
 	{
         return gestureModels[id];
@@ -98,29 +103,5 @@ class Classifier {
     public function deleteGesture(gestureModel:GestureModel)
     {
         gestureModels.remove(gestureModel);
-    }
-
-    public function writeToFile(file:FileOutput)
-    {
-        file.writeInt8(gestureModels.length);
-        for(gestureModel in gestureModels)
-        {
-            gestureModel.writeToFile(file);
-        }
-    }
-
-    public static function fromFile(file:FileInput):Classifier
-    {
-        var result:Classifier = new Classifier();
-        var numGestures:Int = file.readInt8();
-        
-        for(i in 0...numGestures)
-        {
-            result.gestureModels.push
-            (
-                GestureModel.fromFile(file)
-            );
-        }
-        return result;
     }
 }

@@ -1,53 +1,52 @@
 package views;
 
 import controllers.ScreenManager;
+import views.controls.ListView;
 import gestures.controllers.GestureController;
 import gestures.models.GestureModel;
-import haxe.ui.toolkit.containers.VBox;
-import haxe.ui.toolkit.containers.ScrollView;
 import haxe.ui.toolkit.controls.Button;
 import haxe.ui.toolkit.controls.Text;
+import haxe.ui.toolkit.core.renderers.ComponentItemRenderer;
+import views.renderers.CustomComponentRenderer;
 import views.screens.GestureEditScreen;
-import views.GestureListItem;
 
-class GestureList extends ScrollView {
+class GestureList extends ListView {
 
     private var gestureController:GestureController;
     private var gestures:Array<GestureModel>;
-    private var vBox:VBox;
 
     public function new(?gestureController:GestureController)
     {
         super();
 
-        this._scrollSensitivity = 1;
+        this.allowSelection = false;
 
         this.gestureController = gestureController;
-
-        this.style.borderSize = 0;
-        this.style.spacingY = 10;
-
-        this.percentWidth = 95;
-        this.horizontalAlign = "center";
-        
-        vBox = new VBox();
-        vBox.percentWidth = 100;
-        addChild(vBox);
-
         this.gestureController.onGestureAdded.add(populate);
+
         populate();
     }
 
     private function populate()
     {
-        vBox.removeAllChildren();
+        dataSource.removeAll();
 
         this.gestures = gestureController.getGestureModels();
+
+        var pos:Int = 0;
         for(gesture in gestures)
         {
-            var gestureListItem:GestureListItem = new GestureListItem(gesture);
-            gestureListItem.onDeleteButtonPressed.add(deleteGesture);
-            vBox.addChild(gestureListItem);
+            dataSource.add(
+                {
+                    text: gesture.name,
+                    componentType: "button",
+                    componentValue: "delete"
+                }
+            );
+            var item:CustomComponentRenderer = cast(getItem(pos++), CustomComponentRenderer);
+            item.component.onClick = function(e) {
+                deleteGesture(gesture);
+            };
         }
     }
 

@@ -1,10 +1,10 @@
 package views.screens;
 
-import controllers.MappingController;
 import controllers.media.ViperMediaController;
 import haxe.ui.toolkit.core.PopupManager;
 import haxe.ui.toolkit.events.UIEvent;
 import models.media.ViperMedia;
+import msignal.Signal.Signal1;
 import views.controls.FullWidthButton;
 import views.screens.Screen;
 import views.ViperMediaPopupContent;
@@ -12,21 +12,22 @@ import views.ViperMediaScrollList;
 
 class ViperMediaScreen extends Screen {
 
+    public var onMediaSelected:Signal1<ViperMedia> = new Signal1<ViperMedia>();
+
     private var viperMediaController:ViperMediaController;
-    private var mappingController:MappingController;
 
     private var viperMediaScrollList:ViperMediaScrollList;
     private var newMediaButton:FullWidthButton;
     private var requestViperBtn:FullWidthButton;
 
-    public function new(?viperMediaController:ViperMediaController, ?mappingController:MappingController)
+    public function new(?viperMediaController:ViperMediaController)
     {
         super();
 
         this.viperMediaController = viperMediaController;
-        this.mappingController = mappingController;
 
-        viperMediaScrollList = new ViperMediaScrollList(viperMediaController, mappingController);
+        viperMediaScrollList = new ViperMediaScrollList(viperMediaController);
+        viperMediaScrollList.addEventListener(UIEvent.CHANGE, viperMediaSelected);
         addChild(viperMediaScrollList);
 
         newMediaButton = new FullWidthButton("NEW");
@@ -39,6 +40,12 @@ class ViperMediaScreen extends Screen {
 
         requestViperBtn.onClick = requestViperMedia;
 
+    }
+
+    private function viperMediaSelected(e:UIEvent)
+    {
+        var selectedIndex:Int = viperMediaScrollList.selectedIndex;
+        onMediaSelected.dispatch(viperMediaController.mediaList[selectedIndex]);
     }
 
     private function newMediaPressed(e:UIEvent)

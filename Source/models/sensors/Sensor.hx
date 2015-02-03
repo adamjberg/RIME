@@ -55,6 +55,17 @@ class Sensor {
         return false;
     }
 
+    public function getMaxMagnitude(components:Array<Int>):Float
+    {
+        var mag:Float = 0;
+        for(component in components)
+        {
+            mag += Math.pow(values[component], 2);
+        }
+        mag = Math.sqrt(mag);
+        return mag;
+    }
+
     public function update()
     {
         for(i in 0...values.length)
@@ -69,6 +80,20 @@ class Sensor {
             }
         }
         onUpdate.dispatch(values);
+    }
+
+    public function getValuesAsString():String
+    {
+        var outputString:String = "";
+        var roundedVal:Float = 0;
+        for(i in 0...values.length)
+        {
+            outputString += valueLabels[i] + ": ";
+
+            roundedVal = Math.round(values[i] * 100) / 100;
+            outputString += Std.string(roundedVal) + " ";
+        }
+        return outputString;
     }
 
     private function enable(){}

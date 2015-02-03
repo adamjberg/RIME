@@ -1,63 +1,92 @@
 {  
-    "version":1,
-    "deviceID":"",
+    "version":3,
+    "deviceID":"adam",
     "serverInfo":{  
-        "ipAddress":"",
+        "ipAddress":"206.87.113.80",
         "portNumber":"11000"
     },
-    "mappings":[  
-        {  
-            "name":"Orientation - alpha",
-            "mappingData":[  
-                {  
-                    "eventTriggerType":"sensor",
-                    "sensor":"Orientation",
-                    "valueIndex":0,
-                    "dynamicParameters":{  
-                        "targetFields":[  
-                            "setTransparency"
-                        ],
-                        "minOutputs":[  
-                            0
-                        ],
-                        "maxOutputs":[  
-                            255
-                        ]
-                    },
-                    "staticParameters":[  
-                        {  
-                            "method":"update"
-                        }
-                    ],
-                    "intervalInMs":50
-                }
+    "effects":[
+        {
+            "name": "LA - Brightness",
+            "method": "update",
+            "mediaProperties": [
+                "setBrightness"
+            ],
+            "minDesiredValues":[
+                1
+            ],
+            "maxDesiredValues":[
+                255
+            ],
+            "sensorName":"Linear Accelerometer",
+            "updateIntervalInMs":1000,
+            "vectorComponents":[0,1,2],
+            "absoluteValue":false
+        },
+        {
+            "name": "example GestureEffect",
+            "method":"update",
+            "mediaProperties": [
+                "easing",
+                "xPos",
+                "yPos"
+            ],
+            "desiredValues": [
+                0.01,
+                400,
+                400
+            ],
+            "gestureName":"circle"
+        }
+    ],
+    "viperMedia":[
+        {
+            "name":"media1",
+            "filename":"fish3.png",
+            "type":"image",
+            "id":0
+        }
+    ],
+    "effectsToMediaList":[
+        {
+            "name":"example effectToMedia",
+            "effect":"LA - Brightness",
+            "media":"media1"
+        },
+        {
+            "name":"example gesture to media1",
+            "effect":"example GestureEffect",
+            "media":"media1"
+        }
+    ],
+    "presets":[
+        {
+            "name":"Preset",
+            "effectToMediaList": [
+                "example effectToMedia",
+                "example gesture to media1"
             ]
         },
-        {  
-            "name":"Orientation - green",
-            "mappingData":[  
-                {  
-                    "eventTriggerType":"sensor",
-                    "sensor":"Orientation",
-                    "valueIndex":0,
-                    "dynamicParameters":{  
-                        "targetFields":[  
-                            "setGreen"
-                        ],
-                        "minOutputs":[  
-                            0
-                        ],
-                        "maxOutputs":[  
-                            255
-                        ]
-                    },
-                    "staticParameters":[  
-                        {  
-                            "method":"update"
-                        }
-                    ],
-                    "intervalInMs":50
-                }
+        {
+            "name":"Preset 2",
+            "effectToMediaList": [
+                "example gesture to media1"
+            ]
+        },
+        {
+            "name":"Preset 3",
+            "effectToMediaList": [
+                "example effectToMedia"
+            ]
+        }
+    ],
+    "performances":[
+        {
+            "name":"example Performance",
+            "presets": [
+                "Preset",
+                "Preset 2",
+                "Preset 3"
             ]
         }
     ]

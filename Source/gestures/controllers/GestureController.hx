@@ -13,7 +13,7 @@ import models.sensors.data.FilteredSensorData;
 import models.sensors.LinearAccelerometer;
 import models.sensors.Sensor;
 import msignal.Signal.Signal0;
-import msignal.Signal.Signal2;
+import msignal.Signal.Signal1;
 import openfl.display.Stage;
 import openfl.events.MouseEvent;
 import openfl.events.TimerEvent;
@@ -33,15 +33,17 @@ import sys.io.FileOutput;
     private static var FILENAME:String = "gestures.rime";
     private static var FULL_FILENAME:String = DIRECTORY + "/" + FILENAME;
 
-    public var onGestureDetected:Signal2<Int, Float> = new Signal2<Int, Float>();
+    public var onGestureDetected:Signal1<GestureModel> = new Signal1<GestureModel>();
     public var onGestureAdded:Signal0 = new Signal0();
 
     private var currentGesture:Gesture;
     private var trainSequence:Array<Gesture> = new Array<Gesture>();
     private var classifier:Classifier;
+    private var gestureModels:Array<GestureModel>;
 
     private var learning:Bool;
     private var analyzing:Bool;
+    private var noButtonDetectionEnabled:Bool = false;
 
     private var sensorDataController:SensorDataController;
     private var linearAccelFilteredData:FilteredSensorData;
@@ -53,6 +55,7 @@ import sys.io.FileOutput;
         this.analyzing = false;
         this.currentGesture = new Gesture();
         this.classifier = new Classifier();
+        this.gestureModels = new Array<GestureModel>();
 
         loadGesturesFromFile();
 
@@ -91,21 +94,23 @@ import sys.io.FileOutput;
 
     public function enableNoButtonDetection()
     {
-        if(linearAccelFilteredData != null)
+        if(linearAccelFilteredData != null && noButtonDetectionEnabled == false)
         {
             var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
             changeDetectFilter.onChangeStarted.add(startRecognizing);
             changeDetectFilter.onChangeStopped.add(stopRecognizing);
+            noButtonDetectionEnabled = true;
         }
     }
 
     public function disableNoButtonDetection()
     {
-        if(linearAccelFilteredData != null)
+        if(linearAccelFilteredData != null && noButtonDetectionEnabled)
         {
             var changeDetectFilter:ChangeDetectFilter = cast(linearAccelFilteredData.getFilter(ChangeDetectFilter), ChangeDetectFilter);
             changeDetectFilter.onChangeStarted.remove(startRecognizing);
             changeDetectFilter.onChangeStopped.remove(stopRecognizing);
+            noButtonDetectionEnabled = false;
         }
     }
 
@@ -148,7 +153,7 @@ import sys.io.FileOutput;
     {
         trace("Saving gesture with " + trainSequence.length + " trains");
         gestureModel.train(trainSequence);
-        classifier.addGestureModel(gestureModel);
+        gestureModels.push(gestureModel);
         trainSequence = new Array<Gesture>();
         writeGesturesToFile();
         onGestureAdded.dispatch();
@@ -157,7 +162,7 @@ import sys.io.FileOutput;
 
     public function deleteGesture(gestureModel:GestureModel)
     {
-        classifier.deleteGesture(gestureModel);
+        gestureModels.remove(gestureModel);
         writeGesturesToFile();
     }
 
@@ -196,27 +201,60 @@ import sys.io.FileOutput;
         analyzing = false;
     }
 
+    public function getGestureModelByName(gestureName:String):GestureModel
+    {
+        for(gestureModel in gestureModels)
+        {
+            if(gestureModel.name == gestureName)
+            {
+                return gestureModel;
+            }
+        }
+        return null;
+    }
+
+    /*
+     * Enable a gesture, if we are enabling a gesture we most likely
+     * want no button detection on as well
+     */
+    public function enableGesture(gestureModel:GestureModel)
+    {
+        if(gestureModel != null)
+        {
+            enableNoButtonDetection();
+            classifier.addGestureModel(gestureModel);
+        }
+    }
+
+    /*
+     * Removes all active gestures, and stops the detection
+     */
+    public function disableAllGestures()
+    {
+        disableNoButtonDetection();
+        classifier.clear();
+    }
+
     public function getGestureModels():Array<GestureModel>
     {
-        return classifier.getGestureModels();
+        return gestureModels;
     }
 
     private function fireGesture(id:Int, prob:Float)
     {
-        var gestureModel:GestureModel = getGestureModels()[id];
+        var gestureModel:GestureModel = classifier.getGestureModels()[id];
 
         Haptic.vibrate(0, 250);
         PopupManager.instance.showBusy(gestureModel.name, 500, "Gesture Detected!");
 
         trace("Firing Gesture: " + gestureModel.name + " prob: " + prob);
-        onGestureDetected.dispatch(id, prob);
+        onGestureDetected.dispatch(gestureModel);
     }
 
     private function update(newValues:Array<Float>)
     {
         if(this.learning || this.analyzing)
         {
-            trace("update: " + newValues);
             this.currentGesture.add( newValues );
         }
     }
@@ -225,8 +263,16 @@ import sys.io.FileOutput;
     {
         if(FileSystem.exists(FULL_FILENAME))
         {
+            gestureModels.splice(0, gestureModels.length);
             var file:FileInput = File.read(FULL_FILENAME, true);
-            classifier = Classifier.fromFile(file);
+            var numGestures:Int = file.readInt8();
+            for(i in 0...numGestures)
+            {
+                gestureModels.push
+                (
+                    GestureModel.fromFile(file)
+                );
+            }
             file.close();
         }
     }
@@ -239,7 +285,11 @@ import sys.io.FileOutput;
         }
 
         var file:FileOutput = File.write(FULL_FILENAME, true);
-        classifier.writeToFile(file);
+        file.writeInt8(gestureModels.length);
+        for(gestureModel in gestureModels)
+        {
+            gestureModel.writeToFile(file);
+        }
         file.close();
     }
 
