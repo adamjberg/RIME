@@ -66,8 +66,6 @@ class Client {
             socket.connect(serverInfo.ipAddress, serverInfo.portNumber);
             checkConnectivity();
         #end
-
-        heartbeatTimer.start();
     }
 
     public function disconnect()
@@ -78,7 +76,7 @@ class Client {
             socket = null;
         #end
         onDisconnected.dispatch();
-        heartbeatTimer.stop();
+        heartbeatTimer.reset();
     }
 
     public function send(message:OscMessage)
@@ -138,10 +136,12 @@ class Client {
         {
             serverInfo.connectionStatus = ServerInfo.CONNECTED;
             onConnected.dispatch();
+            heartbeatTimer.reset();
         }
         else
         {
             alertConnectionProblem();
+            heartbeatTimer.start();
         }
     }
 
