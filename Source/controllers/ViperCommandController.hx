@@ -74,8 +74,11 @@ class ViperCommandController {
 
                     // Carry over any leftover time
                     sensorVariableEffect.currentTimeInMs = sensorVariableEffect.currentTimeInMs - sensorVariableEffect.updateIntervalInMs;
+
+
                 }
             }
+            //Justin - Check for SensorUDP effect - in database have one effect for SensorUDP
         }
 
         lastSystemTime = sysTime;

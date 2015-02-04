@@ -77,5 +77,8 @@ class SensorController {
             }
         }
         onSensorsUpdated.dispatch();
+        // Justin - Once updated, create listener, send sensorUDP sensorValues array as often as possible
+        // Enable & disable - include option in preset level - T or F
+        // SensorUDPController?
     }
 }
