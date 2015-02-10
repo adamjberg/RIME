@@ -7,6 +7,8 @@ class ViperMedia {
     public var type:String = "image";
     public var xPos:Int = 0;
     public var yPos:Int = 0;
+    public var width:Float = Math.NaN;
+    public var height:Float = Math.NaN;
 
     public function new(?id:Int, ?filename:String)
     {

@@ -17,6 +17,11 @@ class GestureEffect extends Effect {
         this.desiredValues = desiredValues;
     }
 
+    override public function getData(index:Int)
+    {
+        return desiredValues[index];
+    }
+
     override public function isValid():Bool
     {
         return super.isValid() && gestureModel != null && desiredValues != null && desiredValues.length > 0;

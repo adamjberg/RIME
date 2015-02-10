@@ -32,7 +32,6 @@ public class Sensors extends Extension implements SensorEventListener {
     	Sensor.TYPE_GYROSCOPE,
     	Sensor.TYPE_GRAVITY,
     	Sensor.TYPE_LINEAR_ACCELERATION,
-    	Sensor.TYPE_ORIENTATION,
     	Sensor.TYPE_PRESSURE,
     	Sensor.TYPE_AMBIENT_TEMPERATURE,
     	Sensor.TYPE_ROTATION_VECTOR,
@@ -62,7 +61,7 @@ public class Sensors extends Extension implements SensorEventListener {
     }
     public static boolean isOrientationSupported()
     {
-        return mSensorDetails.get(Sensor.TYPE_ORIENTATION).isSupported;
+        return isGravitySupported() && isMagneticFieldSupported();
 
     }
     public static boolean isPressureSupported()
@@ -116,9 +115,18 @@ public class Sensors extends Extension implements SensorEventListener {
     {
         return mSensorDetails.get(Sensor.TYPE_LINEAR_ACCELERATION).values;
     }
+    // Modified from http://stackoverflow.com/questions/20339942/android-get-device-angle-by-using-getorientation-function
     public static float[] getOrient()
     {
-        return mSensorDetails.get(Sensor.TYPE_ORIENTATION).values;
+        float R[] = new float[9];
+        float I[] = new float[9];
+        boolean success = SensorManager.getRotationMatrix(R, I, Sensors.getGravity(), Sensors.getMagneticField());
+        float orientation[] = new float[3];
+        if(success)
+        {   
+            SensorManager.getOrientation(R, orientation);
+        }
+        return orientation;
     }
     public static float getPressure()
     {

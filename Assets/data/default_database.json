@@ -28,8 +28,8 @@
             "method":"update",
             "mediaProperties": [
                 "easing",
-                "xPos",
-                "yPos"
+                "endX",
+                "endY"
             ],
             "desiredValues": [
                 0.01,

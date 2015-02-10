@@ -60,7 +60,7 @@ class Sensor {
         var mag:Float = 0;
         for(component in components)
         {
-            mag += Math.pow(values[component], 2);
+            mag += Math.pow(maxValues[component], 2);
         }
         mag = Math.sqrt(mag);
         return mag;
