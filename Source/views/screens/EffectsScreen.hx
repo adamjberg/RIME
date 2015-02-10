@@ -13,6 +13,7 @@ import controllers.SensorDataController;
 import haxe.ui.toolkit.events.UIEvent;
 import models.effects.SensorVariableEffect; 
 import haxe.ui.toolkit.core.PopupManager;
+import msignal.Signal.Signal0; 
 
 
 class EffectsScreen extends Screen { 
@@ -22,6 +23,8 @@ class EffectsScreen extends Screen {
 
 	private var effectController:EffectController; 
 	private var sensorDataController:SensorDataController; 
+
+	private var updateGUI:Signal0 = new Signal0();
 
 	private var effectName:String = ""; 
 	private var effectMethod:String = "update"; 
@@ -61,11 +64,12 @@ class EffectsScreen extends Screen {
 						effectName = newEffectPopoutScreen.getName(); 
 						effectMethod = "update";  
 						effectMediaProperties = newEffectPopoutScreen.getMediaProperties();
-						var sensorName:String = newEffectPopoutScreen.getSensor(); 
-						var sensorData:SensorData = sensorDataController.getRawWithName(sensorName); 
 						effectMinValues = newEffectPopoutScreen.getMinDesiredValues(); 
 						effectMaxValues = newEffectPopoutScreen.getMaxDesiredValues(); 
 						effectVectorComponenets = newEffectPopoutScreen.getSensorVectorComponents(); 
+
+						var sensorName:String = newEffectPopoutScreen.getSensor(); 
+						var sensorData:SensorData = sensorDataController.getRawWithName(sensorName); 
 						var updateInterval:Int = 100; 
 						var absoluteValue:Bool = false; 
 
@@ -80,9 +84,11 @@ class EffectsScreen extends Screen {
 							updateInterval,
 							effectVectorComponenets,
 							absoluteValue); 
-						trace("attempting to add effect"); 
-						effectController.addEffect(sensorVariableEffect); 
-						trace("making sure we dont crash here"); 
+
+						if(sensorName != "")
+						{
+							effectController.addEffect(sensorVariableEffect); 
+						}
 				}
 
 			} 

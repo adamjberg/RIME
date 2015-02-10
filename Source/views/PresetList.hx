@@ -9,19 +9,17 @@ import views.renderers.CustomComponentRenderer;
 class PresetList extends ListView{
 
 	private var presetController:PresetController; 
-	private var presetList:Array<Preset> = new Array<Preset>(); 
+	private var presetList:Array<Preset>; 
 
 	public function new(?presetController:PresetController)
 	{
 		super(); 
 
 		this.presetController = presetController; 
-		presetController.loadPresetsFromDB(); 
 		this.presetList = presetController.presets; 
 
-		if(presetList.length == 0 ){
-			trace("Preset controller is empty or fucked up"); 
-		}
+		presetController.onUpdated.add(populate); 
+		populate();
 	}
 
 	private function populate()
@@ -31,16 +29,23 @@ class PresetList extends ListView{
 		var pos:Int = 0; 
 		for(preset in presetList)
 		{
+			trace(preset.name);
 			dataSource.add(
 			{
-				text: preset.name, 
-				componentTye: "button", 
+				text: preset.name,
+				componentType: "button", 
 				componentValue: "delete"
 			}); 
 			var item:CustomComponentRenderer = cast(getItem(pos++), CustomComponentRenderer); 
+			if(item.component != null)
+			{
 			item.component.onClick = function(e){
 				deletePreset(preset); 
-			}; 
+			};
+			}
+			else{
+				trace("NULL");
+			} 
 		}
 	}
 

@@ -1,5 +1,6 @@
 package views.screens; 
 import haxe.ui.toolkit.containers.VBox;
+import haxe.ui.toolkit.containers.HBox; 
 import haxe.ui.toolkit.controls.selection.ListSelector;
 import views.controls.LabelledTextInput;
 import haxe.ui.toolkit.events.UIEvent;
@@ -10,6 +11,7 @@ import haxe.ui.toolkit.controls.HSlider;
 import haxe.ui.toolkit.controls.Text; 
 import models.sensors.data.SensorData;
 import controllers.SensorDataController; 
+import views.screens.ParameterLayout; 
 
 class NewEffectPopoutScreen extends VBox { 
 
@@ -21,16 +23,22 @@ class NewEffectPopoutScreen extends VBox {
 	private var sensorXAxisCB:CheckBox; 
 	private var sensorYAxisCB:CheckBox; 
 	private var sensorZAxisCB:CheckBox;  
+	private var checkBoxLayout:HBox; 
+
+	private var parameterCount:Int = 0; 
 
 	//Effect's command parameters
-	private var viperCommandList:ListSelector;
-	private var viperCommandMinValueHS:HSlider; 
-	private var viperCommandMaxValueHS:HSlider; 
+	private var viperCommandParameter:LabelledTextInput;
+	private var viperCommandMinValue:LabelledTextInput; 
+	private var viperCommandMaxValue:LabelledTextInput; 
+	private var parameterLayoutArray:Array<ParameterLayout> = new Array<ParameterLayout>(); 
 
 	//List of Sensors and ViPerCommands
 	private var sensors:Array<String> = new Array<String>(); 
 	private var commands:Array<String> = new Array<String>(); 
-	private var mediaProperties:Array<String> = new Array<String>(); 
+
+	private var newParameterButton:FullWidthButton; 
+	private var parameterContainer:VBox; 
 
 	private var sensorDataController:SensorDataController; 
 	private var _sensorVectorComponents:Array<Int> = new Array<Int>();  	
@@ -63,22 +71,45 @@ class NewEffectPopoutScreen extends VBox {
 			});
 		}
 
+		checkBoxLayout = new HBox(); 
+		checkBoxLayout.percentWidth = 100; 
 		initalizeAxisCheckBoxes(); 
+		addChild(checkBoxLayout); 
 
-		viperCommandList = new ListSelector(); 
-		viperCommandList.percentWidth = 100; 
-		viperCommandList.text = "ViPer Parameter"; 
-		addChild(viperCommandList); 
+		parameterContainer = new VBox(); 
+		parameterContainer.percentWidth = 100; 
+		var pLayout:ParameterLayout = new ParameterLayout(); 
+		parameterContainer.addChild(pLayout);
+		parameterLayoutArray.push(pLayout);
+		trace("Parameter array size: "+parameterLayoutArray.length);
+		addChild(parameterContainer);  
 
-		for (i in 0...commands.length)
-		{
-			viperCommandList.dataSource.add(
-			{
-				text: commands[i]
-			});
+		newParameterButton = new FullWidthButton("Add A Parameter"); 
+		newParameterButton.onClick = newParameterButtonPressed; 
+		addChild(newParameterButton); 
+		
+	}
+
+	private function newParameterButtonPressed(e:UIEvent)
+	{
+
+ 		for(i in parameterCount...parameterLayoutArray.length)
+ 		{
+			if(parameterLayoutArray[parameterCount].viperCommandParameter.getText() != ""){
+				if(parameterLayoutArray[parameterCount].viperCommandMinValue.getText() != ""){
+					if(parameterLayoutArray[parameterCount].viperCommandMaxValue.getText() != ""){
+
+						var pLayout:ParameterLayout = new ParameterLayout();
+						parameterContainer.addChild(pLayout); 
+						parameterLayoutArray.push(pLayout); 
+						parameterCount++; 
+						trace("Parameter Array Size: "+parameterLayoutArray.length); 
+						trace("Parameter Count: "+parameterCount); 
+					}
+				}
+			}
 		}
 
-		initializeMinMaxSliders(); 
 		
 	}
 
@@ -89,60 +120,45 @@ class NewEffectPopoutScreen extends VBox {
 			sensors.push(sensorData.getSensorName()); 
 		}
 
-		commands.push("Moving"); 
-		commands.push("Scaling");
-		commands.push("Blur"); 
-		commands.push("Gray"); 
-
 	}
 
 	private function initalizeAxisCheckBoxes(){
 
+
+
 		sensorXAxisCB = new CheckBox(); 
 		sensorXAxisCB.text = "X"; 
-		addChild(sensorXAxisCB); 
+		sensorXAxisCB.percentWidth = 33; 
+		checkBoxLayout.addChild(sensorXAxisCB); 
 
 		sensorYAxisCB = new CheckBox(); 
 		sensorYAxisCB.text = "Y"; 
-		addChild(sensorYAxisCB); 
+		sensorYAxisCB.percentWidth = 33; 
+		checkBoxLayout.addChild(sensorYAxisCB); 
 
 		sensorZAxisCB = new CheckBox(); 
 		sensorZAxisCB.text = "Z"; 
-		addChild(sensorZAxisCB); 
+		sensorZAxisCB.percentWidth = 33; 
+		checkBoxLayout.addChild(sensorZAxisCB); 
 
 	}
 
-	private function initializeMinMaxSliders(){
-
-		var minText:Text = new Text(); 
-		minText.text = "Min"; 
-		addChild(minText); 
-
-		viperCommandMinValueHS = new HSlider(); 
-		viperCommandMinValueHS.text = "Min"; 
-		viperCommandMinValueHS.width = 300; 
-		viperCommandMinValueHS.pos = 0; 
-		addChild(viperCommandMinValueHS); 
-
-		var maxText:Text = new Text(); 
-		maxText.text = "Max"; 
-		addChild(maxText); 
-
-		viperCommandMaxValueHS = new HSlider(); 
-		viperCommandMaxValueHS.text = "Max"; 
-		viperCommandMaxValueHS.width = 300; 
-		viperCommandMaxValueHS.pos = 100; 
-		addChild(viperCommandMaxValueHS); 
-
-	}
 	public function getName():String
 	{
-		return name.getText(); 
+		if(name.getText() != "")
+		{
+			return name.getText(); 
+		}
+		return ""; 
 	}
 
 	public function getSensor():String
 	{
-		return sensorList.text; 
+		if(sensorList.text != "Select Sensor")
+		{
+			return sensorList.text; 
+		} 
+		return ""; 
 	}
 
 	public function getSensorVectorComponents():Array<Int>
@@ -168,24 +184,43 @@ class NewEffectPopoutScreen extends VBox {
 
 	public function getMediaProperties():Array<String>
 	{	
-		for(i in 0...mediaProperties.length){
-			mediaProperties.pop(); 
+		var mediaProperties:Array<String> = new Array<String>(); 
+
+		for(parameterLayout in parameterLayoutArray)
+		{
+			if(parameterLayout.viperCommandParameter.getText() != "")
+			{
+				mediaProperties.push(parameterLayout.viperCommandParameter.getText()); 
+			}
 		}
-		mediaProperties.push(viperCommandList.text); 
 		return mediaProperties;
 	}
 
 	public function getMinDesiredValues():Array<Float> 
 	{
 		var minDesiredValues:Array<Float> = new Array<Float>(); 
-		minDesiredValues.push(viperCommandMinValueHS.pos); 
+
+		for(parameterLayout in parameterLayoutArray)
+		{
+			if(parameterLayout.viperCommandMinValue.getText() != "")
+			{
+				minDesiredValues.push(Std.parseFloat(parameterLayout.viperCommandMinValue.getText()));
+			}
+		}
 		return minDesiredValues; 
 	}
 
 	public function getMaxDesiredValues():Array<Float>
 	{
 		var maxDesiredValues:Array<Float> = new Array<Float>();
-		maxDesiredValues.push(viperCommandMaxValueHS.pos); 
+
+		for(parameterLayout in parameterLayoutArray)
+		{	
+			if(parameterLayout.viperCommandMaxValue.getText() != "")
+			{
+				maxDesiredValues.push(Std.parseFloat(parameterLayout.viperCommandMaxValue.getText())); 
+			}
+		}
 		return maxDesiredValues; 
 	}
 

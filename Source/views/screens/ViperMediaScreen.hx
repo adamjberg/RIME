@@ -9,12 +9,15 @@ import views.controls.FullWidthButton;
 import views.screens.Screen;
 import views.ViperMediaPopupContent;
 import views.ViperMediaScrollList;
+import msignal.Signal.Signal0; 
 
 class ViperMediaScreen extends Screen {
 
     public var onMediaSelected:Signal1<ViperMedia> = new Signal1<ViperMedia>();
 
     private var viperMediaController:ViperMediaController;
+
+    private var updateGUI:Signal0 = new Signal0(); 
 
     private var viperMediaScrollList:ViperMediaScrollList;
     private var newMediaButton:FullWidthButton;

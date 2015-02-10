@@ -33,7 +33,6 @@ class EffectsToMediaList extends MultiSelectListView{
 			dataSource.add(
 			{
 				text: effectToMedia.name, 
-				comoonentType: "checkbox", 
 				componentType: "button", 
 				componentValue: "delete"
 			}); 

@@ -57,4 +57,8 @@ class MultiSelectListView extends haxe.ui.toolkit.containers.ListView {
 			}
 		}
 	}
+
+	public function get_selectedItems2():Array<IItemRenderer> {
+		return this._selectedItems;
+	}
 }

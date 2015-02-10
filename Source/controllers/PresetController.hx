@@ -102,6 +102,15 @@ class PresetController {
         }
     }
 
+    public function addPreset(preset:Preset)
+    {
+        if(preset != null){
+            presets.push(preset); 
+            onUpdated.dispatch(); 
+            writeToDatabase(); 
+        }
+    }
+
     public function writeToDatabase()
     {
         trace("writing preset to DB"); 
@@ -110,9 +119,14 @@ class PresetController {
         for(preset in presets)
         {
             var presetObj:Dynamic = {};
-
+            var effectToMediaListStrings:Array<String> = new Array<String>(); 
             presetObj.name = preset.name; 
 
+            for(effectToMedia in preset.effectToMediaList)
+            {
+                effectToMediaListStrings.push(effectToMedia.name); 
+            }
+            presetObj.effectToMediaList = effectToMediaListStrings; 
             presetListObj.push(presetObj); 
         }
 

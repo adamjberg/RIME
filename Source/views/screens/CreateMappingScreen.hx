@@ -11,6 +11,7 @@ import controllers.media.ViperMediaController;
 import controllers.EffectToMediaController; 
 import haxe.ui.toolkit.events.UIEvent;
 import models.EffectToMedia;  
+import msignal.Signal.Signal0; 
 
 class CreateMappingScreen extends Screen
 {
@@ -20,8 +21,9 @@ class CreateMappingScreen extends Screen
 	private var mediaList:ListSelector; 
 
 	private var mediaListContent:Array<String> = new Array<String>(); 
-	private var effectsListContent:Array<String> = new Array<String>(); 
 	private var saveMappingButton:FullWidthButton;
+
+	private var updateGUI:Signal0 = new Signal0(); 
 
 	private var effectController:EffectController; 
 	private var viperMediaController:ViperMediaController; 
@@ -32,13 +34,15 @@ class CreateMappingScreen extends Screen
 		super(); 
 		percentWidth = 100; 
 
+		updateGUI.dispatch();
+
 		this.effectController = effectController; 
 		this.effectController.loadEffectsFromDB(); 
-		this.viperMediaController = viperMediaController; 
-		this.effectToMediaController = effectToMediaController; 
+		this.effectController.onUpdated.add(initializeEffectsListContent);
 
-		initializeMediaListContent(); 
-		initializeEffectsListContent(); 
+		this.viperMediaController = viperMediaController; 
+		this.viperMediaController.onUpdated.add(initializeMediaListContent);
+		this.effectToMediaController = effectToMediaController;
 
 		name = new LabelledTextInput("Name: "); 
 		addChild(name); 
@@ -48,51 +52,48 @@ class CreateMappingScreen extends Screen
 		mediaList.text = "Select Media"; 
 		addChild(mediaList); 
 
-		for(i in 0...mediaListContent.length)
-		{
-			mediaList.dataSource.add(
-			{
-				text: mediaListContent[i]
-			});
-		}
-
 		effectsList = new ListSelector(); 
 		effectsList.percentWidth = 100; 
 		effectsList.text = "Select Effect"; 
 		addChild(effectsList); 
 
-		for(i in 0...effectsListContent.length)
-		{
-			effectsList.dataSource.add(
-			{
-				text: effectsListContent[i]
-			}); 
-		}
-
 		saveMappingButton = new FullWidthButton("Save Mapping"); 
 		saveMappingButton.onClick = saveMappingPressed;
 		addChild(saveMappingButton); 
+
+		initializeMediaListContent(); 
+		initializeEffectsListContent(); 
 	
-	}
-
-	private function initializeMediaListContent()
-	{
-		for(effect in effectController.effects)
-		{
-			effectsListContent.push(effect.name); 
-		}
-		trace("Length of effectListContent: "+effectsListContent.length); 
-
-		
 	}
 
 	private function initializeEffectsListContent()
 	{
+		if(effectsList.dataSource != null)
+		{
+			effectsList.dataSource.removeAll(); 
+		}
+
+		for(effect in effectController.effects)
+		{
+			effectsList.dataSource.add({
+				text: effect.name
+				}); 
+		}
+	}
+
+	private function initializeMediaListContent() 
+	{		
+		if(mediaList.dataSource != null)
+		{
+			mediaList.dataSource.removeAll(); 
+		}
+
 		for( viperMedia in viperMediaController.mediaList)
 		{
-			mediaListContent.push(viperMedia.name); 
+			mediaList.dataSource.add({
+				text: viperMedia.name
+				}); 
 		}
-		trace("Length of mediaListcontent: "+mediaListContent.length); 
 	}
 
 	private function saveMappingPressed(e:UIEvent)

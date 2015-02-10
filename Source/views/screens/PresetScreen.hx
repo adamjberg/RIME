@@ -45,7 +45,7 @@ class PresetScreen extends Screen {
 		newPresetButton.onClick = newPresetButtonClicked; 
 		addChild(newPresetButton); 
 
-		newPresetScreen = new NewPresetScreen(effectToMediaController, effectController, viperMediaController); 
+		newPresetScreen = new NewPresetScreen(presetController, effectToMediaController, effectController, viperMediaController); 
 
 	}
 

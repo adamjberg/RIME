@@ -69,6 +69,7 @@ class EffectController {
                     sensorData = sensorDataController.getRawWithName(sensorName);
                 }
                 var minDesiredValues:Array<Float> = effectDBObj.minDesiredValues;
+                trace("Effect :"+name+" minDesiredValues :"+minDesiredValues); 
                 var maxDesiredValues:Array<Float> = effectDBObj.maxDesiredValues;
                 var updateIntervalInMs:Int = effectDBObj.updateIntervalInMs;
                 var vectorComponents:Array<Int> = effectDBObj.vectorComponents;
@@ -157,7 +158,6 @@ class EffectController {
                 effectObj.method = svEffect.method; 
                 effectObj.mediaProperties = svEffect.mediaProperties; 
                 effectObj.sensorName = svEffect.sensorData.getSensorName(); 
-                effectObj.sensorData = svEffect.sensorData.getSensorName(); 
                 effectObj.minDesiredValues = svEffect.minDesiredValues; 
                 effectObj.maxDesiredValues = svEffect.maxDesiredValues; 
                 effectObj.updateIntervalInMs = svEffect.updateIntervalInMs; 
