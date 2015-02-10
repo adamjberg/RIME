@@ -210,7 +210,9 @@ class EffectController {
 
     public function setStatus(effect:Effect, status:Bool)
     {
-        if(effect != null && effects.indexOf(effect) != -1)
+        // TODO: Somehow we are sending in an effect we don't
+        // know about...WHAT?!
+        //if(effect != null && effects.indexOf(effect) != -1)
         {
             if(status)
             {
